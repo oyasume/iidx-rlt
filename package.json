@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "tsc && vite build",
-    "dev": "vite build --watch",
+    "dev": "vite",
     "lint": "eslint src",
     "format": "prettier src --write",
     "test": "jest src"
