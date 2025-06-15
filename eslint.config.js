@@ -12,7 +12,7 @@ export default [
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        project: "./tsconfig.json",
+        project: "./tsconfig.eslint.json",
       },
     },
     rules: {
@@ -23,6 +23,7 @@ export default [
           varsIgnorePattern: "^_",
         },
       ],
+      "func-style": ["error", "expression", { allowArrowFunctions: true }],
     },
   },
 ];
