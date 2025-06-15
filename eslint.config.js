@@ -8,7 +8,7 @@ export default [
   prettier,
 
   {
-    files: ["src/**/*.ts", "src/**/*.tsx"],
+    files: ["src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
