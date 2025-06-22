@@ -47,12 +47,9 @@ const insertTool = () => {
   toolContainer.id = "tool-root";
   ticketListContainer.insertAdjacentElement("beforebegin", toolContainer);
 
-  const shadowRoot = toolContainer.attachShadow({ mode: "open" });
-  const shadowAppContainer = document.createElement("div");
-  shadowRoot.appendChild(shadowAppContainer);
+  const root = createRoot(toolContainer);
 
-  const root = createRoot(shadowAppContainer);
-  root.render(React.createElement(Tool, { tickets }));
+  root.render(<Tool tickets={tickets} />);
 };
 
 insertTool();
