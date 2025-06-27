@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Tool from "./Tool";
 import { Ticket } from "./types";
@@ -27,5 +27,20 @@ describe("Tool", () => {
 
     expect(screen.getByText("当たり配置管理画面")).toBeInTheDocument();
     expect(screen.queryByText("1234567")).not.toBeInTheDocument();
+  });
+
+  it("チケットリストが正しくフィルタリングされること", async () => {
+    const user = userEvent.setup();
+    render(<Tool tickets={mockTickets} />);
+
+    const scratchSideInput = screen.getByLabelText("皿側の3つが");
+
+    await user.clear(scratchSideInput);
+    await user.type(scratchSideInput, "123");
+
+    await waitFor(() => {
+      expect(screen.queryByText("1234567")).toBeInTheDocument();
+      expect(screen.queryByText("7654321")).not.toBeInTheDocument();
+    });
   });
 });
