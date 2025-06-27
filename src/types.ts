@@ -4,9 +4,9 @@ export interface Ticket {
 }
 
 export interface SearchPattern {
-  scratchSide: string;
+  scratchSideText: string;
   isScratchSideUnordered: boolean;
-  nonScratchSide: string;
+  nonScratchSideText: string;
   isNonScratchSideUnordered: boolean;
 }
 

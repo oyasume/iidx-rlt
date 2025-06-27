@@ -9,8 +9,7 @@ const matchChar = (ruleChar: string, targetChar: string): boolean => {
 const matchSide = (ticketSideText: string, patternSideText: string, isUnordered: boolean): boolean => {
   const patternChars = patternSideText.split("");
   const ticketChars = ticketSideText.split("");
-  if (patternChars.length !== ticketChars.length)
-    throw new Error(`比較対象の長さが異なる ${patternChars.length} ${ticketChars.length}`);
+  if (patternChars.length !== ticketChars.length) return false;
   if (isUnordered) {
     for (const t of ticketChars) {
       if (patternChars.includes(t)) patternChars.splice(patternChars.indexOf(t), 1);
@@ -28,15 +27,15 @@ export const matchTicket = (ticket: Ticket, pattern: SearchPattern, playSide: Pl
     const scratchSide = laneText.substring(0, 3);
     const nonScratchSide = laneText.substring(3);
     return (
-      matchSide(scratchSide, pattern.scratchSide, pattern.isScratchSideUnordered) &&
-      matchSide(nonScratchSide, pattern.nonScratchSide, pattern.isNonScratchSideUnordered)
+      matchSide(scratchSide, pattern.scratchSideText, pattern.isScratchSideUnordered) &&
+      matchSide(nonScratchSide, pattern.nonScratchSideText, pattern.isNonScratchSideUnordered)
     );
   } else {
     const scratchSide = laneText.substring(4);
     const nonScratchSide = laneText.substring(0, 4);
     return (
-      matchSide(scratchSide, pattern.scratchSide, pattern.isScratchSideUnordered) &&
-      matchSide(nonScratchSide, pattern.nonScratchSide, pattern.isNonScratchSideUnordered)
+      matchSide(scratchSide, pattern.scratchSideText, pattern.isScratchSideUnordered) &&
+      matchSide(nonScratchSide, pattern.nonScratchSideText, pattern.isNonScratchSideUnordered)
     );
   }
 };
