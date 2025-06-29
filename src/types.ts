@@ -11,3 +11,9 @@ export interface SearchPattern {
 }
 
 export type PlaySide = "1P" | "2P";
+
+export interface SongInfo {
+  title: string;
+  url: string;
+  level: number;
+}

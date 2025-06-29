@@ -3,6 +3,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { SongInfo } from "../src/types.ts";
 
 const TARGET_LEVELS = [12, 11];
 const LEVEL_TO_PARAM_MAP: { [level: number]: string } = {
@@ -13,12 +14,6 @@ const LEVEL_TO_PARAM_MAP: { [level: number]: string } = {
 const BASE_URL = "https://textage.cc/score/";
 const TARGET_URL = `${BASE_URL}index.html`;
 const OUTPUT_FILE_PATH = path.resolve(dirname(fileURLToPath(import.meta.url)), "../public/data/songs.json");
-
-interface SongInfo {
-  title: string;
-  url: string;
-  level: number;
-}
 
 const browser = await puppeteer.launch({ headless: true });
 const page = await browser.newPage();
