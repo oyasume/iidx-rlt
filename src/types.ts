@@ -17,3 +17,7 @@ export interface SongInfo {
   url: string;
   level: number;
 }
+
+export interface AppSettings {
+  playSide: PlaySide;
+}
