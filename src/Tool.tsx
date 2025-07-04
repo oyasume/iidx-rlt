@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Box, Tabs, Tab } from "@mui/material";
-import { Ticket } from "types";
+import React, { useState, useMemo } from "react";
+import { Box, Tabs, Tab, ToggleButtonGroup, ToggleButton, Typography } from "@mui/material";
+import { PlaySide, Ticket } from "types";
 import { TicketSearchForm } from "./component/TicketSearchForm";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { searchFormSchema, SearchFormValues } from "./schema";
 import { filterTickets } from "./utils/ticketMatcher";
+import { useAppSettings } from "./hooks/useAppSettings";
 
 interface ToolProps {
   tickets: Ticket[];
@@ -13,7 +14,7 @@ interface ToolProps {
 
 const Tool: React.FC<ToolProps> = ({ tickets }) => {
   const [tabIndex, setTabIndex] = useState(0);
-  const [filteredTickets, setFilteredTickets] = useState<Ticket[]>(tickets);
+  const { settings, updatePlaySide, isLoading } = useAppSettings();
 
   const methods = useForm<SearchFormValues>({
     resolver: zodResolver(searchFormSchema),
@@ -25,21 +26,23 @@ const Tool: React.FC<ToolProps> = ({ tickets }) => {
     },
   });
 
-  const { scratchSideText, isScratchSideUnordered, nonScratchSideText, isNonScratchSideUnordered } = methods.watch();
+  const formValues = methods.watch();
 
-  useEffect(() => {
-    const currentValues: SearchFormValues = {
-      scratchSideText,
-      isScratchSideUnordered,
-      nonScratchSideText,
-      isNonScratchSideUnordered,
-    };
-    setFilteredTickets(filterTickets(tickets, currentValues, "1P"));
-  }, [scratchSideText, isScratchSideUnordered, nonScratchSideText, isNonScratchSideUnordered, tickets]);
+  const filteredTickets = useMemo(() => {
+    return filterTickets(tickets, formValues, settings.playSide);
+  }, [tickets, formValues, settings.playSide]);
 
   const handleTabChange = (_event: React.SyntheticEvent, value: number) => {
     setTabIndex(value);
   };
+
+  const handlePlaySideChange = (_event: React.MouseEvent<HTMLElement>, newPlaySide: PlaySide) => {
+    updatePlaySide(newPlaySide);
+  };
+
+  if (isLoading) {
+    return <Typography>設定を読み込んでいます...</Typography>;
+  }
 
   return (
     <Box
@@ -54,6 +57,12 @@ const Tool: React.FC<ToolProps> = ({ tickets }) => {
           <Tab label="チケット一覧" />
           <Tab label="当たり配置管理" />
         </Tabs>
+      </Box>
+      <Box sx={{ mt: 2, mb: 2, display: "flex", alignItems: "center", gap: 2 }}>
+        <ToggleButtonGroup value={settings.playSide} exclusive onChange={handlePlaySideChange} size="small">
+          <ToggleButton value="1P">1P</ToggleButton>
+          <ToggleButton value="2P">2P</ToggleButton>
+        </ToggleButtonGroup>
       </Box>
       {tabIndex === 0 && (
         <Box>

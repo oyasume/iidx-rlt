@@ -6,6 +6,34 @@ const meta: Meta<typeof Tool> = {
   title: "Tool",
   component: Tool,
   tags: ["autodocs"],
+  decorators: [
+    (Story, context) => {
+      const { storageDelay = 0 } = context.parameters as { storageDelay?: number };
+
+      // ストレージを抽象化するまでの付け焼き刃の対応
+      window.chrome = {
+        storage: {
+          sync: {
+            get: (
+              _keys: string | string[] | Record<string, unknown> | null,
+              callback: (_items: Record<string, unknown>) => void
+            ) => {
+              if (storageDelay === Infinity) {
+                return;
+              }
+              callback({});
+            },
+            set: (_items: Record<string, unknown>, callback?: () => void) => {
+              if (callback) {
+                callback();
+              }
+            },
+          },
+        },
+      } as typeof chrome;
+      return <Story />;
+    },
+  ],
 };
 
 export default meta;
@@ -28,5 +56,14 @@ export const Default: Story = {
 export const NoTickets: Story = {
   args: {
     tickets: [],
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    tickets: mockTickets,
+  },
+  parameters: {
+    storageDelay: Infinity,
   },
 };
