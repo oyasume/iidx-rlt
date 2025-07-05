@@ -1,19 +1,9 @@
-import React, { useState, useMemo } from "react";
-import {
-  Box,
-  Tabs,
-  Tab,
-  ToggleButtonGroup,
-  ToggleButton,
-  Typography,
-  Autocomplete,
-  TextField,
-  Stack,
-  Divider,
-} from "@mui/material";
+import React, { useState, useMemo, useCallback } from "react";
+import { Box, Tabs, Tab, Typography, Autocomplete, TextField, Stack, Divider } from "@mui/material";
 import { PlaySide, Ticket, SongInfo } from "./types";
 import { TicketSearchForm } from "./component/TicketSearchForm";
 import { TicketList } from "./component/TicketList";
+import { TicketControlPanel } from "./component/TicketControlPanel";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { searchFormSchema, SearchFormValues } from "./schema";
@@ -52,11 +42,12 @@ const Tool: React.FC<ToolProps> = ({ tickets }) => {
     setTabIndex(value);
   };
 
-  const handlePlaySideChange = (_event: React.SyntheticEvent, newPlaySide: PlaySide | null) => {
-    if (newPlaySide !== null) {
+  const handlePlaySideChange = useCallback(
+    (newPlaySide: PlaySide) => {
       updatePlaySide(newPlaySide);
-    }
-  };
+    },
+    [updatePlaySide]
+  );
 
   const handleOpenTextage = (laneText: string) => {
     if (selectedSong !== null) {
@@ -80,10 +71,7 @@ const Tool: React.FC<ToolProps> = ({ tickets }) => {
 
       {tabIndex === 0 && (
         <Stack spacing={3} sx={{ mt: 2 }}>
-          <ToggleButtonGroup value={settings.playSide} exclusive color="primary" onChange={handlePlaySideChange}>
-            <ToggleButton value="1P">1P</ToggleButton>
-            <ToggleButton value="2P">2P</ToggleButton>
-          </ToggleButtonGroup>
+          <TicketControlPanel playSide={settings.playSide} onPlaySideChange={handlePlaySideChange} />
           <FormProvider {...methods}>
             <TicketSearchForm />
           </FormProvider>
