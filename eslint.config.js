@@ -9,6 +9,7 @@ export default [
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   prettier,
+  ...storybook.configs["flat/recommended"],
   {
     files: ["src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts"],
     languageOptions: {
@@ -18,7 +19,7 @@ export default [
       },
     },
     rules: {
-      "no-unused-vars": [
+      "@typescript-eslint/no-unused-vars": [
         "error",
         {
           argsIgnorePattern: "^_",
@@ -28,5 +29,4 @@ export default [
       "func-style": ["error", "expression", { allowArrowFunctions: true }],
     },
   },
-  ...storybook.configs["flat/recommended"],
 ];
