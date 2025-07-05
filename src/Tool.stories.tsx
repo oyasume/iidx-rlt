@@ -12,6 +12,11 @@ const meta: Meta<typeof Tool> = {
 
       // ストレージを抽象化するまでの付け焼き刃の対応
       window.chrome = {
+        runtime: {
+          getURL: (path: string) => {
+            return path;
+          },
+        },
         storage: {
           sync: {
             get: (

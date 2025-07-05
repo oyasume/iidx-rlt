@@ -1,13 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Tool from "./Tool";
 import { Ticket } from "./types";
 import { useAppSettings } from "./hooks/useAppSettings";
+import { useSongs } from "./hooks/useSongs";
 
 const mockUpdatePlaySide = vi.fn();
 
 vi.mock("./hooks/useAppSettings");
+vi.mock("./hooks/useSongs");
 
 describe("Tool", () => {
   beforeEach(() => {
@@ -15,6 +17,17 @@ describe("Tool", () => {
       settings: { playSide: "1P" },
       updatePlaySide: mockUpdatePlaySide,
       isLoading: false,
+    });
+    vi.mocked(useSongs).mockReturnValue({
+      songs: [
+        {
+          title: "A(A)",
+          url: "https://textage.cc/score/7/a_amuro.html?1AC00",
+          level: 12,
+        },
+      ],
+      isLoading: false,
+      error: null,
     });
   });
 
@@ -75,6 +88,27 @@ describe("Tool", () => {
     });
     render(<Tool tickets={mockTickets} />);
 
-    expect(screen.getByText("設定を読み込んでいます...")).toBeInTheDocument();
+    expect(screen.getByText("データを読み込んでいます...")).toBeInTheDocument();
+  });
+
+  it("Textageで確認ボタンが正しく動作すること", async () => {
+    const user = userEvent.setup();
+    const windowOpen = vi.spyOn(window, "open");
+    render(<Tool tickets={mockTickets} />);
+
+    const autocomplete = screen.getByLabelText("楽曲を選択");
+    await user.click(autocomplete);
+    await user.type(autocomplete, "A");
+    const songOption = await screen.findByText("A(A)");
+    await user.click(songOption);
+
+    const ticketElement = screen.getByText("1234567");
+    const textageButton = within(ticketElement.parentElement as HTMLElement).getByRole("button", {
+      name: "Textageで確認",
+    });
+    await user.click(textageButton);
+
+    expect(windowOpen).toHaveBeenCalledWith("https://textage.cc/score/7/a_amuro.html?1AC00R1234567", "_blank");
+    windowOpen.mockRestore();
   });
 });
