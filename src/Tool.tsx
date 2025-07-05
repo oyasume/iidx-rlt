@@ -8,12 +8,12 @@ import {
   Typography,
   Autocomplete,
   TextField,
-  Button,
   Stack,
   Divider,
 } from "@mui/material";
 import { PlaySide, Ticket, SongInfo } from "./types";
 import { TicketSearchForm } from "./component/TicketSearchForm";
+import { TicketList } from "./component/TicketList";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { searchFormSchema, SearchFormValues } from "./schema";
@@ -108,18 +108,7 @@ const Tool: React.FC<ToolProps> = ({ tickets }) => {
             />
           </Box>
           <Divider />
-          <Box>
-            <Stack>
-              {filteredTickets.map((t, index) => (
-                <Box key={index} sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                  <Typography>{t.laneText}</Typography>
-                  <Button variant="outlined" onClick={() => handleOpenTextage(t.laneText)} disabled={!selectedSong}>
-                    Textageで確認
-                  </Button>
-                </Box>
-              ))}
-            </Stack>
-          </Box>
+          <TicketList tickets={filteredTickets} selectedSong={selectedSong} onOpenTextage={handleOpenTextage} />
         </Stack>
       )}
       {tabIndex === 1 && <Box sx={{ mt: 2 }}>当たり配置管理画面</Box>}

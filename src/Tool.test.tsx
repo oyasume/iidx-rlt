@@ -93,7 +93,7 @@ describe("Tool", () => {
 
   it("Textageで確認ボタンが正しく動作すること", async () => {
     const user = userEvent.setup();
-    const windowOpen = vi.spyOn(window, "open");
+    const windowOpen = vi.spyOn(window, "open").mockImplementation(() => null);
     render(<Tool tickets={mockTickets} />);
 
     const autocomplete = screen.getByLabelText("楽曲を選択");
