@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { Box, Tabs, Tab, Typography, Autocomplete, TextField, Stack, Divider } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Stack, Divider } from "@mui/material";
+import { TextageForm } from "./component/TextageForm";
 import { PlaySide, Ticket, SongInfo } from "./types";
 import { TicketSearchForm } from "./component/TicketSearchForm";
 import { TicketList } from "./component/TicketList";
@@ -76,25 +77,7 @@ const Tool: React.FC<ToolProps> = ({ tickets }) => {
             <TicketSearchForm />
           </FormProvider>
           <Divider />
-          <Box>
-            <Typography>Textageの設定</Typography>
-            <Autocomplete
-              options={songs}
-              getOptionLabel={(option) => option.title}
-              value={selectedSong}
-              onChange={(_event, newValue) => setSelectedSong(newValue)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="楽曲を選択"
-                  variant="standard"
-                  sx={{ mt: 1 }}
-                  slotProps={{ inputLabel: { shrink: true } }}
-                  placeholder="曲名で検索 (例: 冥)"
-                />
-              )}
-            />
-          </Box>
+          <TextageForm songs={songs} selectedSong={selectedSong} setSelectedSong={setSelectedSong} />
           <Divider />
           <TicketList tickets={filteredTickets} selectedSong={selectedSong} onOpenTextage={handleOpenTextage} />
         </Stack>

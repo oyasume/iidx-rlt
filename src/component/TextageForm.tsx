@@ -1,0 +1,33 @@
+import React from "react";
+import { Autocomplete, TextField, Typography, Box } from "@mui/material";
+import { SongInfo } from "../types";
+
+interface TextageFormProps {
+  songs: SongInfo[];
+  selectedSong: SongInfo | null;
+  setSelectedSong: (_song: SongInfo | null) => void;
+}
+
+export const TextageForm: React.FC<TextageFormProps> = ({ songs, selectedSong, setSelectedSong }) => {
+  return (
+    <Box>
+      <Typography>Textageの設定</Typography>
+      <Autocomplete
+        options={songs}
+        getOptionLabel={(option) => option.title}
+        value={selectedSong}
+        onChange={(_event, newValue) => setSelectedSong(newValue)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="楽曲を選択"
+            variant="standard"
+            sx={{ mt: 1 }}
+            slotProps={{ inputLabel: { shrink: true } }}
+            placeholder="曲名で検索 (例: 冥)"
+          />
+        )}
+      />
+    </Box>
+  );
+};
