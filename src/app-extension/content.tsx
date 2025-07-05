@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
-import { Ticket } from "./types";
-import Tool from "./Tool";
+import { Ticket } from "../types";
+import Tool from "../Tool";
 
 /**
  * チケットリストの要素からチケット情報を抽出する

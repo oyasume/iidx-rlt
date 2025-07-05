@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "matches": ["https://p.eagate.573.jp/game/2dx/*/djdata/random_lane/*"],
-      "js": ["src/content.tsx"]
+      "js": ["src/app-extension/content.tsx"]
     }
   ],
   "web_accessible_resources": [
