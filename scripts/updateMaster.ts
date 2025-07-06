@@ -15,7 +15,10 @@ const BASE_URL = "https://textage.cc/score/";
 const TARGET_URL = `${BASE_URL}index.html`;
 const OUTPUT_FILE_PATH = path.resolve(dirname(fileURLToPath(import.meta.url)), "../public/data/songs.json");
 
-const browser = await puppeteer.launch({ headless: true });
+const browser = await puppeteer.launch({
+  headless: true,
+  args: ["--no-sandbox", "--disable-setuid-sandbox"],
+});
 const page = await browser.newPage();
 const allSongs: SongInfo[] = [];
 

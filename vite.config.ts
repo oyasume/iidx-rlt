@@ -35,6 +35,7 @@ export default defineConfig(({ mode }) => {
   if (mode === "webapp") {
     return {
       ...commonConfig,
+      base: "/iidx-rlt/",
       plugins: [
         ...commonConfig.plugins!,
         VitePWA({
@@ -49,12 +50,12 @@ export default defineConfig(({ mode }) => {
             theme_color: "#000000",
             icons: [
               {
-                src: "/icons/icon192.png",
+                src: "icons/icon192.png",
                 sizes: "192x192",
                 type: "image/png",
               },
               {
-                src: "/icons/icon512.png",
+                src: "icons/icon512.png",
                 sizes: "512x512",
                 type: "image/png",
               },
