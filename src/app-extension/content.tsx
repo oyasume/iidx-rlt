@@ -51,7 +51,9 @@ const insertTool = () => {
 
   const root = createRoot(toolContainer);
 
-  root.render(<Tool tickets={tickets} storage={chromeStorageInstance} />);
+  root.render(
+    <Tool tickets={tickets} storage={chromeStorageInstance} songsJsonUrl={chrome.runtime.getURL("/data/songs.json")} />
+  );
 };
 
 insertTool();

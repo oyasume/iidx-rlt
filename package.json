@@ -9,7 +9,9 @@
     "coverage": "vitest run --coverage",
     "update-master": "tsx ./scripts/updateMaster.ts",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "build:webapp": "tsc && vite build --mode webapp",
+    "preview:webapp": "vite preview --mode webapp"
   },
   "dependencies": {
     "@crxjs/vite-plugin": "^2.0.0",

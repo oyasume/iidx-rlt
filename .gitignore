@@ -137,3 +137,8 @@ dist
 
 *storybook.log
 storybook-static
+
+# custom
+dist-web
+dist-extension
+public/data/songs.json

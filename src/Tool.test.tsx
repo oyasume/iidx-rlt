@@ -50,7 +50,7 @@ describe("Tool", () => {
   ];
 
   it("初期表示時にチケット一覧タブが選択される", () => {
-    render(<Tool tickets={mockTickets} storage={mockStorage} />);
+    render(<Tool tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
 
     expect(screen.getByRole("tab", { name: "チケット一覧", selected: true })).toBeInTheDocument();
     expect(screen.getByText("1234567")).toBeInTheDocument();
@@ -59,7 +59,7 @@ describe("Tool", () => {
 
   it("当たり配置管理タブに切り替えられること", async () => {
     const user = userEvent.setup();
-    render(<Tool tickets={mockTickets} storage={mockStorage} />);
+    render(<Tool tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
 
     const managementTab = screen.getByRole("tab", { name: "当たり配置管理" });
     await user.click(managementTab);
@@ -70,7 +70,7 @@ describe("Tool", () => {
 
   it("チケットリストが正しくフィルタリングされること", async () => {
     const user = userEvent.setup();
-    render(<Tool tickets={mockTickets} storage={mockStorage} />);
+    render(<Tool tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
 
     const scratchSideInput = screen.getByLabelText("皿側の3つが");
 
@@ -85,7 +85,7 @@ describe("Tool", () => {
 
   it("handlePlaySideChangeが正しく呼び出されること", async () => {
     const user = userEvent.setup();
-    render(<Tool tickets={mockTickets} storage={mockStorage} />);
+    render(<Tool tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
 
     const playSide2P = screen.getByRole("button", { name: "2P" });
     await user.click(playSide2P);
@@ -99,7 +99,7 @@ describe("Tool", () => {
       updatePlaySide: mockUpdatePlaySide,
       isLoading: true,
     });
-    render(<Tool tickets={mockTickets} storage={mockStorage} />);
+    render(<Tool tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
 
     expect(screen.getByText("データを読み込んでいます...")).toBeInTheDocument();
   });
@@ -107,7 +107,7 @@ describe("Tool", () => {
   it("Textageで確認ボタンが正しく動作すること", async () => {
     const user = userEvent.setup();
     const windowOpen = vi.spyOn(window, "open").mockImplementation(() => null);
-    render(<Tool tickets={mockTickets} storage={mockStorage} />);
+    render(<Tool tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
 
     const autocomplete = screen.getByLabelText("楽曲を選択");
     await user.click(autocomplete);

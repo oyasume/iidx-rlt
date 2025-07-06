@@ -17,12 +17,13 @@ import { IStorage } from "./storage";
 interface ToolProps {
   tickets: Ticket[];
   storage: IStorage;
+  songsJsonUrl: string;
 }
 
-const Tool: React.FC<ToolProps> = ({ tickets, storage }) => {
+const Tool: React.FC<ToolProps> = ({ tickets, storage, songsJsonUrl }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const { settings, updatePlaySide, isLoading: isSettingsLoading } = useAppSettings(storage);
-  const { songs, isLoading: isSongDataLoading } = useSongs(chrome.runtime.getURL("/data/songs.json"));
+  const { songs, isLoading: isSongDataLoading } = useSongs(songsJsonUrl);
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
 
   const methods = useForm<SearchFormValues>({
