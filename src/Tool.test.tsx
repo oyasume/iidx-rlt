@@ -6,6 +6,13 @@ import { Ticket } from "./types";
 import { useAppSettings } from "./hooks/useAppSettings";
 import { useSongs } from "./hooks/useSongs";
 
+const mockChrome = {
+  runtime: {
+    getURL: vi.fn((path: string) => `http://localhost:3000${path}`),
+  },
+};
+vi.stubGlobal("chrome", mockChrome);
+
 const mockUpdatePlaySide = vi.fn();
 
 vi.mock("./hooks/useAppSettings");

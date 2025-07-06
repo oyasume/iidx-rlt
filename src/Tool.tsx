@@ -20,7 +20,7 @@ interface ToolProps {
 const Tool: React.FC<ToolProps> = ({ tickets }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const { settings, updatePlaySide, isLoading: isSettingsLoading } = useAppSettings();
-  const { songs, isLoading: isSongDataLoading } = useSongs();
+  const { songs, isLoading: isSongDataLoading } = useSongs(chrome.runtime.getURL("/data/songs.json"));
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
 
   const methods = useForm<SearchFormValues>({

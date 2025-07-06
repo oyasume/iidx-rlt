@@ -17,26 +17,9 @@ const meta: Meta<typeof Tool> = {
             return path;
           },
         },
-        storage: {
-          sync: {
-            get: (
-              _keys: string | string[] | Record<string, unknown> | null,
-              callback: (_items: Record<string, unknown>) => void
-            ) => {
-              if (storageDelay === Infinity) {
-                return;
-              }
-              callback({});
-            },
-            set: (_items: Record<string, unknown>, callback?: () => void) => {
-              if (callback) {
-                callback();
-              }
-            },
-          },
-        },
-      } as typeof chrome;
-      return <Story />;
+      };
+
+      return <Story args={{ ...context.args, storage: mockStorage }} />;
     },
   ],
 };

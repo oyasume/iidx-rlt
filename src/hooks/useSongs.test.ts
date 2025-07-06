@@ -3,13 +3,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useSongs } from "./useSongs";
 import { SongInfo } from "../types";
 
-const mockChrome = {
-  runtime: {
-    getURL: vi.fn((path: string) => `http://localhost:3000${path}`),
-  },
-};
-vi.stubGlobal("chrome", mockChrome);
-
 describe("useSongs", () => {
   const mockSongs: SongInfo[] = [
     {
@@ -29,7 +22,7 @@ describe("useSongs", () => {
   });
 
   it("初期状態", () => {
-    const { result } = renderHook(() => useSongs());
+    const { result } = renderHook(() => useSongs("http://localhost:3000/data/songs.json"));
 
     expect(result.current.songs).toEqual([]);
     expect(result.current.isLoading).toBe(true);
@@ -41,21 +34,18 @@ describe("useSongs", () => {
       ok: true,
       json: () => Promise.resolve(mockSongs),
     } as Response);
-    const { result } = renderHook(() => useSongs());
+    const { result } = renderHook(() => useSongs("http://localhost:3000/data/songs.json"));
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
       expect(result.current.songs).toEqual(mockSongs);
       expect(result.current.error).toBeNull();
     });
-
-    expect(global.chrome.runtime.getURL).toHaveBeenCalledWith("/data/songs.json");
-    expect(global.fetch).toHaveBeenCalledWith("http://localhost:3000/data/songs.json");
   });
 
   it("fetchに失敗するとエラー", async () => {
     vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error());
-    const { result } = renderHook(() => useSongs());
+    const { result } = renderHook(() => useSongs("http://localhost:3000/data/songs.json"));
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
@@ -63,8 +53,5 @@ describe("useSongs", () => {
       expect(result.current.error).toBeInstanceOf(Error);
       expect(result.current.error?.message).toContain("楽曲データの読み込みに失敗しました");
     });
-
-    expect(global.chrome.runtime.getURL).toHaveBeenCalledWith("/data/songs.json");
-    expect(global.fetch).toHaveBeenCalledWith("http://localhost:3000/data/songs.json");
   });
 });

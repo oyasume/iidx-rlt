@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { SongInfo } from "../types";
 
-export const useSongs = () => {
+export const useSongs = (songsJsonUrl: string) => {
   const [songs, setSongs] = useState<SongInfo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    fetch(chrome.runtime.getURL("/data/songs.json"))
+    fetch(songsJsonUrl)
       .then((res) => res.json())
       .then((data) => {
         setSongs(data as SongInfo[]);
