@@ -29,4 +29,10 @@ export default [
       "func-style": ["error", "expression", { allowArrowFunctions: true }],
     },
   },
+  {
+    files: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    rules: {
+      "@typescript-eslint/unbound-method": "off",
+    },
+  },
 ];

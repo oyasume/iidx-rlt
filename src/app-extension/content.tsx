@@ -1,6 +1,9 @@
 import { createRoot } from "react-dom/client";
 import { Ticket } from "../types";
 import Tool from "../Tool";
+import { ChromeStorage } from "../storage/chromeStorage";
+
+const chromeStorageInstance = new ChromeStorage();
 
 /**
  * チケットリストの要素からチケット情報を抽出する
@@ -48,7 +51,7 @@ const insertTool = () => {
 
   const root = createRoot(toolContainer);
 
-  root.render(<Tool tickets={tickets} />);
+  root.render(<Tool tickets={tickets} storage={chromeStorageInstance} />);
 };
 
 insertTool();

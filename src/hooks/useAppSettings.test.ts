@@ -1,21 +1,12 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { useAppSettings } from "./useAppSettings";
-import { AppSettings } from "../types";
+import { IStorage } from "../storage";
 
-const mockChrome = {
-  storage: {
-    sync: {
-      get: vi.fn((_default: AppSettings, callback: (_settings: AppSettings) => void) => {
-        setTimeout(() => callback({ playSide: "1P" }), 0);
-      }),
-      set: vi.fn((_settings: AppSettings, callback: () => void) => {
-        callback();
-      }),
-    },
-  },
+const mockStorage: IStorage = {
+  get: vi.fn(<T extends object>(_keys: T): Promise<T> => Promise.resolve({ playSide: "1P" } as T)),
+  set: vi.fn((_items: object): Promise<void> => Promise.resolve()),
 };
-vi.stubGlobal("chrome", mockChrome);
 
 describe("useAppSettings", () => {
   beforeEach(() => {
@@ -28,77 +19,75 @@ describe("useAppSettings", () => {
   });
 
   describe("初期状態", () => {
-    it("isLoaging が True", () => {
-      const { result } = renderHook(() => useAppSettings());
+    it("設定がロードされる", async () => {
+      const { result } = renderHook(() => useAppSettings(mockStorage));
+
       expect(result.current.isLoading).toBe(true);
-    });
 
-    it("設定がロードされる", () => {
-      const { result } = renderHook(() => useAppSettings());
-
-      act(() => {
+      await act(async () => {
         vi.runAllTimers();
+        await Promise.resolve();
       });
 
       expect(result.current.isLoading).toBe(false);
-      expect(result.current.settings).toEqual({ playSide: "1P" });
+      expect(result.current.settings.playSide).toBe("1P");
     });
 
-    it("ストレージの get が呼ばれる", () => {
-      renderHook(() => useAppSettings());
-      expect(mockChrome.storage.sync.get).toHaveBeenCalledTimes(1);
+    it("ストレージの get が呼ばれる", async () => {
+      renderHook(() => useAppSettings(mockStorage));
+      await act(async () => {});
+
+      expect(mockStorage.get).toHaveBeenCalledTimes(1);
     });
   });
 
   describe("updatePlaySideが呼ばれたとき", () => {
-    const setup = () => {
-      const { result } = renderHook(() => useAppSettings());
-      act(() => {
+    it("すぐにはストレージに保存せず、状態のみ更新する", async () => {
+      const { result } = renderHook(() => useAppSettings(mockStorage));
+
+      await act(async () => {
         vi.runAllTimers();
+        await Promise.resolve();
       });
-      return { result };
-    };
-
-    it("すぐにはストレージに保存せず、状態のみ更新する", () => {
-      const { result } = setup();
-
       act(() => {
         result.current.updatePlaySide("2P");
       });
 
       expect(result.current.settings.playSide).toBe("2P");
-      expect(mockChrome.storage.sync.set).not.toHaveBeenCalled();
+      expect(mockStorage.set).not.toHaveBeenCalled();
     });
 
-    it("デバウンスの後に保存する", () => {
-      const { result } = setup();
+    it("デバウンスの後に保存する", async () => {
+      const { result } = renderHook(() => useAppSettings(mockStorage));
 
+      await act(async () => {
+        vi.runAllTimers();
+        await Promise.resolve();
+      });
       act(() => {
         result.current.updatePlaySide("2P");
-      });
-
-      act(() => {
         vi.advanceTimersByTime(500);
       });
 
-      expect(mockChrome.storage.sync.set).toHaveBeenCalledTimes(1);
-      expect(mockChrome.storage.sync.set).toHaveBeenCalledWith({ playSide: "2P" }, expect.any(Function));
+      expect(mockStorage.set).toHaveBeenCalledTimes(1);
+      expect(mockStorage.set).toHaveBeenCalledWith({ playSide: "2P" });
     });
 
-    it("連続して呼ばれた場合、前回の保存処理がキャンセルされること", () => {
-      const { result } = setup();
+    it("短時間に2回変更されても最後の1回だけ保存される", async () => {
+      const { result } = renderHook(() => useAppSettings(mockStorage));
 
+      await act(async () => {
+        vi.runAllTimers();
+        await Promise.resolve();
+      });
       act(() => {
         result.current.updatePlaySide("2P");
-        result.current.updatePlaySide("1P"); // Call again before debounce
-      });
-
-      act(() => {
+        result.current.updatePlaySide("1P");
         vi.advanceTimersByTime(500);
       });
 
-      expect(mockChrome.storage.sync.set).toHaveBeenCalledTimes(1);
-      expect(mockChrome.storage.sync.set).toHaveBeenCalledWith({ playSide: "1P" }, expect.any(Function));
+      expect(mockStorage.set).toHaveBeenCalledTimes(1);
+      expect(mockStorage.set).toHaveBeenCalledWith({ playSide: "1P" });
     });
   });
 });

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import Tool from "./Tool";
 import { Ticket } from "./types";
+import { IStorage } from "./storage";
 
 const meta: Meta<typeof Tool> = {
   title: "Tool",
@@ -10,14 +11,29 @@ const meta: Meta<typeof Tool> = {
     (Story, context) => {
       const { storageDelay = 0 } = context.parameters as { storageDelay?: number };
 
-      // ストレージを抽象化するまでの付け焼き刃の対応
+      const mockStorage: IStorage = {
+        get: async <T extends object>(keys: T): Promise<T> => {
+          if (storageDelay === Infinity) {
+            return new Promise(() => {});
+          }
+          await new Promise((resolve) => setTimeout(resolve, storageDelay));
+          return { ...keys };
+        },
+        set: async (_items: object): Promise<void> => {
+          if (storageDelay === Infinity) {
+            return new Promise(() => {});
+          }
+          await new Promise((resolve) => setTimeout(resolve, storageDelay));
+        },
+      };
+
       window.chrome = {
         runtime: {
           getURL: (path: string) => {
             return path;
           },
         },
-      };
+      } as typeof chrome;
 
       return <Story args={{ ...context.args, storage: mockStorage }} />;
     },

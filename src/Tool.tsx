@@ -12,14 +12,16 @@ import { makeTextageUrl } from "./utils/makeTextageUrl";
 import { filterTickets } from "./utils/ticketMatcher";
 import { useAppSettings } from "./hooks/useAppSettings";
 import { useSongs } from "./hooks/useSongs";
+import { IStorage } from "./storage";
 
 interface ToolProps {
   tickets: Ticket[];
+  storage: IStorage;
 }
 
-const Tool: React.FC<ToolProps> = ({ tickets }) => {
+const Tool: React.FC<ToolProps> = ({ tickets, storage }) => {
   const [tabIndex, setTabIndex] = useState(0);
-  const { settings, updatePlaySide, isLoading: isSettingsLoading } = useAppSettings();
+  const { settings, updatePlaySide, isLoading: isSettingsLoading } = useAppSettings(storage);
   const { songs, isLoading: isSongDataLoading } = useSongs(chrome.runtime.getURL("/data/songs.json"));
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
 
