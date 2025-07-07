@@ -27,19 +27,7 @@ const meta: Meta<typeof Tool> = {
         },
       };
 
-      window.chrome = {
-        runtime: {
-          getURL: (path: string) => {
-            return path;
-          },
-        },
-      } as typeof chrome;
-
-      return (
-        <Story
-          args={{ ...context.args, storage: mockStorage, songsJsonUrl: chrome.runtime.getURL("/data/songs.json") }}
-        />
-      );
+      return <Story args={{ ...context.args, storage: mockStorage, songsJsonUrl: "/data/songs.json" }} />;
     },
   ],
 };

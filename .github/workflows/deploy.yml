@@ -22,12 +22,12 @@ jobs:
         run: npm ci
 
       - name: Build Web App
-        run: npm run build:webapp
+        run: npm run build
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist-web
+          publish_dir: ./dist
           keep_files: true
           commit_message: "chore: deploy to gh-pages"
