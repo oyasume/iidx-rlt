@@ -1,18 +1,16 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Box, Tabs, Tab, Typography, Stack, Divider } from "@mui/material";
 import { TextageForm } from "./component/TextageForm";
 import { PlaySide, Ticket, SongInfo } from "./types";
 import { TicketSearchForm } from "./component/TicketSearchForm";
 import { TicketList } from "./component/TicketList";
 import { TicketControlPanel } from "./component/TicketControlPanel";
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { searchFormSchema, SearchFormValues } from "./schema";
-import { filterTickets } from "./utils/ticketMatcher";
+import { FormProvider } from "react-hook-form";
+import { IStorage } from "./storage";
 import { useAppSettings } from "./hooks/useAppSettings";
 import { useSongs } from "./hooks/useSongs";
-import { IStorage } from "./storage";
 import { useTextageOpener } from "./hooks/useTextageOpener";
+import { useTicketSearch } from "./hooks/useTicketSearch";
 
 interface ToolProps {
   tickets: Ticket[];
@@ -25,22 +23,7 @@ const Tool: React.FC<ToolProps> = ({ tickets, storage, songsJsonUrl }) => {
   const { settings, updatePlaySide, isLoading: isSettingsLoading } = useAppSettings(storage);
   const { songs, isLoading: isSongDataLoading } = useSongs(songsJsonUrl);
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
-
-  const methods = useForm<SearchFormValues>({
-    resolver: zodResolver(searchFormSchema),
-    defaultValues: {
-      scratchSideText: "***",
-      isScratchSideUnordered: true,
-      nonScratchSideText: "****",
-      isNonScratchSideUnordered: true,
-    },
-  });
-
-  const formValues = methods.watch();
-
-  const filteredTickets = useMemo(() => {
-    return filterTickets(tickets, formValues, settings.playSide);
-  }, [tickets, formValues, settings.playSide]);
+  const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
 
   const handleTabChange = (_event: React.SyntheticEvent, value: number) => {
     setTabIndex(value);
