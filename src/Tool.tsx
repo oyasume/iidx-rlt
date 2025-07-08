@@ -8,11 +8,11 @@ import { TicketControlPanel } from "./component/TicketControlPanel";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { searchFormSchema, SearchFormValues } from "./schema";
-import { makeTextageUrl } from "./utils/makeTextageUrl";
 import { filterTickets } from "./utils/ticketMatcher";
 import { useAppSettings } from "./hooks/useAppSettings";
 import { useSongs } from "./hooks/useSongs";
 import { IStorage } from "./storage";
+import { useTextageOpener } from "./hooks/useTextageOpener";
 
 interface ToolProps {
   tickets: Ticket[];
@@ -53,12 +53,7 @@ const Tool: React.FC<ToolProps> = ({ tickets, storage, songsJsonUrl }) => {
     [updatePlaySide]
   );
 
-  const handleOpenTextage = (laneText: string) => {
-    if (selectedSong !== null) {
-      const textageUrl = makeTextageUrl(selectedSong, settings.playSide, laneText);
-      window.open(textageUrl, "_blank");
-    }
-  };
+  const { handleOpenTextage } = useTextageOpener(selectedSong, settings.playSide);
 
   if (isSettingsLoading || isSongDataLoading) {
     return <Typography>データを読み込んでいます...</Typography>;
