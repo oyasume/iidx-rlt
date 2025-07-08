@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import Tool from "./Tool";
-import { Ticket } from "./types";
-import { IStorage } from "./storage";
+import { TicketView } from "./TicketView";
+import { Ticket } from "types";
+import { IStorage } from "../storage";
 
-const meta: Meta<typeof Tool> = {
-  title: "Tool",
-  component: Tool,
+const meta: Meta<typeof TicketView> = {
+  title: "TicketView",
+  component: TicketView,
   tags: ["autodocs"],
   decorators: [
     (Story, context) => {
@@ -27,7 +27,7 @@ const meta: Meta<typeof Tool> = {
         },
       };
 
-      return <Story args={{ ...context.args, storage: mockStorage, songsJsonUrl: "/data/songs.json" }} />;
+      return <Story args={{ ...context.args, storage: mockStorage, songsJsonUrl: "data/songs.json" }} />;
     },
   ],
 };
