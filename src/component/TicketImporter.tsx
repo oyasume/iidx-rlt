@@ -22,8 +22,7 @@ interface TicketImporterProps {
   onImport: (_tickets: Ticket[]) => Promise<void>;
 }
 
-const bookmarkletCode =
-  "javascript:(function(){const t='https://oyasume.github.io/iidx-rlt/bookmarklet.js?'+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();";
+const bookmarkletCode = `javascript:(function(){const t='${import.meta.env.VITE_BOOKMARKLET_URL}?'+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
 
 export const TicketImporter: React.FC<TicketImporterProps> = ({ onImport }) => {
   const [jsonText, setJsonText] = useState("");
@@ -89,11 +88,7 @@ export const TicketImporter: React.FC<TicketImporterProps> = ({ onImport }) => {
               <Typography color="text.secondary" sx={{ mt: 1 }}>
                 取得されるのはチケットの情報のみで、外部サーバーに送信されることはありません。
                 取得したデータはブラウザのストレージにのみ保存され、 実際に読み込まれる
-                <Link
-                  href="https://oyasume.github.io/iidx-rlt/bookmarklet.js"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Link href={import.meta.env.VITE_BOOKMARKLET_URL} target="_blank" rel="noopener noreferrer">
                   スクリプト本体
                 </Link>
                 の内容は、公開されており、誰でも確認できます。

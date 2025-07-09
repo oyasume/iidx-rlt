@@ -29,7 +29,9 @@ export const WebApp: React.FC = () => {
         </Tabs>
       </Box>
       {tabIndex === 0 && <TicketImporter onImport={saveTickets} />}
-      {tabIndex === 1 && <TicketView tickets={tickets} storage={storage} songsJsonUrl={"data/songs.json"} />}
+      {tabIndex === 1 && (
+        <TicketView tickets={tickets} storage={storage} songsJsonUrl={`${import.meta.env.BASE_URL}data/songs.json`} />
+      )}
       {tabIndex === 2 && <Box sx={{ mt: 2 }}>当たり配置管理画面</Box>}
     </Box>
   );
