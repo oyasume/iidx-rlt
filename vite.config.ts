@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import checker from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
-import { bookmarkletTransformPlugin } from "./vite-plugin-bookmarklet-transform";
 
 export default defineConfig(() => {
   return {
@@ -38,7 +37,6 @@ export default defineConfig(() => {
           ],
         },
       }),
-      bookmarkletTransformPlugin(),
     ],
     test: {
       globals: true,

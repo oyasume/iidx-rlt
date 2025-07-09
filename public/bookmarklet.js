@@ -41,7 +41,7 @@
   try {
     const allTickets = [];
     const lastPage = getLastPageNumber(document);
-    const baseUrl = "__VITE_GAME_BASE_URL__";
+    const baseUrl = "https://p.eagate.573.jp/game/2dx/32/djdata/random_lane/index.html";
 
     for (let i = 0; i <= lastPage; i++) {
       if (progressText) {

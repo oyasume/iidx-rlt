@@ -16,7 +16,7 @@ import {
   AccordionDetails,
   AccordionSummary,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Ticket } from "../types";
 import { ClipboardSnackbar } from "./ClipboardSnackBar";
@@ -26,7 +26,7 @@ interface TicketImporterProps {
   onImport: (_tickets: Ticket[]) => Promise<void>;
 }
 
-const bookmarkletCode = `javascript:(function(){const t='${import.meta.env.VITE_BOOKMARKLET_URL}?'+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
+const bookmarkletCode = `javascript:(function(){const t='https://oyasume.github.io/iidx-rlt/bookmarklet.js?v='+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
 
 export const TicketImporter: React.FC<TicketImporterProps> = ({ onImport }) => {
   const [jsonText, setJsonText] = useState("");
@@ -93,11 +93,7 @@ export const TicketImporter: React.FC<TicketImporterProps> = ({ onImport }) => {
                 <Box sx={{ p: 2, wordBreak: "break-all", bgcolor: "#f5f5f5" }}>{bookmarkletCode}</Box>
               </Box>
               <Accordion sx={{ mt: 1 }}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
                   <Typography>補足</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
