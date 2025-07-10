@@ -21,3 +21,10 @@ export interface SongInfo {
 export interface AppSettings {
   playSide: PlaySide;
 }
+
+export interface RouteDefinition {
+  path: string;
+  label: string;
+  icon: React.ReactNode;
+  element: React.ReactNode;
+}

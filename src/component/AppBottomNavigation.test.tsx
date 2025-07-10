@@ -1,40 +1,34 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { AppBottomNavigation } from "./AppBottomNavigation";
+import { BrowserRouter } from "react-router-dom";
+import { RouteDefinition } from "../types";
 
-const mockTabs = [
-  { label: "インポート", icon: <div data-testid="import-icon" /> },
-  { label: "チケット一覧", icon: <div data-testid="tickets-icon" /> },
+const mockTabs: RouteDefinition[] = [
+  { path: "/import", label: "インポート", icon: <div data-testid="import-icon" />, element: <div /> },
+  { path: "/tickets", label: "チケット一覧", icon: <div data-testid="tickets-icon" />, element: <div /> },
 ];
 
+const TestComponent = (props: { tabIndex: number }) => (
+  <BrowserRouter>
+    <AppBottomNavigation tabs={mockTabs} tabIndex={props.tabIndex} />
+  </BrowserRouter>
+);
+
 describe("AppBottomNavigation", () => {
-  it("タブが正しく表示されること", () => {
-    render(<AppBottomNavigation tabs={mockTabs} tabIndex={0} setTabIndex={() => {}} />);
-
-    expect(screen.getByTestId("import-icon")).toBeInTheDocument();
-    expect(screen.getByTestId("tickets-icon")).toBeInTheDocument();
-  });
-
   it("tabIndexのタブがアクティブになること", () => {
-    const activeIndex = 1;
-    render(<AppBottomNavigation tabs={mockTabs} tabIndex={activeIndex} setTabIndex={() => {}} />);
+    render(<TestComponent tabIndex={1} />);
+    const activeButton = screen.getByRole("link", { name: "チケット一覧" });
+    const inactiveButton = screen.getByRole("link", { name: "インポート" });
 
-    const activeButton = screen.getByRole("button", { name: "チケット一覧" });
     expect(activeButton).toHaveClass("Mui-selected");
-
-    const inactiveButton = screen.getByRole("button", { name: "インポート" });
     expect(inactiveButton).not.toHaveClass("Mui-selected");
   });
 
-  it("タブをクリックした際にsetTabIndexが正しいインデックスで呼び出されること", async () => {
-    const mockSetTabIndex = vi.fn();
-    const user = userEvent.setup();
-    render(<AppBottomNavigation tabs={mockTabs} tabIndex={0} setTabIndex={mockSetTabIndex} />);
+  it("タブが正しいパスにリンクされていること", () => {
+    render(<TestComponent tabIndex={0} />);
 
-    const targetTab = screen.getByRole("button", { name: "チケット一覧" });
-    await user.click(targetTab);
-
-    expect(mockSetTabIndex).toHaveBeenCalledWith(1);
+    expect(screen.getByRole("link", { name: "インポート" })).toHaveAttribute("href", "/import");
+    expect(screen.getByRole("link", { name: "チケット一覧" })).toHaveAttribute("href", "/tickets");
   });
 });
