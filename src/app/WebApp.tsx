@@ -8,6 +8,7 @@ import { TicketView } from "../component/TicketView";
 import { TicketImporter } from "../component/TicketImporter";
 import { AppBottomNavigation } from "../component/AppBottomNavigation";
 import { AppDrawer } from "../component/AppDrawer";
+import { AppHeader } from "../component/AppHeader";
 import { usePersistentTickets } from "../hooks/usePersistentTickets";
 import { LocalStorage } from "../storage/localStorage";
 import { RouteDefinition } from "types";
@@ -50,10 +51,11 @@ export const WebApp: React.FC = () => {
   }
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", pb: isMobile ? 7 : 0 }}>
+    <Box sx={{ display: "flex", height: "100vh" }}>
       {!isMobile && <AppDrawer tabs={routes} tabIndex={tabIndex} />}
       <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-        <Box sx={{ flexGrow: 1, p: 2, overflowY: "auto" }}>
+        <AppHeader />
+        <Box sx={{ flexGrow: 1, p: 2, pb: isMobile ? 9 : 2 }}>
           <Routes>
             <Route path="/" element={<Navigate to="/tickets" replace />} />
             {routes.map((route) => (
