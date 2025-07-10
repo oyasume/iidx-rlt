@@ -8,8 +8,8 @@ describe("makeTextageUrl", () => {
       url: "https://textage.cc/score/7/a_amuro.html?1AC00",
       level: 12,
     };
-    const url = makeTextageUrl(song, "1P", "1234567");
-    expect(url).toBe("https://textage.cc/score/7/a_amuro.html?1AC00R1234567");
+    const url = makeTextageUrl(song, "1P", "7654321");
+    expect(url).toBe("https://textage.cc/score/7/a_amuro.html?1AC00R0765432101234567");
   });
 
   it("2Pの正しいURLを生成する", () => {
@@ -18,7 +18,7 @@ describe("makeTextageUrl", () => {
       url: "https://textage.cc/score/7/a_amuro.html?1AC00",
       level: 12,
     };
-    const url = makeTextageUrl(song, "2P", "1234567");
-    expect(url).toBe("https://textage.cc/score/7/a_amuro.html?2AC00R1234567");
+    const url = makeTextageUrl(song, "2P", "7654321");
+    expect(url).toBe("https://textage.cc/score/7/a_amuro.html?2AC00R0765432101234567");
   });
 });

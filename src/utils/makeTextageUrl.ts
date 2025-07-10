@@ -9,9 +9,7 @@ import type { PlaySide, SongInfo } from "../types";
 export const makeTextageUrl = (songInfo: SongInfo, playSide: PlaySide, laneText: string): string => {
   const baseURL = songInfo.url.split("?")[0];
   const otherOptions = songInfo.url.split("?")[1].slice(1);
-  if (playSide === "1P") {
-    return `${baseURL}?1${otherOptions}R${laneText}`;
-  } else {
-    return `${baseURL}?2${otherOptions}R${laneText}`;
-  }
+  const playSideOption = playSide === "1P" ? "1" : "2";
+
+  return `${baseURL}?${playSideOption}${otherOptions}R0${laneText}01234567`;
 };

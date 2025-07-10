@@ -2,6 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 import { vi, describe, it, expect } from "vitest";
 import { useTextageOpener } from "./useTextageOpener";
 import { SongInfo } from "../types";
+import * as makeTextageUrl from "../utils/makeTextageUrl";
 
 describe("useTextageOpener", () => {
   const mockSong: SongInfo = {
@@ -12,17 +13,14 @@ describe("useTextageOpener", () => {
 
   it("曲が選択されてる状態で正しいURLを正しく開くこと", () => {
     const windowOpen = vi.spyOn(window, "open").mockImplementation(() => null);
+    const mockMakeTextageUrl = vi.spyOn(makeTextageUrl, "makeTextageUrl").mockReturnValue("testurl");
     const { result } = renderHook(() => useTextageOpener(mockSong, "1P"));
 
     act(() => {
       result.current.handleOpenTextage("1234567");
     });
-
-    expect(windowOpen).toHaveBeenCalledWith(
-      "https://textage.cc/score/7/a_amuro.html?1AC00R1234567",
-      "_blank",
-      "noopener,noreferrer"
-    );
+    expect(mockMakeTextageUrl).toHaveBeenCalledWith(mockSong, "1P", "1234567");
+    expect(windowOpen).toHaveBeenCalledWith("testurl", "_blank", "noopener,noreferrer");
   });
 
   it("曲が選択されていない場合、何も開かないこと", () => {
