@@ -8,7 +8,7 @@ import { useClipboard } from "../hooks/useClipboard";
 vi.mock("../hooks/useClipboard");
 
 describe("TicketImporter", () => {
-  const mockOnImport = vi.fn();
+  const mockOnImport = vi.fn().mockResolvedValue(undefined);
   const mockCopyToClipboard = vi.fn();
 
   beforeEach(() => {
@@ -78,7 +78,7 @@ describe("TicketImporter", () => {
     await user.click(importButton);
 
     expect(mockOnImport).toHaveBeenCalledWith(tickets);
-    expect(await screen.findByText("チケットをインポートしました。")).toBeInTheDocument();
+    expect(await screen.findByText(/チケットをインポートしました/i)).toBeInTheDocument();
     expect(textbox).toHaveValue("");
   });
 
@@ -98,7 +98,7 @@ describe("TicketImporter", () => {
     await user.click(importButton);
 
     expect(mockOnImport).toHaveBeenCalledWith(tickets);
-    expect(await screen.findByText("チケットのインポート中に予期せぬエラーが発生しました。")).toBeInTheDocument();
+    expect(await screen.findByText(/チケットのインポート中に予期せぬエラーが発生しました/i)).toBeInTheDocument();
     expect(textbox).toHaveValue(validJson);
   });
 
