@@ -1,5 +1,5 @@
 import React from "react";
-import { Autocomplete, TextField, Typography, Box } from "@mui/material";
+import { Autocomplete, TextField, Box } from "@mui/material";
 import { SongInfo } from "../types";
 
 interface TextageFormProps {
@@ -11,7 +11,6 @@ interface TextageFormProps {
 export const TextageForm: React.FC<TextageFormProps> = ({ songs, selectedSong, setSelectedSong }) => {
   return (
     <Box>
-      <Typography>Textageの設定</Typography>
       <Autocomplete
         options={songs}
         getOptionLabel={(option) => option.title}

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Typography, Stack, Divider } from "@mui/material";
+import { Typography, Stack, Divider, Box } from "@mui/material";
 import { TextageForm } from "./TextageForm";
 import { PlaySide, Ticket, SongInfo } from "../types";
 import { TicketSearchForm } from "./TicketSearchForm";
@@ -38,7 +38,7 @@ export const TicketView: React.FC<TicketViewProps> = ({ tickets, storage, songsJ
   }
 
   return (
-    <Stack spacing={3} sx={{ mt: 2 }}>
+    <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <TicketControlPanel playSide={settings.playSide} onPlaySideChange={handlePlaySideChange} />
       <FormProvider {...methods}>
         <TicketSearchForm />
@@ -46,7 +46,9 @@ export const TicketView: React.FC<TicketViewProps> = ({ tickets, storage, songsJ
       <Divider />
       <TextageForm songs={songs} selectedSong={selectedSong} setSelectedSong={setSelectedSong} />
       <Divider />
-      <TicketList tickets={filteredTickets} selectedSong={selectedSong} onOpenTextage={handleOpenTextage} />
+      <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
+        <TicketList tickets={filteredTickets} selectedSong={selectedSong} onOpenTextage={handleOpenTextage} />
+      </Box>
     </Stack>
   );
 };
