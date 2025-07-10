@@ -1,16 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { UseFormReturn } from "react-hook-form";
+
 import { TicketView } from "./TicketView";
 import { Ticket } from "../types";
 import { useAppSettings } from "../hooks/useAppSettings";
 import { useSongs } from "../hooks/useSongs";
+import { useTicketSearch } from "../hooks/useTicketSearch";
+import { SearchFormValues } from "../schema";
 import { IStorage } from "../storage";
+import { renderWithRouter } from "../utils/renderWithRouter";
 
 const mockUpdatePlaySide = vi.fn();
 
 vi.mock("../hooks/useAppSettings");
 vi.mock("../hooks/useSongs");
+vi.mock("../hooks/useTicketSearch");
 
 const mockStorage: IStorage = {
   get: vi.fn(<T extends object>(_keys: T): Promise<T> => Promise.resolve({ playSide: "1P" } as T)),
@@ -18,6 +24,18 @@ const mockStorage: IStorage = {
 };
 
 describe("TicketView", () => {
+  const mockTickets: Ticket[] = [
+    { laneText: "1234567", expiration: "" },
+    { laneText: "7654321", expiration: "" },
+  ];
+  const mockFilteredTickets: Ticket[] = [{ laneText: "7654321", expiration: "" }];
+  const mockMethods = {
+    register: vi.fn(),
+    formState: {
+      errors: {},
+    },
+  } as unknown as UseFormReturn<SearchFormValues>;
+
   beforeEach(() => {
     vi.mocked(useAppSettings).mockReturnValue({
       settings: { playSide: "1P" },
@@ -35,18 +53,21 @@ describe("TicketView", () => {
       isLoading: false,
       error: null,
     });
+    vi.mocked(useTicketSearch).mockReturnValue({
+      methods: mockMethods,
+      filteredTickets: mockFilteredTickets,
+    });
   });
 
-  const mockTickets: Ticket[] = [
-    { laneText: "1234567", expiration: "" },
-    { laneText: "7654321", expiration: "" },
-  ];
-
-  it("初期表示時にチケット一覧が表示される", () => {
+  it("isLoadingがtrueの場合、ローディング表示がされること", () => {
+    vi.mocked(useAppSettings).mockReturnValue({
+      settings: { playSide: "1P" },
+      updatePlaySide: mockUpdatePlaySide,
+      isLoading: true,
+    });
     render(<TicketView tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
 
-    expect(screen.getByText("1234567")).toBeInTheDocument();
-    expect(screen.getByText("7654321")).toBeInTheDocument();
+    expect(screen.getByText("データを読み込んでいます...")).toBeInTheDocument();
   });
 
   it("handlePlaySideChangeが正しく呼び出されること", async () => {
@@ -59,14 +80,30 @@ describe("TicketView", () => {
     expect(mockUpdatePlaySide).toHaveBeenCalledWith("2P");
   });
 
-  it("isLoadingがtrueの場合、ローディング表示がされること", () => {
-    vi.mocked(useAppSettings).mockReturnValue({
-      settings: { playSide: "1P" },
-      updatePlaySide: mockUpdatePlaySide,
-      isLoading: true,
-    });
-    render(<TicketView tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
+  describe("絞り込み時", () => {
+    it("絞り込みされたチケットが表示される", () => {
+      render(<TicketView tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
 
-    expect(screen.getByText("データを読み込んでいます...")).toBeInTheDocument();
+      mockFilteredTickets.forEach((ticket) => {
+        expect(screen.getByText(ticket.laneText)).toBeInTheDocument();
+      });
+    });
+
+    it("チケットが一つも登録されていない場合、メッセージが表示されること", () => {
+      // リンクを使うためヘルパーが必要
+      renderWithRouter(<TicketView tickets={[]} storage={mockStorage} songsJsonUrl="" />);
+
+      expect(screen.getByText("チケットがありません")).toBeInTheDocument();
+    });
+
+    it("検索条件に合うチケットがない場合、メッセージが表示されること", () => {
+      vi.mocked(useTicketSearch).mockReturnValue({
+        methods: mockMethods,
+        filteredTickets: [],
+      });
+      render(<TicketView tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
+
+      expect(screen.getByText("検索条件に一致するチケットはありません。"));
+    });
   });
 });
