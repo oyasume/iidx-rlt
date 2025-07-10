@@ -7,7 +7,7 @@ export const useTextageOpener = (selectedSong: SongInfo | null, playSide: PlaySi
     (laneText: string) => {
       if (selectedSong !== null) {
         const textageUrl = makeTextageUrl(selectedSong, playSide, laneText);
-        window.open(textageUrl, "_blank");
+        window.open(textageUrl, "_blank", "noopener,noreferrer");
       }
     },
     [selectedSong, playSide]

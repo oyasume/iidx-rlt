@@ -18,7 +18,11 @@ describe("useTextageOpener", () => {
       result.current.handleOpenTextage("1234567");
     });
 
-    expect(windowOpen).toHaveBeenCalledWith("https://textage.cc/score/7/a_amuro.html?1AC00R1234567", "_blank");
+    expect(windowOpen).toHaveBeenCalledWith(
+      "https://textage.cc/score/7/a_amuro.html?1AC00R1234567",
+      "_blank",
+      "noopener,noreferrer"
+    );
   });
 
   it("曲が選択されていない場合、何も開かないこと", () => {
