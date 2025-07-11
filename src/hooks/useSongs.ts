@@ -8,12 +8,16 @@ export const useSongs = (source: SongsSource) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  const type = source.type;
+  const path = source.type === "url" ? source.path : undefined;
+  const data = source.type === "static" ? source.data : undefined;
+
   useEffect(() => {
     setIsLoading(true);
     setError(null);
 
-    if (source.type === "url") {
-      fetch(source.path)
+    if (type === "url" && path) {
+      fetch(path)
         .then((res) => res.json())
         .then((data) => {
           setSongs(data as SongInfo[]);
@@ -24,11 +28,11 @@ export const useSongs = (source: SongsSource) => {
         .finally(() => {
           setIsLoading(false);
         });
-    } else if (source.type === "static") {
-      setSongs(source.data);
+    } else if (type === "static" && data) {
+      setSongs(data);
       setIsLoading(false);
     }
-  }, [source]);
+  }, [type, path, data]);
 
   return { songs, isLoading, error };
 };

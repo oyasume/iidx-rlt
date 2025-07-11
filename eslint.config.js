@@ -4,6 +4,7 @@ import storybook from "eslint-plugin-storybook";
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
+import reactHooks from "eslint-plugin-react-hooks";
 
 export default [
   js.configs.recommended,
@@ -33,6 +34,15 @@ export default [
     files: ["src/**/*.test.ts", "src/**/*.test.tsx"],
     rules: {
       "@typescript-eslint/unbound-method": "off",
+    },
+  },
+  {
+    files: ["src/**/*.ts", "src/**/*.tsx"],
+    plugins: {
+      "react-hooks": reactHooks,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
     },
   },
 ];
