@@ -51,10 +51,17 @@ export const TicketView: React.FC<TicketViewProps> = ({ tickets, storage, songsJ
       {tickets.length === 0 ? (
         <Box>
           <Typography variant="h6">チケットがありません</Typography>
-          <Typography color="text.secondary">先にチケットをインポートしてください。</Typography>
-          <Button component={Link} to="/import" variant="contained" sx={{ mt: 1 }}>
-            インポートページへ
-          </Button>
+          <Typography color="text.secondary" sx={{ mt: 1 }}>
+            まずはインポートするか、サンプルデータでお試しください。
+          </Typography>
+          <Stack direction="row" spacing={2} justifyContent="start" sx={{ mt: 2 }}>
+            <Button component={Link} to="/import" variant="contained">
+              インポートする
+            </Button>
+            <Button component={Link} to="/sample" variant="outlined">
+              サンプルデータで試す
+            </Button>
+          </Stack>
         </Box>
       ) : filteredTickets.length === 0 ? (
         <Typography sx={{ textAlign: "center", mt: 4, color: "text.secondary" }}>

@@ -12,6 +12,7 @@ import { AppHeader } from "../components/layout/AppHeader";
 import { usePersistentTickets } from "../hooks/usePersistentTickets";
 import { LocalStorage } from "../storage/localStorage";
 import { RouteDefinition } from "../types";
+import { SampleTicketView } from "../features/sample/SampleTicketView";
 
 const storage = new LocalStorage();
 
@@ -58,6 +59,7 @@ export const WebApp: React.FC = () => {
         <Box sx={{ flexGrow: 1, p: 2, pb: isMobile ? 9 : 2 }}>
           <Routes>
             <Route path="/" element={<Navigate to="/tickets" replace />} />
+            <Route path="/sample" element={<SampleTicketView />} />
             {routes.map((route) => (
               <Route key={route.path} path={route.path} element={route.element} />
             ))}
