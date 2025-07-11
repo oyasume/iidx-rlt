@@ -4,6 +4,9 @@ import { TicketView } from "../ticket/TicketView";
 import { SampleStorage } from "./storage/SampleStorage";
 import { Typography } from "@mui/material";
 import { SongInfo } from "../../types";
+import { useTicketSearch } from "../../features/ticket/hooks/useTicketSearch";
+import { FormProvider } from "react-hook-form";
+import { useAppSettings } from "../../hooks/useAppSettings";
 
 const sampleStorage = new SampleStorage();
 
@@ -21,20 +24,23 @@ export const sampleSongs: SongInfo[] = [
 ];
 
 export const SampleTicketView: React.FC = () => {
+  const { settings, updatePlaySide } = useAppSettings(sampleStorage);
   const { tickets, isLoading } = usePersistentTickets(sampleStorage);
+  const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
 
   if (isLoading) {
     return <Typography>サンプルデータを読み込んでいます...</Typography>;
   }
 
   return (
-    <TicketView
-      tickets={tickets}
-      storage={sampleStorage}
-      songsSource={{
-        type: "static",
-        data: sampleSongs,
-      }}
-    />
+    <FormProvider {...methods}>
+      <TicketView
+        allTickets={tickets}
+        filteredTickets={filteredTickets}
+        songs={sampleSongs}
+        settings={settings}
+        onPlaySideChange={updatePlaySide}
+      />
+    </FormProvider>
   );
 };

@@ -3,23 +3,35 @@ import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { FormProvider } from "react-hook-form";
 
 import { TicketView } from "../features/ticket/TicketView";
 import { TicketImporter } from "../features/import/TicketImporter";
 import { AppBottomNavigation } from "../components/layout/AppBottomNavigation";
 import { AppDrawer } from "../components/layout/AppDrawer";
 import { AppHeader } from "../components/layout/AppHeader";
-import { usePersistentTickets } from "../hooks/usePersistentTickets";
 import { LocalStorage } from "../storage/localStorage";
 import { RouteDefinition } from "../types";
 import { SampleTicketView } from "../features/sample/SampleTicketView";
+import { usePersistentTickets } from "../hooks/usePersistentTickets";
+import { useAppSettings } from "../hooks/useAppSettings";
+import { useSongs } from "../hooks/useSongs";
+import { useTicketSearch } from "../features/ticket/hooks/useTicketSearch";
 
 const storage = new LocalStorage();
 
 export const WebApp: React.FC = () => {
-  const { tickets, saveTickets, isLoading } = usePersistentTickets(storage);
+  const { tickets, saveTickets, isLoading: isTicketsLoading } = usePersistentTickets(storage);
+  const { settings, updatePlaySide, isLoading: isSettingsLoading } = useAppSettings(storage);
+  const { songs, isLoading: isSongDataLoading } = useSongs({
+    type: "url",
+    path: `${import.meta.env.BASE_URL}data/songs.json`,
+  });
+  const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLoading = isTicketsLoading || isSettingsLoading || isSongDataLoading;
 
   const routes: RouteDefinition[] = [
     {
@@ -33,14 +45,15 @@ export const WebApp: React.FC = () => {
       label: "チケット一覧",
       icon: <ListAltIcon />,
       element: (
-        <TicketView
-          tickets={tickets}
-          storage={storage}
-          songsSource={{
-            type: "url",
-            path: `${import.meta.env.BASE_URL}data/songs.json`,
-          }}
-        />
+        <FormProvider {...methods}>
+          <TicketView
+            allTickets={tickets}
+            filteredTickets={filteredTickets}
+            songs={songs}
+            settings={settings}
+            onPlaySideChange={updatePlaySide}
+          />
+        </FormProvider>
       ),
     },
     {
