@@ -30,7 +30,9 @@ const meta: Meta<typeof TicketView> = {
 
       return (
         <MemoryRouter>
-          <Story args={{ ...context.args, storage: mockStorage, songsJsonUrl: "data/songs.json" }} />
+          <Story
+            args={{ ...context.args, storage: mockStorage, songsSource: { type: "url", path: "data/songs.json" } }}
+          />
         </MemoryRouter>
       );
     },

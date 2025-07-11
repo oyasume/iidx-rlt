@@ -33,7 +33,14 @@ export const WebApp: React.FC = () => {
       label: "チケット一覧",
       icon: <ListAltIcon />,
       element: (
-        <TicketView tickets={tickets} storage={storage} songsJsonUrl={`${import.meta.env.BASE_URL}data/songs.json`} />
+        <TicketView
+          tickets={tickets}
+          storage={storage}
+          songsSource={{
+            type: "url",
+            path: `${import.meta.env.BASE_URL}data/songs.json`,
+          }}
+        />
       ),
     },
     {

@@ -6,7 +6,7 @@ import { UseFormReturn } from "react-hook-form";
 import { TicketView } from "./TicketView";
 import { Ticket } from "../../types";
 import { useAppSettings } from "../../hooks/useAppSettings";
-import { useSongs } from "../../hooks/useSongs";
+import { SongsSource, useSongs } from "../../hooks/useSongs";
 import { useTicketSearch } from "./hooks/useTicketSearch";
 import { SearchFormValues } from "../../schema";
 import { IStorage } from "../../storage";
@@ -35,6 +35,7 @@ describe("TicketView", () => {
       errors: {},
     },
   } as unknown as UseFormReturn<SearchFormValues>;
+  const mockSongsSource: SongsSource = { type: "static", data: [] };
 
   beforeEach(() => {
     vi.mocked(useAppSettings).mockReturnValue({
@@ -65,14 +66,14 @@ describe("TicketView", () => {
       updatePlaySide: mockUpdatePlaySide,
       isLoading: true,
     });
-    render(<TicketView tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
+    render(<TicketView tickets={mockTickets} storage={mockStorage} songsSource={mockSongsSource} />);
 
     expect(screen.getByText("データを読み込んでいます...")).toBeInTheDocument();
   });
 
   it("handlePlaySideChangeが正しく呼び出されること", async () => {
     const user = userEvent.setup();
-    render(<TicketView tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
+    render(<TicketView tickets={mockTickets} storage={mockStorage} songsSource={mockSongsSource} />);
 
     const playSide2P = screen.getByRole("button", { name: "2P" });
     await user.click(playSide2P);
@@ -82,7 +83,7 @@ describe("TicketView", () => {
 
   describe("絞り込み時", () => {
     it("絞り込みされたチケットが表示される", () => {
-      render(<TicketView tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
+      render(<TicketView tickets={mockTickets} storage={mockStorage} songsSource={mockSongsSource} />);
 
       mockFilteredTickets.forEach((ticket) => {
         expect(screen.getByText(ticket.laneText)).toBeInTheDocument();
@@ -91,7 +92,7 @@ describe("TicketView", () => {
 
     it("チケットが一つも登録されていない場合、メッセージが表示されること", () => {
       // リンクを使うためヘルパーが必要
-      renderWithRouter(<TicketView tickets={[]} storage={mockStorage} songsJsonUrl="" />);
+      renderWithRouter(<TicketView tickets={[]} storage={mockStorage} songsSource={mockSongsSource} />);
 
       expect(screen.getByText("チケットがありません")).toBeInTheDocument();
     });
@@ -101,7 +102,7 @@ describe("TicketView", () => {
         methods: mockMethods,
         filteredTickets: [],
       });
-      render(<TicketView tickets={mockTickets} storage={mockStorage} songsJsonUrl="" />);
+      render(<TicketView tickets={mockTickets} storage={mockStorage} songsSource={mockSongsSource} />);
 
       expect(screen.getByText("検索条件に一致するチケットはありません。"));
     });

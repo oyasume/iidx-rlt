@@ -10,19 +10,19 @@ import { TicketControlPanel } from "./components/TicketControlPanel";
 import { FormProvider } from "react-hook-form";
 import { IStorage } from "../../storage";
 import { useAppSettings } from "../../hooks/useAppSettings";
-import { useSongs } from "../../hooks/useSongs";
+import { SongsSource, useSongs } from "../../hooks/useSongs";
 import { useTextageOpener } from "./hooks/useTextageOpener";
 import { useTicketSearch } from "./hooks/useTicketSearch";
 
 interface TicketViewProps {
   tickets: Ticket[];
   storage: IStorage;
-  songsJsonUrl: string;
+  songsSource: SongsSource;
 }
 
-export const TicketView: React.FC<TicketViewProps> = ({ tickets, storage, songsJsonUrl }) => {
+export const TicketView: React.FC<TicketViewProps> = ({ tickets, storage, songsSource }) => {
   const { settings, updatePlaySide, isLoading: isSettingsLoading } = useAppSettings(storage);
-  const { songs, isLoading: isSongDataLoading } = useSongs(songsJsonUrl);
+  const { songs, isLoading: isSongDataLoading } = useSongs(songsSource);
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
   const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
 
