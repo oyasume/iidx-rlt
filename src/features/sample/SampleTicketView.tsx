@@ -2,7 +2,7 @@ import React from "react";
 import { usePersistentTickets } from "../../hooks/usePersistentTickets";
 import { TicketView } from "../ticket/TicketView";
 import { SampleStorage } from "./storage/SampleStorage";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { SongInfo } from "../../types";
 import { useTicketSearch } from "../../features/ticket/hooks/useTicketSearch";
 import { FormProvider } from "react-hook-form";
@@ -33,14 +33,16 @@ export const SampleTicketView: React.FC = () => {
   }
 
   return (
-    <FormProvider {...methods}>
-      <TicketView
-        allTickets={tickets}
-        filteredTickets={filteredTickets}
-        songs={sampleSongs}
-        settings={settings}
-        onPlaySideChange={updatePlaySide}
-      />
-    </FormProvider>
+    <Box>
+      <FormProvider {...methods}>
+        <TicketView
+          allTickets={tickets}
+          filteredTickets={filteredTickets}
+          songs={sampleSongs}
+          settings={settings}
+          onPlaySideChange={updatePlaySide}
+        />
+      </FormProvider>
+    </Box>
   );
 };
