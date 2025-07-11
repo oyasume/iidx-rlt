@@ -11,10 +11,10 @@ import {
   TextField,
 } from "@mui/material";
 
-import { Ticket } from "../types";
-import { BookmarkletSection } from "./BookmarkletSection";
-import { useImporter } from "../hooks/useImporter";
-import { ImportResult } from "./ImportResult";
+import { Ticket } from "../../types";
+import { BookmarkletSection } from "./components/BookmarkletSection";
+import { useImporter } from "./hooks/useImporter";
+import { ImportResult } from "./components/ImportResult";
 
 interface TicketImporterProps {
   onImport: (_tickets: Ticket[]) => Promise<void>;
@@ -22,7 +22,7 @@ interface TicketImporterProps {
 
 export const TicketImporter: React.FC<TicketImporterProps> = ({ onImport }) => {
   const [jsonText, setJsonText] = useState("");
-  const { state, importTickets, resetStatus } = useImporter(onImport);
+  const { state, importTickets } = useImporter(onImport);
 
   useEffect(() => {
     if (state.status === "success") {
@@ -32,10 +32,6 @@ export const TicketImporter: React.FC<TicketImporterProps> = ({ onImport }) => {
 
   const handleTextChange = (text: string) => {
     setJsonText(text);
-
-    if (state.status === "success" || state.status === "error") {
-      resetStatus();
-    }
   };
 
   return (

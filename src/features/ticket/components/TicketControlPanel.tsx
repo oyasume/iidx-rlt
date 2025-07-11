@@ -1,6 +1,6 @@
 import React from "react";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
-import { PlaySide } from "../types";
+import { PlaySide } from "../../../types";
 
 interface TicketControlPanelProps {
   playSide: PlaySide;

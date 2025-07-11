@@ -1,6 +1,6 @@
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import { Link } from "react-router-dom";
-import { RouteDefinition } from "../types";
+import { RouteDefinition } from "../../types";
 
 interface AppBottomNavigationProps {
   tabs: RouteDefinition[];

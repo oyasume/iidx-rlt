@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { TicketSearchForm } from "./TicketSearchForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { FC, PropsWithChildren } from "react";
-import { SearchFormValues } from "../schema";
+import { SearchFormValues } from "../../../schema";
 
 describe("TicketSearchForm", () => {
   const FormWrapper: FC<PropsWithChildren> = ({ children }) => {

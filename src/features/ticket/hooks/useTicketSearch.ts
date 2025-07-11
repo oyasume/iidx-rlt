@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { searchFormSchema, SearchFormValues } from "../schema";
-import { filterTickets } from "../utils/ticketMatcher";
+import { searchFormSchema, SearchFormValues } from "../../../schema";
+import { filterTickets } from "../../../utils/ticketMatcher";
 import { useMemo } from "react";
-import { Ticket, PlaySide } from "../types";
+import { Ticket, PlaySide } from "../../../types";
 
 export const useTicketSearch = (tickets: Ticket[], playSide: PlaySide) => {
   const methods = useForm<SearchFormValues>({

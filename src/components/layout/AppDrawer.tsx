@@ -1,7 +1,7 @@
 import React from "react";
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { Link } from "react-router-dom";
-import { RouteDefinition } from "../types";
+import { RouteDefinition } from "../../types";
 
 interface AppDrawerProps {
   tabs: RouteDefinition[];

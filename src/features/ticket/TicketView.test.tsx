@@ -4,19 +4,19 @@ import userEvent from "@testing-library/user-event";
 import { UseFormReturn } from "react-hook-form";
 
 import { TicketView } from "./TicketView";
-import { Ticket } from "../types";
-import { useAppSettings } from "../hooks/useAppSettings";
-import { useSongs } from "../hooks/useSongs";
-import { useTicketSearch } from "../hooks/useTicketSearch";
-import { SearchFormValues } from "../schema";
-import { IStorage } from "../storage";
-import { renderWithRouter } from "../utils/renderWithRouter";
+import { Ticket } from "../../types";
+import { useAppSettings } from "../../hooks/useAppSettings";
+import { useSongs } from "../../hooks/useSongs";
+import { useTicketSearch } from "./hooks/useTicketSearch";
+import { SearchFormValues } from "../../schema";
+import { IStorage } from "../../storage";
+import { renderWithRouter } from "../../utils/renderWithRouter";
 
 const mockUpdatePlaySide = vi.fn();
 
-vi.mock("../hooks/useAppSettings");
-vi.mock("../hooks/useSongs");
-vi.mock("../hooks/useTicketSearch");
+vi.mock("../../hooks/useAppSettings");
+vi.mock("../../hooks/useSongs");
+vi.mock("./hooks/useTicketSearch");
 
 const mockStorage: IStorage = {
   get: vi.fn(<T extends object>(_keys: T): Promise<T> => Promise.resolve({ playSide: "1P" } as T)),

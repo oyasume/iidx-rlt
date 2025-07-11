@@ -1,5 +1,5 @@
 import { useReducer, useCallback } from "react";
-import { Ticket } from "../types";
+import { Ticket } from "../../../types";
 
 export type ImporterState = {
   status: "idle" | "loading" | "success" | "error";
@@ -29,6 +29,7 @@ const reducer = (state: ImporterState, action: Action): ImporterState => {
       return { ...state, status: "error", error: action.payload.error };
     case "RESET":
       return initialState;
+    /* v8 ignore next 2 */
     default:
       return state;
   }

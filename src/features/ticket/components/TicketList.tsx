@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Stack, Typography, Button } from "@mui/material";
-import { Ticket, SongInfo } from "../types";
+import { Ticket, SongInfo } from "../../../types";
 
 interface TicketListProps {
   tickets: Ticket[];

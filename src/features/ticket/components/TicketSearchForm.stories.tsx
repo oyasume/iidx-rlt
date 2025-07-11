@@ -2,8 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TicketSearchForm } from "./TicketSearchForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { searchFormSchema, SearchFormValues } from "../schema";
-import React from "react";
+import { searchFormSchema, SearchFormValues } from "../../../schema";
 
 const meta: Meta<typeof TicketSearchForm> = {
   title: "Component/TicketSearchForm",

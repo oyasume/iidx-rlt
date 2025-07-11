@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Box, Typography, Collapse, Button, Link, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { useClipboard } from "../hooks/useClipboard";
-import { ClipboardSnackbar } from "./ClipboardSnackBar";
+import { useClipboard } from "../../../hooks/useClipboard";
+import { ClipboardSnackbar } from "../../../components/ui/ClipboardSnackBar";
 
 const bookmarkletCode = `javascript:(function(){const t='https://oyasume.github.io/iidx-rlt/bookmarklet.js?v='+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
 

@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { BookmarkletSection } from "./BookmarkletSection";
-import { useClipboard } from "../hooks/useClipboard";
+import { useClipboard } from "../../../hooks/useClipboard";
 
-vi.mock("../hooks/useClipboard");
+vi.mock("../../../hooks/useClipboard");
 
 describe("BookmarkletSection", () => {
   const mockCopyToClipboard = vi.fn();

@@ -1,6 +1,6 @@
 import React from "react";
 import { Collapse, Alert, Typography } from "@mui/material";
-import { ImporterState } from "hooks/useImporter";
+import { ImporterState } from "../hooks/useImporter";
 
 interface ImportResultProps {
   state: ImporterState;

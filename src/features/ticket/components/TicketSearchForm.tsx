@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, FormControlLabel, Checkbox, Grid } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-import { SearchFormValues } from "../schema";
+import { SearchFormValues } from "../../../schema";
 
 export const TicketSearchForm: React.FC = () => {
   const {
@@ -34,7 +34,7 @@ export const TicketSearchForm: React.FC = () => {
           variant="standard"
           slotProps={{ inputLabel: { shrink: true } }}
           error={!!errors.nonScratchSideText}
-          helperText={errors.nonScratchSideText?.message}
+          helperText={errors.nonScratchSideText?.message as string}
         />
         <FormControlLabel
           control={<Checkbox defaultChecked {...register("isNonScratchSideUnordered")} />}

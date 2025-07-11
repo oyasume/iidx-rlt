@@ -1,6 +1,6 @@
 import React from "react";
 import { Autocomplete, TextField, Box } from "@mui/material";
-import { SongInfo } from "../types";
+import { SongInfo } from "../../../types";
 
 interface TextageFormProps {
   songs: SongInfo[];

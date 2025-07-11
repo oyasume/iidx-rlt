@@ -4,14 +4,14 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
-import { TicketView } from "../component/TicketView";
-import { TicketImporter } from "../component/TicketImporter";
-import { AppBottomNavigation } from "../component/AppBottomNavigation";
-import { AppDrawer } from "../component/AppDrawer";
-import { AppHeader } from "../component/AppHeader";
+import { TicketView } from "../features/ticket/TicketView";
+import { TicketImporter } from "../features/import/TicketImporter";
+import { AppBottomNavigation } from "../components/layout/AppBottomNavigation";
+import { AppDrawer } from "../components/layout/AppDrawer";
+import { AppHeader } from "../components/layout/AppHeader";
 import { usePersistentTickets } from "../hooks/usePersistentTickets";
 import { LocalStorage } from "../storage/localStorage";
-import { RouteDefinition } from "types";
+import { RouteDefinition } from "../types";
 
 const storage = new LocalStorage();
 

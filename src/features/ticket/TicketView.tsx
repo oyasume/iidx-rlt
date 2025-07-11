@@ -2,17 +2,17 @@ import React, { useCallback, useState } from "react";
 import { Typography, Stack, Divider, Box, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
-import { TextageForm } from "./TextageForm";
-import { PlaySide, Ticket, SongInfo } from "../types";
-import { TicketSearchForm } from "./TicketSearchForm";
-import { TicketList } from "./TicketList";
-import { TicketControlPanel } from "./TicketControlPanel";
+import { TextageForm } from "./components/TextageForm";
+import { PlaySide, Ticket, SongInfo } from "../../types";
+import { TicketSearchForm } from "./components/TicketSearchForm";
+import { TicketList } from "./components/TicketList";
+import { TicketControlPanel } from "./components/TicketControlPanel";
 import { FormProvider } from "react-hook-form";
-import { IStorage } from "../storage";
-import { useAppSettings } from "../hooks/useAppSettings";
-import { useSongs } from "../hooks/useSongs";
-import { useTextageOpener } from "../hooks/useTextageOpener";
-import { useTicketSearch } from "../hooks/useTicketSearch";
+import { IStorage } from "../../storage";
+import { useAppSettings } from "../../hooks/useAppSettings";
+import { useSongs } from "../../hooks/useSongs";
+import { useTextageOpener } from "./hooks/useTextageOpener";
+import { useTicketSearch } from "./hooks/useTicketSearch";
 
 interface TicketViewProps {
   tickets: Ticket[];

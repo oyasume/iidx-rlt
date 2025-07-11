@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TicketView } from "./TicketView";
-import { Ticket } from "types";
-import { IStorage } from "../storage";
+import { Ticket } from "../../types";
+import { IStorage } from "../../storage";
 
 const meta: Meta<typeof TicketView> = {
   title: "TicketView",

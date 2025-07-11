@@ -2,10 +2,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TicketImporter } from "./TicketImporter";
-import { Ticket } from "../types";
-import { useClipboard } from "../hooks/useClipboard";
+import { Ticket } from "../../types";
+import { useClipboard } from "../../hooks/useClipboard";
 
-vi.mock("../hooks/useClipboard");
+vi.mock("../../hooks/useClipboard");
 
 describe("TicketImporter", () => {
   const mockOnImport = vi.fn().mockResolvedValue(undefined);
@@ -56,7 +56,7 @@ describe("TicketImporter", () => {
 
     const textbox = screen.getByRole("textbox");
     await user.click(textbox);
-    await user.paste(JSON.stringify({ ticket: 1 }));
+    await user.paste(JSON.stringify({ laneText: "1234567", expiration: "" }));
 
     const importButton = screen.getByRole("button", { name: "インポート実行" });
     await user.click(importButton);
@@ -77,8 +77,8 @@ describe("TicketImporter", () => {
     const importButton = screen.getByRole("button", { name: "インポート実行" });
     await user.click(importButton);
 
-    expect(mockOnImport).toHaveBeenCalledWith(tickets);
     expect(await screen.findByText(/チケットをインポートしました/i)).toBeInTheDocument();
+    expect(mockOnImport).toHaveBeenCalledWith(tickets);
     expect(textbox).toHaveValue("");
   });
 
