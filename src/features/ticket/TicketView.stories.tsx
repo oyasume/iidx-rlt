@@ -2,9 +2,10 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TicketView } from "./TicketView";
 import { Ticket } from "../../types";
 import { IStorage } from "../../storage";
+import { MemoryRouter } from "react-router-dom";
 
 const meta: Meta<typeof TicketView> = {
-  title: "TicketView",
+  title: "Page/TicketView",
   component: TicketView,
   tags: ["autodocs"],
   decorators: [
@@ -27,7 +28,11 @@ const meta: Meta<typeof TicketView> = {
         },
       };
 
-      return <Story args={{ ...context.args, storage: mockStorage, songsJsonUrl: "data/songs.json" }} />;
+      return (
+        <MemoryRouter>
+          <Story args={{ ...context.args, storage: mockStorage, songsJsonUrl: "data/songs.json" }} />
+        </MemoryRouter>
+      );
     },
   ],
 };

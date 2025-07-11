@@ -10,16 +10,16 @@ const meta: Meta<typeof TicketControlPanel> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const PlaySide1P: Story = {
   args: {
     playSide: "1P",
-    onPlaySideChange: (_newPlaySide) => {},
+    onPlaySideChange: () => {},
   },
 };
 
 export const PlaySide2P: Story = {
   args: {
     playSide: "2P",
-    onPlaySideChange: (_newPlaySide) => {},
+    onPlaySideChange: () => {},
   },
 };
