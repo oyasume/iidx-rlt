@@ -14,8 +14,8 @@ describe("TextageForm", () => {
 
   it("曲を選択できる", async () => {
     const user = userEvent.setup();
-    const setSelectedSong = vi.fn();
-    render(<TextageForm songs={songs} selectedSong={null} setSelectedSong={setSelectedSong} />);
+    const onSongSelect = vi.fn();
+    render(<TextageForm songs={songs} selectedSong={null} onSongSelect={onSongSelect} />);
 
     const autocomplete = screen.getByLabelText("楽曲を選択");
     await user.click(autocomplete);
@@ -23,6 +23,6 @@ describe("TextageForm", () => {
     const songOption = await screen.findByText("A(A)");
     await user.click(songOption);
 
-    expect(setSelectedSong).toHaveBeenCalledWith(song);
+    expect(onSongSelect).toHaveBeenCalledWith(song);
   });
 });

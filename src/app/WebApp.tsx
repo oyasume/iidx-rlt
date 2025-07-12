@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import ListAltIcon from "@mui/icons-material/ListAlt";
@@ -11,12 +12,13 @@ import { AppBottomNavigation } from "../components/layout/AppBottomNavigation";
 import { AppDrawer } from "../components/layout/AppDrawer";
 import { AppHeader } from "../components/layout/AppHeader";
 import { LocalStorage } from "../storage/localStorage";
-import { RouteDefinition } from "../types";
+import { SongInfo, RouteDefinition } from "../types";
 import { SampleTicketView } from "../features/sample/SampleTicketView";
 import { usePersistentTickets } from "../hooks/usePersistentTickets";
 import { useAppSettings } from "../hooks/useAppSettings";
 import { useSongs } from "../hooks/useSongs";
 import { useTicketSearch } from "../hooks/useTicketSearch";
+import { useTextageOpener } from "../hooks/useTextageOpener";
 
 const storage = new LocalStorage();
 
@@ -27,7 +29,9 @@ export const WebApp: React.FC = () => {
     type: "url",
     path: `${import.meta.env.BASE_URL}data/songs.json`,
   });
+  const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
   const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
+  const { handleOpenTextage } = useTextageOpener(selectedSong, settings.playSide);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -50,8 +54,11 @@ export const WebApp: React.FC = () => {
             allTickets={tickets}
             filteredTickets={filteredTickets}
             songs={songs}
+            selectedSong={selectedSong}
+            onSongSelect={setSelectedSong}
             settings={settings}
             onPlaySideChange={updatePlaySide}
+            onOpenTextage={handleOpenTextage}
           />
         </FormProvider>
       ),

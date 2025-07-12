@@ -17,13 +17,12 @@ const mockTickets: Ticket[] = [
   { laneText: "7654321", expiration: "" },
 ];
 const mockFilteredTickets: Ticket[] = [{ laneText: "7654321", expiration: "" }];
-const mockSongs: SongInfo[] = [
-  {
-    title: "A(A)",
-    url: "https://textage.cc/score/7/a_amuro.html?1AC00",
-    level: 12,
-  },
-];
+const mockSelectedSong: SongInfo = {
+  title: "A(A)",
+  url: "https://textage.cc/score/7/a_amuro.html?1AC00",
+  level: 12,
+};
+const mockSongs: SongInfo[] = [mockSelectedSong];
 const mockOnPlaySideChange = vi.fn();
 
 const TestComponent = ({
@@ -56,8 +55,11 @@ describe("TicketView", () => {
           allTickets={mockTickets}
           filteredTickets={mockFilteredTickets}
           songs={mockSongs}
+          selectedSong={mockSelectedSong}
           settings={{ playSide: "1P" }}
           onPlaySideChange={mockOnPlaySideChange}
+          onSongSelect={() => {}}
+          onOpenTextage={() => {}}
         />
       </TestComponent>
     );
@@ -76,8 +78,11 @@ describe("TicketView", () => {
             allTickets={mockTickets}
             filteredTickets={mockFilteredTickets}
             songs={mockSongs}
+            selectedSong={mockSelectedSong}
             settings={{ playSide: "1P" }}
             onPlaySideChange={mockOnPlaySideChange}
+            onSongSelect={() => {}}
+            onOpenTextage={() => {}}
           />
         </TestComponent>
       );
@@ -94,8 +99,11 @@ describe("TicketView", () => {
             allTickets={[]}
             filteredTickets={[]}
             songs={mockSongs}
+            selectedSong={mockSelectedSong}
             settings={{ playSide: "1P" }}
             onPlaySideChange={mockOnPlaySideChange}
+            onSongSelect={() => {}}
+            onOpenTextage={() => {}}
           />
         </TestComponent>
       );
@@ -110,8 +118,11 @@ describe("TicketView", () => {
             allTickets={mockTickets}
             filteredTickets={[]}
             songs={mockSongs}
+            selectedSong={mockSelectedSong}
             settings={{ playSide: "1P" }}
             onPlaySideChange={mockOnPlaySideChange}
+            onSongSelect={() => {}}
+            onOpenTextage={() => {}}
           />
         </TestComponent>
       );

@@ -5,17 +5,17 @@ import { SongInfo } from "../../../types";
 interface TextageFormProps {
   songs: SongInfo[];
   selectedSong: SongInfo | null;
-  setSelectedSong: (_song: SongInfo | null) => void;
+  onSongSelect: (_song: SongInfo | null) => void;
 }
 
-export const TextageForm: React.FC<TextageFormProps> = ({ songs, selectedSong, setSelectedSong }) => {
+export const TextageForm: React.FC<TextageFormProps> = ({ songs, selectedSong, onSongSelect }) => {
   return (
     <Box>
       <Autocomplete
         options={songs}
         getOptionLabel={(option) => option.title}
         value={selectedSong}
-        onChange={(_event, newValue) => setSelectedSong(newValue)}
+        onChange={(_event, newValue) => onSongSelect(newValue)}
         renderInput={(params) => (
           <TextField
             {...params}

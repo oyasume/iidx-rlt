@@ -27,6 +27,6 @@ export const Default: Story = {
   args: {
     songs: songs,
     selectedSong: null,
-    setSelectedSong: () => {},
+    onSongSelect: () => {},
   },
 };

@@ -1,20 +1,20 @@
-import React, { useState } from "react";
 import { Typography, Stack, Divider, Box, Button, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { TextageForm } from "./components/TextageForm";
 import { TicketSearchForm } from "./components/TicketSearchForm";
 import { TicketList } from "./components/TicketList";
-import { useTextageOpener } from "../../hooks/useTextageOpener";
-
 import { AppSettings, PlaySide, SongInfo, Ticket } from "../../types";
 
 interface TicketViewProps {
   allTickets: Ticket[];
   filteredTickets: Ticket[];
   songs: SongInfo[];
+  selectedSong: SongInfo | null;
   settings: AppSettings;
   onPlaySideChange: (newPlaySide: PlaySide) => void;
+  onSongSelect: (song: SongInfo | null) => void;
+  onOpenTextage: (laneText: string) => void;
 }
 
 export const TicketView: React.FC<TicketViewProps> = ({
@@ -22,10 +22,11 @@ export const TicketView: React.FC<TicketViewProps> = ({
   filteredTickets,
   songs,
   settings,
+  selectedSong,
   onPlaySideChange,
+  onSongSelect,
+  onOpenTextage,
 }) => {
-  const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
-  const { handleOpenTextage } = useTextageOpener(selectedSong, settings.playSide);
   const handlePlaySideToggle = (_event: React.MouseEvent<HTMLElement>, newPlaySide: PlaySide | null) => {
     if (newPlaySide !== null) {
       onPlaySideChange(newPlaySide);
@@ -40,7 +41,7 @@ export const TicketView: React.FC<TicketViewProps> = ({
       </ToggleButtonGroup>
       <TicketSearchForm />
       <Divider />
-      <TextageForm songs={songs} selectedSong={selectedSong} setSelectedSong={setSelectedSong} />
+      <TextageForm songs={songs} selectedSong={selectedSong} onSongSelect={onSongSelect} />
       <Divider />
       {allTickets.length === 0 ? (
         <Box sx={{ mt: 4 }}>
@@ -57,7 +58,7 @@ export const TicketView: React.FC<TicketViewProps> = ({
           検索条件に一致するチケットはありません。
         </Typography>
       ) : (
-        <TicketList tickets={filteredTickets} selectedSong={selectedSong} onOpenTextage={handleOpenTextage} />
+        <TicketList tickets={filteredTickets} selectedSong={selectedSong} onOpenTextage={onOpenTextage} />
       )}
     </Stack>
   );
