@@ -1,8 +1,8 @@
 import { renderHook, act } from "@testing-library/react";
 import { useTicketSearch } from "./useTicketSearch";
-import { Ticket } from "../../../types";
+import { Ticket } from "../types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import * as ticketMatcher from "../../../utils/ticketMatcher";
+import * as ticketMatcher from "../utils/ticketMatcher";
 
 describe("useTicketSearch", () => {
   const tickets: Ticket[] = [

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { SongInfo, PlaySide } from "../../../types";
-import { makeTextageUrl } from "../../../utils/makeTextageUrl";
+import { SongInfo, PlaySide } from "../types";
+import { makeTextageUrl } from "../utils/makeTextageUrl";
 
 export const useTextageOpener = (selectedSong: SongInfo | null, playSide: PlaySide) => {
   const handleOpenTextage = useCallback(

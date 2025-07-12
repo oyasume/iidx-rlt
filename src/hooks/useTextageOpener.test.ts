@@ -1,8 +1,8 @@
 import { renderHook, act } from "@testing-library/react";
 import { vi, describe, it, expect } from "vitest";
 import { useTextageOpener } from "./useTextageOpener";
-import { SongInfo } from "../../../types";
-import * as makeTextageUrl from "../../../utils/makeTextageUrl";
+import { SongInfo } from "../types";
+import * as makeTextageUrl from "../utils/makeTextageUrl";
 
 describe("useTextageOpener", () => {
   const mockSong: SongInfo = {

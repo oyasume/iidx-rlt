@@ -4,7 +4,7 @@ import { sampleSongs, sampleTickets } from "../../data";
 import { MemoryRouter } from "react-router-dom";
 import { FormProvider } from "react-hook-form";
 import { AppSettings } from "types";
-import { useTicketSearch } from "./hooks/useTicketSearch";
+import { useTicketSearch } from "../../hooks/useTicketSearch";
 
 const meta: Meta<typeof TicketView> = {
   title: "Page/TicketView",

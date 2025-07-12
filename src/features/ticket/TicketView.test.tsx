@@ -5,12 +5,12 @@ import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 
 import { TicketView } from "./TicketView";
 import { SongInfo, Ticket } from "../../types";
-import { useTicketSearch } from "./hooks/useTicketSearch";
+import { useTicketSearch } from "../../hooks/useTicketSearch";
 import { SearchFormValues } from "../../schema";
 import { renderWithRouter } from "../../utils/renderWithRouter";
 import { ReactNode } from "react";
 
-vi.mock("./hooks/useTicketSearch");
+vi.mock("../../hooks/useTicketSearch");
 
 const mockTickets: Ticket[] = [
   { laneText: "1234567", expiration: "" },

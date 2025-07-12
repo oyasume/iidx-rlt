@@ -16,7 +16,7 @@ import { SampleTicketView } from "../features/sample/SampleTicketView";
 import { usePersistentTickets } from "../hooks/usePersistentTickets";
 import { useAppSettings } from "../hooks/useAppSettings";
 import { useSongs } from "../hooks/useSongs";
-import { useTicketSearch } from "../features/ticket/hooks/useTicketSearch";
+import { useTicketSearch } from "../hooks/useTicketSearch";
 
 const storage = new LocalStorage();
 

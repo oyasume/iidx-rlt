@@ -4,7 +4,7 @@ import { TicketView } from "../ticket/TicketView";
 import { SampleStorage } from "./storage/SampleStorage";
 import { Box, Typography } from "@mui/material";
 import { SongInfo } from "../../types";
-import { useTicketSearch } from "../../features/ticket/hooks/useTicketSearch";
+import { useTicketSearch } from "../../hooks/useTicketSearch";
 import { FormProvider } from "react-hook-form";
 import { useAppSettings } from "../../hooks/useAppSettings";
 

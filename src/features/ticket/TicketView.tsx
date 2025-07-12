@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { TextageForm } from "./components/TextageForm";
 import { TicketSearchForm } from "./components/TicketSearchForm";
 import { TicketList } from "./components/TicketList";
-import { useTextageOpener } from "./hooks/useTextageOpener";
+import { useTextageOpener } from "../../hooks/useTextageOpener";
 
 import { AppSettings, PlaySide, SongInfo, Ticket } from "../../types";
 
