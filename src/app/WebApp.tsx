@@ -19,6 +19,7 @@ import { useAppSettings } from "../hooks/useAppSettings";
 import { useSongs } from "../hooks/useSongs";
 import { useTicketSearch } from "../hooks/useTicketSearch";
 import { useTextageOpener } from "../hooks/useTextageOpener";
+import { AppSettingsContext } from "../contexts/AppSettingsContext";
 
 const storage = new LocalStorage();
 
@@ -55,9 +56,8 @@ export const WebApp: React.FC = () => {
             filteredTickets={filteredTickets}
             songs={songs}
             selectedSong={selectedSong}
-            onSongSelect={setSelectedSong}
-            settings={settings}
             onPlaySideChange={updatePlaySide}
+            onSongSelect={setSelectedSong}
             onOpenTextage={handleOpenTextage}
           />
         </FormProvider>
@@ -79,21 +79,23 @@ export const WebApp: React.FC = () => {
   }
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
-      {!isMobile && <AppDrawer tabs={routes} tabIndex={tabIndex} />}
-      <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-        <AppHeader />
-        <Box sx={{ flexGrow: 1, p: 2, pb: isMobile ? 9 : 2 }}>
-          <Routes>
-            <Route path="/" element={<Navigate to="/tickets" replace />} />
-            <Route path="/sample" element={<SampleTicketView />} />
-            {routes.map((route) => (
-              <Route key={route.path} path={route.path} element={route.element} />
-            ))}
-          </Routes>
+    <AppSettingsContext.Provider value={settings}>
+      <Box sx={{ display: "flex", height: "100vh" }}>
+        {!isMobile && <AppDrawer tabs={routes} tabIndex={tabIndex} />}
+        <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+          <AppHeader />
+          <Box sx={{ flexGrow: 1, p: 2, pb: isMobile ? 9 : 2 }}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/tickets" replace />} />
+              <Route path="/sample" element={<SampleTicketView />} />
+              {routes.map((route) => (
+                <Route key={route.path} path={route.path} element={route.element} />
+              ))}
+            </Routes>
+          </Box>
         </Box>
+        {isMobile && <AppBottomNavigation tabs={routes} tabIndex={tabIndex} />}
       </Box>
-      {isMobile && <AppBottomNavigation tabs={routes} tabIndex={tabIndex} />}
-    </Box>
+    </AppSettingsContext.Provider>
   );
 };

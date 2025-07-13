@@ -29,7 +29,6 @@ export const SampleTicketView: React.FC = () => {
             allTickets={sampleTickets}
             filteredTickets={filteredTickets}
             songs={sampleSongs}
-            settings={settings}
             selectedSong={selectedSong}
             onPlaySideChange={updatePlaySide}
             onSongSelect={setSelectedSong}

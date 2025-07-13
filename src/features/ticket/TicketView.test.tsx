@@ -9,6 +9,7 @@ import { useTicketSearch } from "../../hooks/useTicketSearch";
 import { SearchFormValues } from "../../schema";
 import { renderWithRouter } from "../../utils/renderWithRouter";
 import { ReactNode } from "react";
+import { AppSettingsContext } from "../../contexts/AppSettingsContext";
 
 vi.mock("../../hooks/useTicketSearch");
 
@@ -32,7 +33,11 @@ const TestComponent = ({
   children: ReactNode;
   mockMethods: UseFormReturn<SearchFormValues>;
 }) => {
-  return <FormProvider {...mockMethods}>{children}</FormProvider>;
+  return (
+    <FormProvider {...mockMethods}>
+      <AppSettingsContext.Provider value={{ playSide: "1P" }}>{children}</AppSettingsContext.Provider>
+    </FormProvider>
+  );
 };
 
 describe("TicketView", () => {
@@ -56,7 +61,6 @@ describe("TicketView", () => {
           filteredTickets={mockFilteredTickets}
           songs={mockSongs}
           selectedSong={mockSelectedSong}
-          settings={{ playSide: "1P" }}
           onPlaySideChange={mockOnPlaySideChange}
           onSongSelect={() => {}}
           onOpenTextage={() => {}}
@@ -79,7 +83,6 @@ describe("TicketView", () => {
             filteredTickets={mockFilteredTickets}
             songs={mockSongs}
             selectedSong={mockSelectedSong}
-            settings={{ playSide: "1P" }}
             onPlaySideChange={mockOnPlaySideChange}
             onSongSelect={() => {}}
             onOpenTextage={() => {}}
@@ -100,7 +103,6 @@ describe("TicketView", () => {
             filteredTickets={[]}
             songs={mockSongs}
             selectedSong={mockSelectedSong}
-            settings={{ playSide: "1P" }}
             onPlaySideChange={mockOnPlaySideChange}
             onSongSelect={() => {}}
             onOpenTextage={() => {}}
@@ -119,7 +121,6 @@ describe("TicketView", () => {
             filteredTickets={[]}
             songs={mockSongs}
             selectedSong={mockSelectedSong}
-            settings={{ playSide: "1P" }}
             onPlaySideChange={mockOnPlaySideChange}
             onSongSelect={() => {}}
             onOpenTextage={() => {}}
