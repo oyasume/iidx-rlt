@@ -4,7 +4,7 @@ import { sampleSongs, sampleTickets } from "../../data";
 import { MemoryRouter } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
 import { AppSettings, PlaySide } from "../../types";
-import { AppSettingsContext } from "../../contexts/AppSettingsContext";
+import { AppSettingsContext, AppSettingsDispatchContext } from "../../contexts/AppSettingsContext";
 import { SearchFormValues } from "../../schema";
 import { ComponentProps } from "react";
 
@@ -30,11 +30,13 @@ const meta: Meta<TicketViewStoryProps> = {
 
       return (
         <AppSettingsContext.Provider value={settings}>
-          <MemoryRouter>
-            <FormProvider {...methods}>
-              <Story />
-            </FormProvider>
-          </MemoryRouter>
+          <AppSettingsDispatchContext.Provider value={{ updatePlaySide: () => {} }}>
+            <MemoryRouter>
+              <FormProvider {...methods}>
+                <Story />
+              </FormProvider>
+            </MemoryRouter>
+          </AppSettingsDispatchContext.Provider>
         </AppSettingsContext.Provider>
       );
     },

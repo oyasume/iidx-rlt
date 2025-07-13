@@ -9,7 +9,7 @@ import { useTicketSearch } from "../../hooks/useTicketSearch";
 import { SearchFormValues } from "../../schema";
 import { renderWithRouter } from "../../utils/renderWithRouter";
 import { ReactNode } from "react";
-import { AppSettingsContext } from "../../contexts/AppSettingsContext";
+import { AppSettingsContext, AppSettingsDispatchContext } from "../../contexts/AppSettingsContext";
 
 vi.mock("../../hooks/useTicketSearch");
 
@@ -24,7 +24,7 @@ const mockSelectedSong: SongInfo = {
   level: 12,
 };
 const mockSongs: SongInfo[] = [mockSelectedSong];
-const mockOnPlaySideChange = vi.fn();
+const mockUpdatePlaySide = vi.fn();
 
 const TestComponent = ({
   children,
@@ -35,7 +35,11 @@ const TestComponent = ({
 }) => {
   return (
     <FormProvider {...mockMethods}>
-      <AppSettingsContext.Provider value={{ playSide: "1P" }}>{children}</AppSettingsContext.Provider>
+      <AppSettingsContext.Provider value={{ playSide: "1P" }}>
+        <AppSettingsDispatchContext value={{ updatePlaySide: mockUpdatePlaySide }}>
+          {children}
+        </AppSettingsDispatchContext>
+      </AppSettingsContext.Provider>
     </FormProvider>
   );
 };
@@ -61,7 +65,6 @@ describe("TicketView", () => {
           filteredTickets={mockFilteredTickets}
           songs={mockSongs}
           selectedSong={mockSelectedSong}
-          onPlaySideChange={mockOnPlaySideChange}
           onSongSelect={() => {}}
           onOpenTextage={() => {}}
         />
@@ -71,7 +74,7 @@ describe("TicketView", () => {
     const playSide2P = screen.getByRole("button", { name: "2P" });
     await user.click(playSide2P);
 
-    expect(mockOnPlaySideChange).toHaveBeenCalledWith("2P");
+    expect(mockUpdatePlaySide).toHaveBeenCalledWith("2P");
   });
 
   describe("絞り込み時", () => {
@@ -83,7 +86,6 @@ describe("TicketView", () => {
             filteredTickets={mockFilteredTickets}
             songs={mockSongs}
             selectedSong={mockSelectedSong}
-            onPlaySideChange={mockOnPlaySideChange}
             onSongSelect={() => {}}
             onOpenTextage={() => {}}
           />
@@ -103,7 +105,6 @@ describe("TicketView", () => {
             filteredTickets={[]}
             songs={mockSongs}
             selectedSong={mockSelectedSong}
-            onPlaySideChange={mockOnPlaySideChange}
             onSongSelect={() => {}}
             onOpenTextage={() => {}}
           />
@@ -121,7 +122,6 @@ describe("TicketView", () => {
             filteredTickets={[]}
             songs={mockSongs}
             selectedSong={mockSelectedSong}
-            onPlaySideChange={mockOnPlaySideChange}
             onSongSelect={() => {}}
             onOpenTextage={() => {}}
           />

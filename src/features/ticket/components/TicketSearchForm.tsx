@@ -2,15 +2,15 @@ import React from "react";
 import { TextField, FormControlLabel, Checkbox, Grid } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { SearchFormValues } from "../../../schema";
-import { useAppSettingsContext } from "../../../contexts/AppSettingsContext";
+import { useAppSettings } from "../../../contexts/AppSettingsContext";
 
 export const TicketSearchForm: React.FC = () => {
   const {
     register,
     formState: { errors },
   } = useFormContext<SearchFormValues>();
-  const { playSide } = useAppSettingsContext();
-  const is1P = playSide === "1P";
+  const settings = useAppSettings();
+  const is1P = settings.playSide === "1P";
   const scratchSideLabelText = is1P ? "左側の3つが" : "右側の3つが";
   const nonScratchSideLabelText = is1P ? "右側の4つが" : "左側の4つが";
 

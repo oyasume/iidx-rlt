@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import ListAltIcon from "@mui/icons-material/ListAlt";
@@ -15,23 +15,24 @@ import { LocalStorage } from "../storage/localStorage";
 import { SongInfo, RouteDefinition } from "../types";
 import { SampleTicketView } from "../features/sample/SampleTicketView";
 import { usePersistentTickets } from "../hooks/usePersistentTickets";
-import { useAppSettings } from "../hooks/useAppSettings";
+import { useAppSettings as useLocalStorageAppSettings } from "../hooks/useAppSettings";
 import { useSongs } from "../hooks/useSongs";
 import { useTicketSearch } from "../hooks/useTicketSearch";
 import { useTextageOpener } from "../hooks/useTextageOpener";
-import { AppSettingsContext } from "../contexts/AppSettingsContext";
+import { AppSettingsContext, AppSettingsDispatchContext } from "../contexts/AppSettingsContext";
 
 const storage = new LocalStorage();
 
 export const WebApp: React.FC = () => {
   const { tickets, saveTickets, isLoading: isTicketsLoading } = usePersistentTickets(storage);
-  const { settings, updatePlaySide, isLoading: isSettingsLoading } = useAppSettings(storage);
+  const { settings, updatePlaySide, isLoading: isSettingsLoading } = useLocalStorageAppSettings(storage);
+  const dispatchValue = useMemo(() => ({ updatePlaySide }), [updatePlaySide]);
+  const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
   const { songs, isLoading: isSongDataLoading } = useSongs({
     type: "url",
     path: `${import.meta.env.BASE_URL}data/songs.json`,
   });
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
-  const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
   const { handleOpenTextage } = useTextageOpener(selectedSong, settings.playSide);
 
   const theme = useTheme();
@@ -56,7 +57,6 @@ export const WebApp: React.FC = () => {
             filteredTickets={filteredTickets}
             songs={songs}
             selectedSong={selectedSong}
-            onPlaySideChange={updatePlaySide}
             onSongSelect={setSelectedSong}
             onOpenTextage={handleOpenTextage}
           />
@@ -80,22 +80,24 @@ export const WebApp: React.FC = () => {
 
   return (
     <AppSettingsContext.Provider value={settings}>
-      <Box sx={{ display: "flex", height: "100vh" }}>
-        {!isMobile && <AppDrawer tabs={routes} tabIndex={tabIndex} />}
-        <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-          <AppHeader />
-          <Box sx={{ flexGrow: 1, p: 2, pb: isMobile ? 9 : 2 }}>
-            <Routes>
-              <Route path="/" element={<Navigate to="/tickets" replace />} />
-              <Route path="/sample" element={<SampleTicketView />} />
-              {routes.map((route) => (
-                <Route key={route.path} path={route.path} element={route.element} />
-              ))}
-            </Routes>
+      <AppSettingsDispatchContext.Provider value={dispatchValue}>
+        <Box sx={{ display: "flex", height: "100vh" }}>
+          {!isMobile && <AppDrawer tabs={routes} tabIndex={tabIndex} />}
+          <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+            <AppHeader />
+            <Box sx={{ flexGrow: 1, p: 2, pb: isMobile ? 9 : 2 }}>
+              <Routes>
+                <Route path="/" element={<Navigate to="/tickets" replace />} />
+                <Route path="/sample" element={<SampleTicketView />} />
+                {routes.map((route) => (
+                  <Route key={route.path} path={route.path} element={route.element} />
+                ))}
+              </Routes>
+            </Box>
           </Box>
+          {isMobile && <AppBottomNavigation tabs={routes} tabIndex={tabIndex} />}
         </Box>
-        {isMobile && <AppBottomNavigation tabs={routes} tabIndex={tabIndex} />}
-      </Box>
+      </AppSettingsDispatchContext.Provider>
     </AppSettingsContext.Provider>
   );
 };

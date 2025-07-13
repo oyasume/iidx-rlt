@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TicketSearchForm } from "./TicketSearchForm";
 import { searchFormSchema, SearchFormValues } from "../../../schema";
 import { AppSettingsContext } from "../../../contexts/AppSettingsContext";
-import { PlaySide } from "types";
+import { AppSettings, PlaySide } from "types";
 import { TicketView } from "../TicketView";
 
 type TicketViewStoryProps = ComponentProps<typeof TicketView> & {
@@ -19,7 +19,7 @@ const meta: Meta<TicketViewStoryProps> = {
   tags: ["autodocs"],
   decorators: [
     (Story, context) => {
-      const playSide = context.args.playSide;
+      const settings: AppSettings = { playSide: context.args.playSide || "1P" };
       const methods = useForm<SearchFormValues>({
         resolver: zodResolver(searchFormSchema),
         defaultValues: {
@@ -30,7 +30,7 @@ const meta: Meta<TicketViewStoryProps> = {
         },
       });
       return (
-        <AppSettingsContext.Provider value={{ playSide }}>
+        <AppSettingsContext.Provider value={settings}>
           <FormProvider {...methods}>
             <Story />
           </FormProvider>

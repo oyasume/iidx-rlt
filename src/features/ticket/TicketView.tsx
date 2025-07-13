@@ -5,14 +5,13 @@ import { TextageForm } from "./components/TextageForm";
 import { TicketSearchForm } from "./components/TicketSearchForm";
 import { TicketList } from "./components/TicketList";
 import { PlaySide, SongInfo, Ticket } from "../../types";
-import { useAppSettingsContext } from "../../contexts/AppSettingsContext";
+import { useAppSettings, useAppSettingsDispatch } from "../../contexts/AppSettingsContext";
 
 interface TicketViewProps {
   allTickets: Ticket[];
   filteredTickets: Ticket[];
   songs: SongInfo[];
   selectedSong: SongInfo | null;
-  onPlaySideChange: (newPlaySide: PlaySide) => void;
   onSongSelect: (song: SongInfo | null) => void;
   onOpenTextage: (laneText: string) => void;
 }
@@ -22,21 +21,21 @@ export const TicketView: React.FC<TicketViewProps> = ({
   filteredTickets,
   songs,
   selectedSong,
-  onPlaySideChange,
   onSongSelect,
   onOpenTextage,
 }) => {
-  const { playSide } = useAppSettingsContext();
+  const settings = useAppSettings();
+  const { updatePlaySide } = useAppSettingsDispatch();
 
   const handlePlaySideToggle = (_event: React.MouseEvent<HTMLElement>, newPlaySide: PlaySide | null) => {
     if (newPlaySide !== null) {
-      onPlaySideChange(newPlaySide);
+      updatePlaySide(newPlaySide);
     }
   };
 
   return (
     <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <ToggleButtonGroup value={playSide} color="primary" exclusive onChange={handlePlaySideToggle}>
+      <ToggleButtonGroup value={settings.playSide} color="primary" exclusive onChange={handlePlaySideToggle}>
         <ToggleButton value="1P">1P</ToggleButton>
         <ToggleButton value="2P">2P</ToggleButton>
       </ToggleButtonGroup>
