@@ -2,16 +2,16 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { AppDrawer } from "./AppDrawer";
 import { BrowserRouter } from "react-router-dom";
-import { RouteDefinition } from "../../types";
+import { AppNavItem } from "../../types";
 
-const mockTabs: RouteDefinition[] = [
-  { path: "/import", label: "インポート", icon: <div data-testid="import-icon" />, element: <div /> },
-  { path: "/tickets", label: "チケット一覧", icon: <div data-testid="tickets-icon" />, element: <div /> },
+const mockTabs: AppNavItem[] = [
+  { path: "/import", label: "インポート", icon: <div data-testid="import-icon" /> },
+  { path: "/tickets", label: "チケット一覧", icon: <div data-testid="tickets-icon" /> },
 ];
 
 const TestComponent = (props: { tabIndex: number }) => (
   <BrowserRouter>
-    <AppDrawer tabs={mockTabs} tabIndex={props.tabIndex} />
+    <AppDrawer navItems={mockTabs} tabIndex={props.tabIndex} />
   </BrowserRouter>
 );
 

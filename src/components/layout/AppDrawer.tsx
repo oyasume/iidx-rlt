@@ -1,25 +1,25 @@
 import React from "react";
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { Link } from "react-router-dom";
-import { RouteDefinition } from "../../types";
+import { AppNavItem } from "../../types";
 
 interface AppDrawerProps {
-  tabs: RouteDefinition[];
+  navItems: AppNavItem[];
   tabIndex: number;
   width?: number;
 }
 
-export const AppDrawer: React.FC<AppDrawerProps> = ({ tabs, tabIndex, width = 200 }) => {
+export const AppDrawer: React.FC<AppDrawerProps> = ({ navItems, tabIndex, width = 200 }) => {
   return (
     <Drawer
       variant="permanent"
       sx={{ width, flexShrink: 0, [`& .MuiDrawer-paper`]: { width, boxSizing: "border-box" } }}
     >
       <List>
-        {tabs.map((tab, i) => (
-          <ListItemButton key={i} selected={tabIndex === i} component={Link} to={tab.path}>
-            <ListItemIcon>{tab.icon}</ListItemIcon>
-            <ListItemText primary={tab.label} />
+        {navItems.map((item, i) => (
+          <ListItemButton key={i} selected={tabIndex === i} component={Link} to={item.path}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.label} />
           </ListItemButton>
         ))}
       </List>

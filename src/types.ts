@@ -22,9 +22,8 @@ export interface AppSettings {
   playSide: PlaySide;
 }
 
-export interface RouteDefinition {
+export interface AppNavItem {
   path: string;
   label: string;
   icon: React.ReactNode;
-  element: React.ReactNode;
 }
