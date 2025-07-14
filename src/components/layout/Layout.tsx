@@ -1,4 +1,4 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import ListAltIcon from "@mui/icons-material/ListAlt";
@@ -26,9 +26,9 @@ export const Layout: React.FC = () => {
       {!isMobile && <AppDrawer navItems={navItems} tabIndex={tabIndex} />}
       <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
         <AppHeader />
-        <Box sx={{ flexGrow: 1, p: 2, pb: isMobile ? 9 : 2 }}>
+        <Container sx={{ flexGrow: 1, p: 2, pb: isMobile ? 9 : 2 }}>
           <Outlet />
-        </Box>
+        </Container>
       </Box>
       {isMobile && <AppBottomNavigation navItems={navItems} tabIndex={tabIndex} />}
     </Box>

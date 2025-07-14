@@ -44,19 +44,17 @@ export const TicketView: React.FC<TicketViewProps> = ({
       <TextageForm songs={songs} selectedSong={selectedSong} onSongSelect={onSongSelect} />
       <Divider />
       {allTickets.length === 0 ? (
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h6">チケットがありません</Typography>
-          <Typography color="text.secondary" sx={{ mt: 1 }}>
-            先にチケットをインポートするか、<Link to="/sample">サンプルページ</Link>でお試しください。
+        <Box>
+          <Typography variant="body1">チケットがありません</Typography>
+          <Typography color="text.secondary">
+            先にチケットをインポートするか、<Link to="/sample">サンプル</Link>でお試しください。
           </Typography>
           <Button component={Link} to="/import" variant="contained" sx={{ mt: 2 }}>
             インポートページへ
           </Button>
         </Box>
       ) : filteredTickets.length === 0 ? (
-        <Typography sx={{ textAlign: "center", mt: 4, color: "text.secondary" }}>
-          検索条件に一致するチケットはありません。
-        </Typography>
+        <Typography sx={{ color: "text.secondary" }}>検索条件に一致するチケットはありません。</Typography>
       ) : (
         <TicketList tickets={filteredTickets} selectedSong={selectedSong} onOpenTextage={onOpenTextage} />
       )}
