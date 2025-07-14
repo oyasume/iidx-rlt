@@ -24,8 +24,8 @@ describe("TicketSearchForm", () => {
       </FormWrapper>
     );
 
-    expect(screen.getByLabelText("左側の3つが")).toBeInTheDocument();
-    expect(screen.getByLabelText("右側の4つが")).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: /左側の3つが/i })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: /右側の4つが/i })).toBeInTheDocument();
   });
 
   it("2P設定で必要な入力欄が正しく表示される", () => {
@@ -35,7 +35,7 @@ describe("TicketSearchForm", () => {
       </FormWrapper>
     );
 
-    expect(screen.getByLabelText("右側の3つが")).toBeInTheDocument();
-    expect(screen.getByLabelText("左側の4つが")).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: /右側の3つが/i })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: /左側の4つが/i })).toBeInTheDocument();
   });
 });
