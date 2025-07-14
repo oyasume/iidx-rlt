@@ -3,13 +3,12 @@ import { Box, Typography, Collapse, Button, Link, Accordion, AccordionSummary, A
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useClipboard } from "../../../hooks/useClipboard";
-import { ClipboardSnackbar } from "../../../components/ui/ClipboardSnackBar";
 
 const bookmarkletCode = `javascript:(function(){const t='https://oyasume.github.io/iidx-rlt/bookmarklet.js?v='+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
 
 export const BookmarkletSection: React.FC = () => {
   const [showBookmarklet, setShowBookmarklet] = useState(false);
-  const { copyToClipboard, isCopied, error: copyError } = useClipboard();
+  const { copyToClipboard } = useClipboard();
 
   return (
     <>
@@ -41,7 +40,6 @@ export const BookmarkletSection: React.FC = () => {
           </AccordionDetails>
         </Accordion>
       </Collapse>
-      <ClipboardSnackbar open={isCopied || !!copyError} error={copyError} />
     </>
   );
 };

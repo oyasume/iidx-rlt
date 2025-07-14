@@ -1,23 +1,20 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
+import { useSnackbar } from "../contexts/SnackbarContext";
 
-export const useClipboard = (resetDelay = 2000) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export const useClipboard = () => {
+  const { showSnackbar } = useSnackbar();
 
   const copyToClipboard = useCallback(
     async (text: string) => {
-      setError(null);
       try {
         await navigator.clipboard.writeText(text);
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), resetDelay);
+        showSnackbar("クリップボードにコピーしました", "success");
       } catch (e) {
-        setError(`クリップボードへのコピーに失敗しました: ${e as string}`);
-        setIsCopied(false);
+        showSnackbar(`コピーに失敗しました: ${e as string}`, "error");
       }
     },
-    [resetDelay]
+    [showSnackbar]
   );
 
-  return { copyToClipboard, isCopied, error };
+  return { copyToClipboard };
 };

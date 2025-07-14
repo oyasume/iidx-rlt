@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { LocalStorage } from "../storage/localStorage";
 import { useAppSettings as useLocalStorageAppSettings } from "../hooks/useAppSettings";
 import { AppSettingsContext, AppSettingsDispatchContext } from "../contexts/AppSettingsContext";
+import { SnackbarProvider } from "../contexts/SnackbarContext";
 import { Layout } from "../components/layout/Layout";
 import { TicketViewPage } from "../pages/TicketViewPage";
 import { TicketImporterPage } from "../pages/TicketImporterPage";
@@ -20,18 +21,20 @@ export const WebApp: React.FC = () => {
   }
 
   return (
-    <AppSettingsContext.Provider value={settings}>
-      <AppSettingsDispatchContext.Provider value={dispatchValue}>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<TicketViewPage />} />
-            <Route path="import" element={<TicketImporterPage />} />
-            <Route path="manage" element={<AtariManagementPage />} />
-            <Route path="sample" element={<SampleTicketViewPage />} />
-            <Route path="tickets" element={<TicketViewPage />} />
-          </Route>
-        </Routes>
-      </AppSettingsDispatchContext.Provider>
-    </AppSettingsContext.Provider>
+    <SnackbarProvider>
+      <AppSettingsContext.Provider value={settings}>
+        <AppSettingsDispatchContext.Provider value={dispatchValue}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<TicketViewPage />} />
+              <Route path="import" element={<TicketImporterPage />} />
+              <Route path="manage" element={<AtariManagementPage />} />
+              <Route path="sample" element={<SampleTicketViewPage />} />
+              <Route path="tickets" element={<TicketViewPage />} />
+            </Route>
+          </Routes>
+        </AppSettingsDispatchContext.Provider>
+      </AppSettingsContext.Provider>
+    </SnackbarProvider>
   );
 };

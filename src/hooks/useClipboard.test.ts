@@ -2,11 +2,17 @@ import { renderHook, act } from "@testing-library/react";
 import { useClipboard } from "./useClipboard";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+const mockShowSnackbar = vi.fn();
+vi.mock("../contexts/SnackbarContext", () => ({
+  useSnackbar: () => ({
+    showSnackbar: mockShowSnackbar,
+  }),
+}));
+
 describe("useClipboard", () => {
   const mockWriteText = vi.fn();
 
   beforeEach(() => {
-    vi.useFakeTimers();
     vi.clearAllMocks();
     vi.stubGlobal("navigator", {
       clipboard: { writeText: mockWriteText },
@@ -14,40 +20,30 @@ describe("useClipboard", () => {
   });
 
   afterEach(() => {
-    vi.useRealTimers();
     vi.unstubAllGlobals();
   });
 
-  it("初期状態ではisCopied=false, エラーがnullである", () => {
+  it("コピー成功時に、成功メッセージ付きでshowSnackbarが呼ばれること", async () => {
+    mockWriteText.mockResolvedValueOnce(undefined);
     const { result } = renderHook(() => useClipboard());
 
-    expect(result.current.isCopied).toBe(false);
-    expect(result.current.error).toBeNull();
-  });
-
-  it("コピー成功時にisCopiedがtrueになり、指定秒数後にfalseになる", async () => {
-    mockWriteText.mockResolvedValueOnce(undefined);
-    const { result } = renderHook(() => useClipboard(1000));
-
-    await act(() => result.current.copyToClipboard("test"));
-
-    expect(mockWriteText).toHaveBeenCalledWith("test");
-    expect(result.current.isCopied).toBe(true);
-
-    act(() => {
-      vi.advanceTimersByTime(1000);
+    await act(async () => {
+      await result.current.copyToClipboard("test");
     });
 
-    expect(result.current.isCopied).toBe(false);
+    expect(mockWriteText).toHaveBeenCalledWith("test");
+    expect(mockShowSnackbar).toHaveBeenCalledWith("クリップボードにコピーしました", "success");
   });
 
-  it("コピー失敗時にerrorが設定され、isCopiedはfalseになる", async () => {
-    mockWriteText.mockRejectedValueOnce(new Error());
+  it("コピー失敗時に、失敗メッセージ付きでshowSnackbarが呼ばれること", async () => {
+    const error = new Error("コピー失敗");
+    mockWriteText.mockRejectedValueOnce(error);
     const { result } = renderHook(() => useClipboard());
 
-    await act(() => result.current.copyToClipboard("test"));
+    await act(async () => {
+      await result.current.copyToClipboard("test");
+    });
 
-    expect(result.current.isCopied).toBe(false);
-    expect(result.current.error).toContain("クリップボードへのコピーに失敗しました");
+    expect(mockShowSnackbar).toHaveBeenCalledWith(`コピーに失敗しました: ${error.toString()}`, "error");
   });
 });

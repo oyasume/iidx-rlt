@@ -13,8 +13,6 @@ describe("BookmarkletSection", () => {
     vi.clearAllMocks();
     vi.mocked(useClipboard).mockReturnValue({
       copyToClipboard: mockCopyToClipboard,
-      isCopied: false,
-      error: null,
     });
   });
 

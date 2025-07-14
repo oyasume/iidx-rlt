@@ -4,8 +4,8 @@ import { usePersistentTickets } from "../hooks/usePersistentTickets";
 import { useImporter } from "../features/import/hooks/useImporter";
 import { BookmarkletSection } from "../features/import/components/BookmarkletSection";
 import { JsonImportForm } from "../features/import/components/JsonImportForm";
-import { ImportResult } from "../features/import/components/ImportResult";
 import { LocalStorage } from "../storage/localStorage";
+import { useSnackbar } from "../contexts/SnackbarContext";
 
 const storage = new LocalStorage();
 
@@ -13,12 +13,16 @@ export const TicketImporterPage: React.FC = () => {
   const { saveTickets } = usePersistentTickets(storage);
   const [jsonText, setJsonText] = useState("");
   const { state, importTickets } = useImporter(saveTickets);
+  const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (state.status === "success") {
       setJsonText("");
+      showSnackbar(`${state.importedCount}件のチケットをインポートしました。`, "success");
+    } else if (state.status === "error" && state.error) {
+      showSnackbar(state.error, "error");
     }
-  }, [state.status]);
+  }, [state.status, state.error, state.importedCount, showSnackbar]);
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -45,7 +49,6 @@ export const TicketImporterPage: React.FC = () => {
           </StepContent>
         </Step>
       </Stepper>
-      <ImportResult state={state} />
     </Box>
   );
 };

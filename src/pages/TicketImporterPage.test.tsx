@@ -3,15 +3,15 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Ticket } from "../types";
 import { TicketImporterPage } from "./TicketImporterPage";
-import { useClipboard } from "../hooks/useClipboard";
 import * as persistentTicketsHook from "../hooks/usePersistentTickets";
+import * as snackbarContext from "../contexts/SnackbarContext";
 
 vi.mock("../hooks/usePersistentTickets");
-vi.mock("../hooks/useClipboard");
+vi.mock("../contexts/SnackbarContext");
 
 describe("TicketImporterPage", () => {
   const mockSaveTickets = vi.fn();
-  const mockCopyToClipboard = vi.fn();
+  const mockShowSnackbar = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -20,10 +20,12 @@ describe("TicketImporterPage", () => {
       saveTickets: mockSaveTickets,
       isLoading: false,
     });
-    vi.mocked(useClipboard).mockReturnValue({
-      copyToClipboard: mockCopyToClipboard,
-      isCopied: false,
-      error: null,
+    vi.mocked(snackbarContext.useSnackbar).mockReturnValue({
+      showSnackbar: mockShowSnackbar,
+      open: false,
+      message: "",
+      severity: "success",
+      closeSnackbar: vi.fn(),
     });
   });
 
@@ -34,7 +36,7 @@ describe("TicketImporterPage", () => {
     const importButton = screen.getByRole("button", { name: "インポート実行" });
     await user.click(importButton);
 
-    expect(await screen.findByText("インポートするチケットデータがありません。")).toBeInTheDocument();
+    expect(mockShowSnackbar).toHaveBeenCalledWith("インポートするチケットデータがありません。", "error");
     expect(mockSaveTickets).not.toHaveBeenCalled();
   });
 
@@ -49,11 +51,10 @@ describe("TicketImporterPage", () => {
     const importButton = screen.getByRole("button", { name: "インポート実行" });
     await user.click(importButton);
 
-    expect(
-      await screen.findByText(
-        "チケットデータの形式が正しくありません。公式サイトでブックマークレットを実行し、表示された内容をすべてコピーして貼り付けてください。"
-      )
-    ).toBeInTheDocument();
+    expect(mockShowSnackbar).toHaveBeenCalledWith(
+      expect.stringContaining("チケットデータの形式が正しくありません"),
+      "error"
+    );
     expect(mockSaveTickets).not.toHaveBeenCalled();
   });
 
@@ -68,7 +69,7 @@ describe("TicketImporterPage", () => {
     const importButton = screen.getByRole("button", { name: "インポート実行" });
     await user.click(importButton);
 
-    expect(await screen.findByText("データが配列形式になっていません。")).toBeInTheDocument();
+    expect(mockShowSnackbar).toHaveBeenCalledWith("データが配列形式になっていません。", "error");
     expect(mockSaveTickets).not.toHaveBeenCalled();
   });
 
@@ -88,10 +89,10 @@ describe("TicketImporterPage", () => {
     await user.click(importButton);
 
     await waitFor(() => {
-      expect(screen.getByText(`${tickets.length}件のチケットをインポートしました。`)).toBeInTheDocument();
+      expect(mockSaveTickets).toHaveBeenCalledWith(tickets);
     });
 
-    expect(mockSaveTickets).toHaveBeenCalledWith(tickets);
+    expect(mockShowSnackbar).toHaveBeenCalledWith(`${tickets.length}件のチケットをインポートしました。`, "success");
     expect(textbox).toHaveValue("");
   });
 
@@ -112,20 +113,10 @@ describe("TicketImporterPage", () => {
     await user.click(importButton);
 
     expect(mockSaveTickets).toHaveBeenCalledWith(tickets);
-    expect(await screen.findByText(/チケットのインポート中に予期せぬエラーが発生しました/i)).toBeInTheDocument();
+    expect(mockShowSnackbar).toHaveBeenCalledWith(
+      expect.stringContaining("チケットのインポート中に予期せぬエラーが発生しました"),
+      "error"
+    );
     expect(textbox).toHaveValue(validJson);
-  });
-
-  it("ブックマークレットのコピーボタンを押すと、copyToClipboardが呼ばれる", async () => {
-    const user = userEvent.setup();
-    render(<TicketImporterPage />);
-
-    const showBookmarkletLink = screen.getByRole("button", { name: "ブックマークレットを表示" });
-    await user.click(showBookmarkletLink);
-
-    const copyButton = screen.getByRole("button", { name: "コピー" });
-    await user.click(copyButton);
-
-    expect(mockCopyToClipboard).toHaveBeenCalledTimes(1);
   });
 });

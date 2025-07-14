@@ -8,6 +8,8 @@ import { AppHeader } from "./AppHeader";
 import { AppDrawer } from "./AppDrawer";
 import { AppBottomNavigation } from "./AppBottomNavigation";
 import { AppNavItem } from "../../types";
+import { AppSnackbar } from "../ui/AppSnackbar";
+import { useSnackbar } from "../../contexts/SnackbarContext";
 
 const navItems: AppNavItem[] = [
   { path: "/import", label: "インポート", icon: <VerticalAlignBottomIcon /> },
@@ -20,6 +22,7 @@ export const Layout: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname === "/" ? "/tickets" : location.pathname;
   const tabIndex = navItems.findIndex((item) => item.path === currentPath);
+  const { open, message, severity, closeSnackbar } = useSnackbar();
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
@@ -31,6 +34,7 @@ export const Layout: React.FC = () => {
         </Container>
       </Box>
       {isMobile && <AppBottomNavigation navItems={navItems} tabIndex={tabIndex} />}
+      <AppSnackbar open={open} onClose={closeSnackbar} message={message} severity={severity} />
     </Box>
   );
 };
