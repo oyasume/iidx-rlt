@@ -15,6 +15,7 @@ import {
   StepContent,
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import LaunchIcon from "@mui/icons-material/Launch";
 import { GitHubLink } from "../components/links/GitHubLink";
 import { XLink } from "../components/links/XLink";
 
@@ -100,7 +101,9 @@ export const AboutPage = () => {
           </StepLabel>
           <StepContent>
             <Typography variant="body1" component="p">
-              目的のチケットが見つかったら、楽曲を選択して「Textageで確認」ボタンを押します。実際の譜面がどうなるかをすぐにプレビューできます。
+              目的のチケットが見つかったら、楽曲を選択してチケット横にあるアイコン
+              <LaunchIcon fontSize="inherit" sx={{ verticalAlign: "middle", mx: 0.5 }} />
+              を押します。実際の譜面がどうなるかを Textage で確認できます。
             </Typography>
           </StepContent>
         </Step>
@@ -108,7 +111,7 @@ export const AboutPage = () => {
       <Divider sx={{ my: 4 }} />
       <Typography variant="caption" color="text.secondary" component="p">
         beatmaniaは株式会社コナミデジタルエンタテインメントの登録商標です。
-        本アプリケーションは個人で開発・公開している非公式のツールです。株式会社コナミデジタルエンタテインメント、コナミアミューズメントおよび関連企業とは一切関係ありません。
+        本アプリケーションは個人で開発・公開している非公式のツールです。当該法人および関連企業とは一切関係ありません。
       </Typography>
       <Typography variant="caption" color="text.secondary" component="p">
         本ツールの使用はご自身の責任でお願いいたします。使用により生じたいかなる損害についても、開発者は責任を負いかねます。
