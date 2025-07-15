@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, Collapse, Button, Link, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Box, Typography, Collapse, Button, Link, Alert, AlertTitle } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useClipboard } from "../../../hooks/useClipboard";
 
@@ -13,7 +12,13 @@ export const BookmarkletSection: React.FC = () => {
   return (
     <>
       <Typography>IIDX公式サイトでブックマークレットを実行し、チケット情報をコピーします。</Typography>
-      <Link component="button" onClick={() => setShowBookmarklet(!showBookmarklet)}>
+      <Link
+        component="button"
+        variant="body1"
+        underline="hover"
+        onClick={() => setShowBookmarklet(!showBookmarklet)}
+        sx={{ mt: 1 }}
+      >
         ブックマークレットを表示
       </Link>
       <Collapse in={showBookmarklet}>
@@ -25,20 +30,14 @@ export const BookmarkletSection: React.FC = () => {
           </Box>
           <Box sx={{ p: 2, wordBreak: "break-all", bgcolor: "#f5f5f5" }}>{bookmarkletCode}</Box>
         </Box>
-        <Accordion sx={{ mt: 1 }}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-            <Typography>補足</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography color="text.secondary" variant="body2">
-              ※コピーしたコードをURLにしたブックマークを作成してください。
-              その後、IIDX公式サイトでブックマークをクリックすることで実行されます。
-              <br />
-              取得されるのはチケットの情報のみで、外部サーバーに送信されることはありません。
-              ソースコードはGitHubで公開されています。
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+        <Alert severity="info" sx={{ mt: 2 }}>
+          <AlertTitle>補足</AlertTitle>
+          <Typography color="text.secondary" variant="body2" component="div">
+            コピーしたコードをURLにしたブックマークを作成してください。
+            その後、IIDX公式サイトでブックマークを開くことで実行されます。
+            取得されるのはチケットの情報のみで、外部サーバーに送信されることはありません。
+          </Typography>
+        </Alert>
       </Collapse>
     </>
   );
