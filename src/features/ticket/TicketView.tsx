@@ -35,7 +35,13 @@ export const TicketView: React.FC<TicketViewProps> = ({
 
   return (
     <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <ToggleButtonGroup value={settings.playSide} color="primary" exclusive onChange={handlePlaySideToggle}>
+      <ToggleButtonGroup
+        size="large"
+        value={settings.playSide}
+        color="primary"
+        exclusive
+        onChange={handlePlaySideToggle}
+      >
         <ToggleButton value="1P">1P</ToggleButton>
         <ToggleButton value="2P">2P</ToggleButton>
       </ToggleButtonGroup>

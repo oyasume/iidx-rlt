@@ -38,6 +38,7 @@ export const KeypadInput: React.FC<KeypadInputProps> = ({
             textAlign: "center",
             letterSpacing: "0.8em",
             fontFamily: "monospace",
+            fontWeight: "bold",
             padding: "0.5em",
           },
         }}
@@ -47,7 +48,11 @@ export const KeypadInput: React.FC<KeypadInputProps> = ({
       <FormHelperText error={!!error} sx={{ margin: 0.25 }}>
         {error?.message ?? (showExample ? exampleText : "")}
       </FormHelperText>
-      <FormControlLabel control={<Checkbox defaultChecked {...register(checkboxName)} />} label="順不同" />
+      <FormControlLabel
+        control={<Checkbox defaultChecked {...register(checkboxName)} />}
+        label="順不同"
+        slotProps={{ typography: { color: "text.secondary" } }}
+      />
     </FormControl>
   );
 };
