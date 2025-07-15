@@ -1,9 +1,7 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
-import GitHubIcon from "@mui/icons-material/GitHub";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 
-const APP_TITLE = "iidx-rlt";
-const GITHUB_URL = "https://github.com/oyasume/iidx-rlt";
+const APP_TITLE = "RLT Manager（仮）";
 
 export const AppHeader: React.FC = () => {
   return (
@@ -20,17 +18,6 @@ export const AppHeader: React.FC = () => {
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           {APP_TITLE}
         </Typography>
-
-        <IconButton
-          edge="end"
-          color="inherit"
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="github repository"
-        >
-          <GitHubIcon />
-        </IconButton>
       </Toolbar>
     </AppBar>
   );
