@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { Route, Routes } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { LocalStorage } from "../storage/localStorage";
 import { useAppSettings as useLocalStorageAppSettings } from "../hooks/useAppSettings";
 import { AppSettingsContext, AppSettingsDispatchContext } from "../contexts/AppSettingsContext";
@@ -16,6 +16,19 @@ const storage = new LocalStorage();
 export const WebApp: React.FC = () => {
   const { settings, updatePlaySide, isLoading } = useLocalStorageAppSettings(storage);
   const dispatchValue = useMemo(() => ({ updatePlaySide }), [updatePlaySide]);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const redirectPath = sessionStorage.getItem("redirect");
+    if (redirectPath) {
+      sessionStorage.removeItem("redirect");
+      const basePath = import.meta.env.BASE_URL;
+      const pathWithoutBase = redirectPath.startsWith(basePath)
+        ? "/" + redirectPath.substring(basePath.length)
+        : redirectPath;
+      void navigate(pathWithoutBase.replace("//", "/"), { replace: true });
+    }
+  }, [navigate]);
 
   if (isLoading) {
     return <div>設定を読み込んでいます...</div>;
