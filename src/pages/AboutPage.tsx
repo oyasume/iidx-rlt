@@ -15,13 +15,20 @@ import {
   StepContent,
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { GitHubLink } from "../components/links/GitHubLink";
+import { XLink } from "../components/links/XLink";
 
 export const AboutPage = () => {
   return (
     <Box sx={{ px: 2, py: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        このツールについて
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Typography variant="h5" gutterBottom>
+          このツールについて
+        </Typography>
+        <Box sx={{ flexGrow: 1 }} />
+        <GitHubLink />
+        <XLink />
+      </Box>
       <Typography variant="body1" component="p">
         beatmania IIDXの「ランダムレーンチケット」を有効に活用するためのWebアプリケーションです。
       </Typography>
