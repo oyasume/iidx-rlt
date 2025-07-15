@@ -22,6 +22,9 @@ export const AppBottomNavigation: React.FC<AppBottomNavigationProps> = ({ navIte
               "& .MuiBottomNavigationAction-label": {
                 fontSize: "0.6rem",
               },
+              "&.Mui-selected .MuiBottomNavigationAction-label": {
+                fontSize: "0.6rem",
+              },
             }}
           />
         ))}
