@@ -12,13 +12,21 @@ export const searchFormSchema = z.object({
     .length(3, "3文字で指定してください")
     .regex(/^[1-7*]*$/, "指定できるのは1-7と*だけです")
     .refine(validateDuplicate, { message: "重複している鍵盤があります" }),
+  isScratchSideUnordered: z.boolean(),
   nonScratchSideText: z
     .string()
     .length(4, "4文字で指定してください")
     .regex(/^[1-7*]*$/, "指定できるのは1-7と*だけです")
     .refine(validateDuplicate, { message: "重複している鍵盤があります" }),
-  isScratchSideUnordered: z.boolean(),
   isNonScratchSideUnordered: z.boolean(),
 });
-
 export type SearchFormValues = z.infer<typeof searchFormSchema>;
+
+export const atariRuleSchema = z.object({
+  id: z.string(),
+  songTitle: z.string(),
+  priority: z.number(),
+  description: z.string(),
+  patterns: z.array(searchFormSchema),
+});
+export const atariRulesSchema = z.array(atariRuleSchema);
