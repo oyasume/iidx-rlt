@@ -18,6 +18,14 @@ export interface SongInfo {
   level: number;
 }
 
+export interface AtariRule {
+  id: string;
+  songTitle: string;
+  priority: number;
+  description: string;
+  patterns: SearchPattern[];
+}
+
 export interface AppSettings {
   playSide: PlaySide;
 }
