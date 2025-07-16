@@ -6,71 +6,126 @@ import { dirname } from "path";
 import { AtariRule, SearchPattern } from "../src/types";
 
 const SONG_RULES_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvdia8KZZiRbJ8WmaaFw64HixFWuuYP3HuxYzqfAYKvDso8ITI0OWITchKiv04T57uD2vk0bm9sMFx/pub?output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvdia8KZZiRbJ8WmaaFw64HixFWuuYP3HuxYzqfAYKvDso8ITI0OWITchKiv04T57uD2vk0bm9sMFx/pub?gid=0&single=true&output=csv";
+const SCRATCH_SIDE_RULES_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvdia8KZZiRbJ8WmaaFw64HixFWuuYP3HuxYzqfAYKvDso8ITI0OWITchKiv04T57uD2vk0bm9sMFx/pub?gid=1857526366&single=true&output=csv";
 
-const main = async () => {
-  console.log(`Fetching song rules from ${SONG_RULES_CSV_URL}`);
+type SongRuleCsvRow = {
+  曲名: string;
+  説明?: string;
+  優先度: string;
+  皿側テキスト: string;
+  皿側順不同: "TRUE" | "FALSE";
+  非皿側テキスト: string;
+  非皿側順不同: "TRUE" | "FALSE";
+};
 
-  const response = await fetch(SONG_RULES_CSV_URL);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch CSV: ${response.statusText}`);
-  }
-  const csvText = await response.text();
-
-  type CsvRow = {
-    曲名: string;
-    説明?: string;
-    優先度: string;
-    皿側テキスト: string;
-    皿側順不同: "TRUE" | "FALSE";
-    非皿側テキスト: string;
-    非皿側順不同: "TRUE" | "FALSE";
-  };
-
-  const parsed = Papa.parse<CsvRow>(csvText, {
-    header: true,
-    skipEmptyLines: true,
-  });
-
+const fetchAndParseCsv = async <T>(url: string, options: Papa.ParseConfig<T>): Promise<T[]> => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch CSV from ${url}: ${res.statusText}`);
+  const text = await res.text();
+  const parsed = Papa.parse<T>(text, options);
   if (parsed.errors.length > 0) {
     console.error("CSV parsing errors:", parsed.errors);
-    throw new Error("Failed to parse CSV");
+    throw new Error(`Failed to parse CSV from ${url}`);
   }
+  return parsed.data;
+};
 
-  const finalRules: AtariRule[] = parsed.data
-    .filter(
-      (row) =>
-        row.曲名 &&
-        row.曲名.trim() !== "" &&
-        row.優先度 &&
-        row.優先度.trim() !== "" &&
-        row.皿側テキスト != null &&
-        row.非皿側テキスト != null
-    )
-    .map((row, index): AtariRule => {
-      const searchPattern: SearchPattern = {
-        scratchSideText: row.皿側テキスト,
-        isScratchSideUnordered: row.皿側順不同 === "TRUE",
-        nonScratchSideText: row.非皿側テキスト,
-        isNonScratchSideUnordered: row.非皿側順不同 === "TRUE",
-      };
-
-      return {
-        id: `preset-${index}`,
-        songTitle: row.曲名,
-        priority: parseInt(row.優先度, 10),
-        description: row.説明 || "",
-        patterns: [searchPattern],
-      };
-    });
-
+const writeJsonFile = async (data: AtariRule[], outputPath: string): Promise<void> => {
   const __dirname = dirname(fileURLToPath(import.meta.url));
-  const outputPath = path.resolve(__dirname, "../public/data/atari-rules.json");
+  const absoluteOutputPath = path.resolve(__dirname, outputPath);
+  await fs.mkdir(dirname(absoluteOutputPath), { recursive: true });
+  await fs.writeFile(absoluteOutputPath, JSON.stringify(data, null, 2));
+  console.log(`JSON has been built successfully at: ${absoluteOutputPath}`);
+};
 
-  await fs.mkdir(dirname(outputPath), { recursive: true });
-  await fs.writeFile(outputPath, JSON.stringify(finalRules, null, 2));
+const isValidString = (value: unknown): value is string => {
+  return typeof value === "string" && value.trim() !== "";
+};
 
-  console.log(`Atari rules JSON has been built successfully at: ${outputPath}`);
+const processSongRules = (csvData: SongRuleCsvRow[]): AtariRule[] => {
+  const validRows = csvData.filter(
+    (row) =>
+      isValidString(row.曲名) &&
+      isValidString(row.優先度) &&
+      isValidString(row.皿側テキスト) &&
+      isValidString(row.非皿側テキスト)
+  );
+
+  return validRows.map((row, i): AtariRule => {
+    const searchPattern: SearchPattern = {
+      scratchSideText: row.皿側テキスト,
+      isScratchSideUnordered: row.皿側順不同 === "TRUE",
+      nonScratchSideText: row.非皿側テキスト,
+      isNonScratchSideUnordered: row.非皿側順不同 === "TRUE",
+    };
+
+    return {
+      id: `preset-song-${i}`,
+      songTitle: row.曲名,
+      priority: parseInt(row.優先度, 10),
+      description: row.説明 || "",
+      patterns: [searchPattern],
+    };
+  });
+};
+
+const processScratchSideRules = (csvData: string[][], startIndex: number): AtariRule[] => {
+  const rules: AtariRule[] = [];
+  const header = csvData[0];
+  const scratchSidePatterns = header.slice(1);
+  const songRows = csvData.slice(1);
+
+  let ruleCounter = 0;
+  for (const row of songRows) {
+    const songTitle = row[0];
+    if (typeof songTitle !== "string" || !songTitle.trim()) continue;
+
+    for (let i = 0; i < scratchSidePatterns.length; i++) {
+      const patternText = scratchSidePatterns[i];
+      const priorityStr = row[i + 1];
+
+      if (typeof priorityStr === "string" && priorityStr.trim() !== "") {
+        const searchPattern: SearchPattern = {
+          scratchSideText: patternText,
+          isScratchSideUnordered: true,
+          nonScratchSideText: "****",
+          isNonScratchSideUnordered: true,
+        };
+
+        rules.push({
+          id: `preset-scratch-${startIndex + ruleCounter++}`,
+          songTitle,
+          priority: parseInt(priorityStr, 10),
+          description: `皿側3つの当たり`,
+          patterns: [searchPattern],
+        });
+      }
+    }
+  }
+  return rules;
+};
+
+const main = async () => {
+  const [songRulesData, scratchSideData] = await Promise.all([
+    fetchAndParseCsv<SongRuleCsvRow>(SONG_RULES_CSV_URL, {
+      header: true,
+      skipEmptyLines: true,
+    }),
+    fetchAndParseCsv<string[]>(SCRATCH_SIDE_RULES_CSV_URL, {
+      skipEmptyLines: true,
+    }),
+  ]);
+
+  const processedSongRules = processSongRules(songRulesData);
+
+  const processedScratchSideRules = processScratchSideRules(scratchSideData, processedSongRules.length);
+
+  const finalRules: AtariRule[] = [...processedSongRules, ...processedScratchSideRules];
+  console.log(`Total rules built: ${finalRules.length}`);
+
+  await writeJsonFile(finalRules, "../public/data/atari-rules.json");
 };
 
 main().catch((err) => {
