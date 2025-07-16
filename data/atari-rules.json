@@ -1,0 +1,30 @@
+[
+  {
+    "id": "preset-0",
+    "songTitle": "冥(A)",
+    "priority": 1,
+    "description": "低速の縦連が割れる",
+    "patterns": [
+      {
+        "scratchSideText": "2**",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "3***",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-1",
+    "songTitle": "冥(A)",
+    "priority": 1,
+    "description": "低速の縦連が割れる",
+    "patterns": [
+      {
+        "scratchSideText": "3**",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "2***",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  }
+]
