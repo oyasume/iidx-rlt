@@ -55,7 +55,7 @@ try {
           }
 
           const src = trNode.cells[COLUMNS_SCORE]?.querySelector("img")?.getAttribute("src");
-          const diff = src === `lv/a${currentLevel}.gif` ? "A" : src === `lv/l${currentLevel}.gif` ? "L" : null;
+          const diff = src === `lv/a${currentLevel}.gif` ? "A" : src === `lv/x${currentLevel}.gif` ? "L" : null;
 
           if (!diff) {
             console.log(`難易度が取得できない：${title}`);

@@ -98,7 +98,7 @@ const processScratchSideRules = (csvData: string[][], startIndex: number): Atari
           id: `preset-scratch-${startIndex + ruleCounter++}`,
           songTitle,
           priority: parseInt(priorityStr, 10),
-          description: `皿側3つの当たり`,
+          description: "",
           patterns: [searchPattern],
         });
       }
