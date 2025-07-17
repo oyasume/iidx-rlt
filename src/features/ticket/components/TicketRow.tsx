@@ -2,14 +2,21 @@ import { TableRow, TableCell, Box, Typography, Tooltip, IconButton } from "@mui/
 import LaunchIcon from "@mui/icons-material/Launch";
 
 import { Ticket, SongInfo } from "types";
+import { useTicketDetail } from "../contexts/TicketDetailContext";
 
 export const TicketRow: React.FC<{
   ticket: Ticket;
   selectedSong: SongInfo | null;
   onOpenTextage: (_laneText: string) => void;
 }> = ({ ticket, selectedSong, onOpenTextage }) => {
+  const { setDetailTicket } = useTicketDetail();
+
   return (
-    <TableRow key={ticket.laneText}>
+    <TableRow
+      key={ticket.laneText}
+      onClick={() => setDetailTicket(ticket)}
+      sx={{ "&:hover": { cursor: "pointer", backgroundColor: "action.hover" } }}
+    >
       <TableCell component="th" scope="row">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography variant="body1" component="span" sx={{ mr: 1 }}>
@@ -20,7 +27,10 @@ export const TicketRow: React.FC<{
             <span>
               <IconButton
                 size="small"
-                onClick={() => onOpenTextage(ticket.laneText)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenTextage(ticket.laneText);
+                }}
                 disabled={!selectedSong}
                 aria-label={`Textageで確認`}
                 color={selectedSong ? "primary" : "inherit"}

@@ -10,6 +10,7 @@ import { SearchFormValues } from "../../schema";
 import { renderWithRouter } from "../../utils/renderWithRouter";
 import { ReactNode } from "react";
 import { AppSettingsContext, AppSettingsDispatchContext } from "../../contexts/AppSettingsContext";
+import { TicketDetailProvider } from "./contexts/TicketDetailContext";
 
 vi.mock("../../hooks/useTicketSearch");
 
@@ -34,13 +35,15 @@ const TestComponent = ({
   mockMethods: UseFormReturn<SearchFormValues>;
 }) => {
   return (
-    <FormProvider {...mockMethods}>
-      <AppSettingsContext.Provider value={{ playSide: "1P" }}>
-        <AppSettingsDispatchContext value={{ updatePlaySide: mockUpdatePlaySide }}>
-          {children}
-        </AppSettingsDispatchContext>
-      </AppSettingsContext.Provider>
-    </FormProvider>
+    <TicketDetailProvider>
+      <FormProvider {...mockMethods}>
+        <AppSettingsContext.Provider value={{ playSide: "1P" }}>
+          <AppSettingsDispatchContext value={{ updatePlaySide: mockUpdatePlaySide }}>
+            {children}
+          </AppSettingsDispatchContext>
+        </AppSettingsContext.Provider>
+      </FormProvider>
+    </TicketDetailProvider>
   );
 };
 

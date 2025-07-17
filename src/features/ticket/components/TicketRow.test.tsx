@@ -4,6 +4,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Table, TableBody } from "@mui/material";
 import { TicketRow } from "./TicketRow";
 import { SongInfo, Ticket } from "types";
+import * as TicketDetailContext from "../contexts/TicketDetailContext";
 
 const mockTicket: Ticket = { laneText: "1234567", expiration: "2999/12/31" };
 const mockSelectedSong: SongInfo = {
@@ -11,6 +12,12 @@ const mockSelectedSong: SongInfo = {
   url: "",
   level: 12,
 };
+
+const mockSetDetailTicket = vi.fn();
+vi.spyOn(TicketDetailContext, "useTicketDetail").mockReturnValue({
+  detailTicket: null,
+  setDetailTicket: mockSetDetailTicket,
+});
 
 const tableWrapper = ({ children }: { children: React.ReactNode }) => (
   <Table>
@@ -49,5 +56,15 @@ describe("TicketRow", () => {
 
     await user.click(screen.getByRole("button"));
     expect(onOpenTextageMock).toHaveBeenCalledWith(mockTicket.laneText);
+  });
+
+  it("行をクリックするとsetDetailTicketが呼ばれること", async () => {
+    const user = userEvent.setup();
+    render(<TicketRow ticket={mockTicket} selectedSong={null} onOpenTextage={() => {}} />, { wrapper: tableWrapper });
+
+    await user.click(screen.getByText(mockTicket.laneText));
+
+    expect(mockSetDetailTicket).toHaveBeenCalledTimes(1);
+    expect(mockSetDetailTicket).toHaveBeenCalledWith(mockTicket);
   });
 });
