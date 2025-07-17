@@ -20,10 +20,10 @@ export const AppBottomNavigation: React.FC<AppBottomNavigationProps> = ({ navIte
             to={tab.path}
             sx={{
               "& .MuiBottomNavigationAction-label": {
-                fontSize: "0.6rem",
+                fontSize: "0.5rem",
               },
               "&.Mui-selected .MuiBottomNavigationAction-label": {
-                fontSize: "0.6rem",
+                fontSize: "0.5rem",
               },
             }}
           />
