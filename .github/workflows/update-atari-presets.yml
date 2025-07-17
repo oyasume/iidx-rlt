@@ -28,7 +28,7 @@ jobs:
       - name: Prepare data for deployment
         run: |
           mkdir -p ./staging/data
-          cp ./public/data/atari-rules.json ./staging/data/
+          cp -r ./public/data ./staging/
 
       - name: Deploy data file to gh-pages
         uses: peaceiris/actions-gh-pages@v4

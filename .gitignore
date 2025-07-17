@@ -143,3 +143,4 @@ dist-web
 dist-extension
 public/data/songs.json
 public/data/atari-rules.json
+public/data/version.json
