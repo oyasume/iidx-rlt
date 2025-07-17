@@ -33,9 +33,10 @@ describe("TicketRow", () => {
     expect(screen.getByText(mockTicket.expiration)).toBeInTheDocument();
   });
 
-  it("楽曲が選択されていない場合、ボタンがdisabledになること", () => {
+  it("楽曲が選択されていない場合、ボタンが見えなくなること", () => {
     render(<TicketRow ticket={mockTicket} selectedSong={null} onOpenTextage={() => {}} />, { wrapper: tableWrapper });
-    expect(screen.getByRole("button")).toBeDisabled();
+
+    expect(screen.queryByRole("button")).toBeNull();
   });
 
   it("楽曲が選択されている場合、ボタンは有効になること", () => {

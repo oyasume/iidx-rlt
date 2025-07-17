@@ -56,19 +56,24 @@ export const TicketDetailPanel = ({ ticket, atariInfo, onClose }: TicketDetailPa
             <Divider sx={{ mb: 2 }} />
 
             {atariInfo && atariInfo.length > 0 ? (
-              <List>
-                {atariInfo.map((info) => (
-                  <ListItem key={info.id} disablePadding>
-                    <ListItemText primary={info.songTitle} secondary={info.description} />
-                    <IconButton
-                      aria-label={`「${info.songTitle}」をTextageで確認`}
-                      onClick={() => handleOpenTextage(info.textageUrl)}
-                    >
-                      <LaunchIcon />
-                    </IconButton>
-                  </ListItem>
-                ))}
-              </List>
+              <Box>
+                <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
+                  当たり配置候補
+                </Typography>
+                <List>
+                  {atariInfo.map((info) => (
+                    <ListItem key={info.id} disablePadding>
+                      <ListItemText primary={info.songTitle} secondary={info.description} />
+                      <IconButton
+                        aria-label={`「${info.songTitle}」をTextageで確認`}
+                        onClick={() => handleOpenTextage(info.textageUrl)}
+                      >
+                        <LaunchIcon />
+                      </IconButton>
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
             ) : (
               <Typography>このチケットに該当する当たり配置ルールはありません。</Typography>
             )}

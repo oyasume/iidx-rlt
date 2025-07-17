@@ -23,7 +23,6 @@ export const TicketRow: React.FC<{
             {ticket.laneText}
           </Typography>
           <Tooltip title="Textageで確認" placement="right">
-            {/* disabledでもTooltipを出す */}
             <span>
               <IconButton
                 size="small"
@@ -32,6 +31,7 @@ export const TicketRow: React.FC<{
                   onOpenTextage(ticket.laneText);
                 }}
                 disabled={!selectedSong}
+                sx={{ visibility: selectedSong ? "visible" : "hidden" }}
                 aria-label={`Textageで確認`}
                 color={selectedSong ? "primary" : "inherit"}
               >
