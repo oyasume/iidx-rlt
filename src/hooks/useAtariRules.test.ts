@@ -56,10 +56,15 @@ describe("useAtariRules", () => {
   });
 
   it("データの取得とインデックス構築に成功し、パターンが正しく重複排除されること", async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockAtariRules),
-    } as Response);
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ version: "test-version" }),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockAtariRules),
+      } as Response);
 
     const { result } = renderHook(() => useAtariRules());
 
