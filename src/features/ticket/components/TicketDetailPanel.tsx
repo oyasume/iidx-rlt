@@ -40,6 +40,7 @@ export const TicketDetailPanel = ({ ticket, atariInfo, onClose }: TicketDetailPa
       anchor={isMobile ? "bottom" : "right"}
       open={!!ticket}
       onClose={onClose}
+      closeAfterTransition={true}
       slotProps={{ paper: { sx: { width: isMobile ? "100%" : 400, height: isMobile ? "60vh" : "auto" } } }}
     >
       <Box sx={{ p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
@@ -49,7 +50,7 @@ export const TicketDetailPanel = ({ ticket, atariInfo, onClose }: TicketDetailPa
               <Typography variant="h6" sx={{ flexGrow: 1 }}>
                 {ticket.laneText}
               </Typography>
-              <IconButton onClick={onClose} aria-label="閉じる" autoFocus>
+              <IconButton onClick={onClose} aria-label="閉じる">
                 <CloseIcon />
               </IconButton>
             </Box>
