@@ -42,15 +42,15 @@
     ]
   },
   {
-    "id": "preset-scratch-3",
-    "songTitle": "Smashing Wedge(A)",
+    "id": "preset-song-3",
+    "songTitle": "THANK YOU FOR PLAYING(L)",
     "priority": 1,
-    "description": "皿側3つの当たり",
+    "description": "24分が割れる",
     "patterns": [
       {
-        "scratchSideText": "123",
+        "scratchSideText": "45*",
         "isScratchSideUnordered": true,
-        "nonScratchSideText": "****",
+        "nonScratchSideText": "23**",
         "isNonScratchSideUnordered": true
       }
     ]
@@ -59,10 +59,10 @@
     "id": "preset-scratch-4",
     "songTitle": "Smashing Wedge(A)",
     "priority": 1,
-    "description": "皿側3つの当たり",
+    "description": "",
     "patterns": [
       {
-        "scratchSideText": "567",
+        "scratchSideText": "123",
         "isScratchSideUnordered": true,
         "nonScratchSideText": "****",
         "isNonScratchSideUnordered": true
@@ -71,12 +71,12 @@
   },
   {
     "id": "preset-scratch-5",
-    "songTitle": "狂イ咲ケ焔ノ華(A)",
+    "songTitle": "Smashing Wedge(A)",
     "priority": 1,
-    "description": "皿側3つの当たり",
+    "description": "",
     "patterns": [
       {
-        "scratchSideText": "123",
+        "scratchSideText": "567",
         "isScratchSideUnordered": true,
         "nonScratchSideText": "****",
         "isNonScratchSideUnordered": true
@@ -87,7 +87,21 @@
     "id": "preset-scratch-6",
     "songTitle": "狂イ咲ケ焔ノ華(A)",
     "priority": 1,
-    "description": "皿側3つの当たり",
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "123",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-7",
+    "songTitle": "狂イ咲ケ焔ノ華(A)",
+    "priority": 1,
+    "description": "",
     "patterns": [
       {
         "scratchSideText": "567",
@@ -98,27 +112,13 @@
     ]
   },
   {
-    "id": "preset-scratch-7",
-    "songTitle": "rage against usual(A)",
-    "priority": 1,
-    "description": "皿側3つの当たり",
-    "patterns": [
-      {
-        "scratchSideText": "147",
-        "isScratchSideUnordered": true,
-        "nonScratchSideText": "****",
-        "isNonScratchSideUnordered": true
-      }
-    ]
-  },
-  {
     "id": "preset-scratch-8",
-    "songTitle": "TECHNOPHOBIA(A)",
+    "songTitle": "Beyond Evolution(A)",
     "priority": 1,
-    "description": "皿側3つの当たり",
+    "description": "",
     "patterns": [
       {
-        "scratchSideText": "147",
+        "scratchSideText": "123",
         "isScratchSideUnordered": true,
         "nonScratchSideText": "****",
         "isNonScratchSideUnordered": true
@@ -127,9 +127,37 @@
   },
   {
     "id": "preset-scratch-9",
+    "songTitle": "rage against usual(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-10",
+    "songTitle": "TECHNOPHOBIA(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-11",
     "songTitle": "Inferno of Fomalhaut(A)",
     "priority": 1,
-    "description": "皿側3つの当たり",
+    "description": "",
     "patterns": [
       {
         "scratchSideText": "345",
@@ -140,10 +168,10 @@
     ]
   },
   {
-    "id": "preset-scratch-10",
+    "id": "preset-scratch-12",
     "songTitle": "3y3s(A)",
     "priority": 1,
-    "description": "皿側3つの当たり",
+    "description": "",
     "patterns": [
       {
         "scratchSideText": "137",
@@ -154,10 +182,10 @@
     ]
   },
   {
-    "id": "preset-scratch-11",
+    "id": "preset-scratch-13",
     "songTitle": "3y3s(A)",
     "priority": 1,
-    "description": "皿側3つの当たり",
+    "description": "",
     "patterns": [
       {
         "scratchSideText": "347",
@@ -168,13 +196,27 @@
     ]
   },
   {
-    "id": "preset-scratch-12",
+    "id": "preset-scratch-14",
     "songTitle": "n/a(A)",
     "priority": 1,
-    "description": "皿側3つの当たり",
+    "description": "",
     "patterns": [
       {
         "scratchSideText": "135",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-15",
+    "songTitle": "KAMAITACHI(L)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "136",
         "isScratchSideUnordered": true,
         "nonScratchSideText": "****",
         "isNonScratchSideUnordered": true
