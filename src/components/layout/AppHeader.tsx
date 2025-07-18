@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
-const APP_TITLE = "RLT Manager（仮）";
+const APP_TITLE = "RLT Manager";
 
 export const AppHeader: React.FC = () => {
   return (
