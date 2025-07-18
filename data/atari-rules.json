@@ -31,7 +31,7 @@
     "id": "preset-song-2",
     "songTitle": "Xperanza(A)",
     "priority": 1,
-    "description": "",
+    "description": "全体のトリルが割れる",
     "patterns": [
       {
         "scratchSideText": "17*",
@@ -43,9 +43,37 @@
   },
   {
     "id": "preset-song-3",
+    "songTitle": "聖人の塔(A)",
+    "priority": 1,
+    "description": "二重トリルが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "17*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "35**",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-song-4",
+    "songTitle": "聖人の塔(A)",
+    "priority": 1,
+    "description": "二重トリルが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "35*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "17**",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-song-5",
     "songTitle": "THANK YOU FOR PLAYING(L)",
     "priority": 1,
-    "description": "24分が割れる",
+    "description": "24分折り返しが割れる",
     "patterns": [
       {
         "scratchSideText": "45*",
@@ -56,7 +84,77 @@
     ]
   },
   {
-    "id": "preset-scratch-4",
+    "id": "preset-song-6",
+    "songTitle": "Inferno of Fomalhaut(A)",
+    "priority": 1,
+    "description": "ラストの二重トリルが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "345",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-song-7",
+    "songTitle": "Sounds Of Summer(A)",
+    "priority": 1,
+    "description": "トリルが全部割れる",
+    "patterns": [
+      {
+        "scratchSideText": "157",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-song-8",
+    "songTitle": "東京神話(A)",
+    "priority": 1,
+    "description": "1-7, 5-7トリルが割れる",
+    "patterns": [
+      {
+        "scratchSideText": "15*",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "7***",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-song-9",
+    "songTitle": "AIR RAID FROM THA UNDAGROUND(L)",
+    "priority": 1,
+    "description": "トリルがほぼ割れる",
+    "patterns": [
+      {
+        "scratchSideText": "156",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-song-10",
+    "songTitle": "AIR RAID FROM THA UNDAGROUND(L)",
+    "priority": 1,
+    "description": "トリルがほぼ割れる",
+    "patterns": [
+      {
+        "scratchSideText": "237",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-11",
     "songTitle": "Smashing Wedge(A)",
     "priority": 1,
     "description": "",
@@ -70,7 +168,7 @@
     ]
   },
   {
-    "id": "preset-scratch-5",
+    "id": "preset-scratch-12",
     "songTitle": "Smashing Wedge(A)",
     "priority": 1,
     "description": "",
@@ -84,7 +182,7 @@
     ]
   },
   {
-    "id": "preset-scratch-6",
+    "id": "preset-scratch-13",
     "songTitle": "狂イ咲ケ焔ノ華(A)",
     "priority": 1,
     "description": "",
@@ -98,7 +196,7 @@
     ]
   },
   {
-    "id": "preset-scratch-7",
+    "id": "preset-scratch-14",
     "songTitle": "狂イ咲ケ焔ノ華(A)",
     "priority": 1,
     "description": "",
@@ -112,7 +210,7 @@
     ]
   },
   {
-    "id": "preset-scratch-8",
+    "id": "preset-scratch-15",
     "songTitle": "Beyond Evolution(A)",
     "priority": 1,
     "description": "",
@@ -126,13 +224,13 @@
     ]
   },
   {
-    "id": "preset-scratch-9",
-    "songTitle": "rage against usual(A)",
+    "id": "preset-scratch-16",
+    "songTitle": "Somnidiscotheque(A)",
     "priority": 1,
     "description": "",
     "patterns": [
       {
-        "scratchSideText": "147",
+        "scratchSideText": "123",
         "isScratchSideUnordered": true,
         "nonScratchSideText": "****",
         "isNonScratchSideUnordered": true
@@ -140,13 +238,13 @@
     ]
   },
   {
-    "id": "preset-scratch-10",
-    "songTitle": "TECHNOPHOBIA(A)",
+    "id": "preset-scratch-17",
+    "songTitle": "Somnidiscotheque(A)",
     "priority": 1,
     "description": "",
     "patterns": [
       {
-        "scratchSideText": "147",
+        "scratchSideText": "567",
         "isScratchSideUnordered": true,
         "nonScratchSideText": "****",
         "isNonScratchSideUnordered": true
@@ -154,49 +252,7 @@
     ]
   },
   {
-    "id": "preset-scratch-11",
-    "songTitle": "Inferno of Fomalhaut(A)",
-    "priority": 1,
-    "description": "",
-    "patterns": [
-      {
-        "scratchSideText": "345",
-        "isScratchSideUnordered": true,
-        "nonScratchSideText": "****",
-        "isNonScratchSideUnordered": true
-      }
-    ]
-  },
-  {
-    "id": "preset-scratch-12",
-    "songTitle": "3y3s(A)",
-    "priority": 1,
-    "description": "",
-    "patterns": [
-      {
-        "scratchSideText": "137",
-        "isScratchSideUnordered": true,
-        "nonScratchSideText": "****",
-        "isNonScratchSideUnordered": true
-      }
-    ]
-  },
-  {
-    "id": "preset-scratch-13",
-    "songTitle": "3y3s(A)",
-    "priority": 1,
-    "description": "",
-    "patterns": [
-      {
-        "scratchSideText": "347",
-        "isScratchSideUnordered": true,
-        "nonScratchSideText": "****",
-        "isNonScratchSideUnordered": true
-      }
-    ]
-  },
-  {
-    "id": "preset-scratch-14",
+    "id": "preset-scratch-18",
     "songTitle": "n/a(A)",
     "priority": 1,
     "description": "",
@@ -210,13 +266,153 @@
     ]
   },
   {
-    "id": "preset-scratch-15",
+    "id": "preset-scratch-19",
     "songTitle": "KAMAITACHI(L)",
     "priority": 1,
     "description": "",
     "patterns": [
       {
         "scratchSideText": "136",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-20",
+    "songTitle": "3y3s(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "137",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-21",
+    "songTitle": "3y3s(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "347",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-22",
+    "songTitle": "rage against usual(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-23",
+    "songTitle": "TECHNOPHOBIA(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-24",
+    "songTitle": "KAISER PHOENIX(L)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "147",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-25",
+    "songTitle": "AKASHIC BREAK(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "157",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-26",
+    "songTitle": "卑弥呼(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-27",
+    "songTitle": "ディスコルディア(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-28",
+    "songTitle": "Go Beyond!!(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-scratch-29",
+    "songTitle": "Go Ahead!!(A)",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
         "isScratchSideUnordered": true,
         "nonScratchSideText": "****",
         "isNonScratchSideUnordered": true
