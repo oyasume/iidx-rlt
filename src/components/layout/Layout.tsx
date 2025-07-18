@@ -2,7 +2,7 @@ import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+// import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import InfoIcon from "@mui/icons-material/Info";
 
 import { AppHeader } from "./AppHeader";
@@ -15,7 +15,7 @@ import { useSnackbar } from "../../contexts/SnackbarContext";
 const navItems: AppNavItem[] = [
   { path: "/import", label: "インポート", icon: <VerticalAlignBottomIcon /> },
   { path: "/tickets", label: "チケット一覧", icon: <ListAltIcon /> },
-  { path: "/manage", label: "当たり配置管理", icon: <ManageSearchIcon /> },
+  // { path: "/manage", label: "当たり配置管理", icon: <ManageSearchIcon /> },
   { path: "/about", label: "About", icon: <InfoIcon /> },
 ];
 export const Layout: React.FC = () => {
