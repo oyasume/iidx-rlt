@@ -22,7 +22,7 @@ export const TicketRow: React.FC<{
           <Typography variant="body1" component="span" sx={{ mr: 1 }}>
             {ticket.laneText}
           </Typography>
-          <Tooltip title="Textageで確認" placement="right">
+          <Tooltip title="Textageで確認" placement="right" disableHoverListener={!selectedSong}>
             <span>
               <IconButton
                 size="small"
@@ -32,7 +32,7 @@ export const TicketRow: React.FC<{
                 }}
                 disabled={!selectedSong}
                 sx={{ visibility: selectedSong ? "visible" : "hidden" }}
-                aria-label={`Textageで確認`}
+                aria-label="Textageで確認"
                 color={selectedSong ? "primary" : "inherit"}
               >
                 <LaunchIcon fontSize="small" />
