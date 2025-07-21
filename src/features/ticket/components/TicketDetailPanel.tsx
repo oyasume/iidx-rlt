@@ -1,15 +1,4 @@
-import {
-  Drawer,
-  Box,
-  Typography,
-  IconButton,
-  useMediaQuery,
-  useTheme,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-} from "@mui/material";
+import { Box, Typography, IconButton, List, ListItem, ListItemText, Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LaunchIcon from "@mui/icons-material/Launch";
 import { Ticket } from "../../../types";
@@ -28,59 +17,47 @@ interface TicketDetailPanelProps {
 }
 
 export const TicketDetailPanel = ({ ticket, atariInfo, onClose }: TicketDetailPanelProps) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const handleOpenTextage = (url: string) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  return (
-    <Drawer
-      anchor={isMobile ? "bottom" : "right"}
-      open={!!ticket}
-      onClose={onClose}
-      closeAfterTransition={true}
-      slotProps={{ paper: { sx: { width: isMobile ? "100%" : 400, height: isMobile ? "60vh" : "auto" } } }}
-    >
-      <Box sx={{ p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
-        {ticket && (
-          <>
-            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-              <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                {ticket.laneText}
-              </Typography>
-              <IconButton onClick={onClose} aria-label="閉じる">
-                <CloseIcon />
-              </IconButton>
-            </Box>
-            <Divider sx={{ mb: 2 }} />
+  if (!ticket) return null;
 
-            {atariInfo && atariInfo.length > 0 ? (
-              <Box>
-                <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
-                  当たり配置候補
-                </Typography>
-                <List>
-                  {atariInfo.map((info) => (
-                    <ListItem key={info.id} disablePadding>
-                      <ListItemText primary={info.songTitle} secondary={info.description} />
-                      <IconButton
-                        aria-label={`「${info.songTitle}」をTextageで確認`}
-                        onClick={() => handleOpenTextage(info.textageUrl)}
-                      >
-                        <LaunchIcon />
-                      </IconButton>
-                    </ListItem>
-                  ))}
-                </List>
+  return (
+    <Box sx={{ p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
+      {
+        <>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              <Box component="span">{ticket.laneText}</Box>
+              <Box component="span" sx={{ color: "text.secondary", ml: 1, fontSize: "0.875rem" }}>
+                の当たり配置候補
               </Box>
-            ) : (
-              <Typography>このチケットに該当する当たり配置ルールはありません。</Typography>
-            )}
-          </>
-        )}
-      </Box>
-    </Drawer>
+            </Typography>
+            <IconButton onClick={onClose} aria-label="閉じる">
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <Divider sx={{ mb: 1 }} />
+          {atariInfo && atariInfo.length > 0 ? (
+            <List>
+              {atariInfo.map((info) => (
+                <ListItem key={info.id} disablePadding>
+                  <ListItemText primary={info.songTitle} secondary={info.description} />
+                  <IconButton
+                    aria-label={`${info.songTitle}をTextageで確認`}
+                    onClick={() => handleOpenTextage(info.textageUrl)}
+                  >
+                    <LaunchIcon />
+                  </IconButton>
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            <Typography>このチケットに該当する当たり配置ルールはありません。</Typography>
+          )}
+        </>
+      }
+    </Box>
   );
 };

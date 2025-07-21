@@ -1,6 +1,18 @@
-import { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { FormProvider } from "react-hook-form";
-import { Stack, Divider, Box, Button, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import {
+  Stack,
+  Divider,
+  Box,
+  Button,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+  useTheme,
+  useMediaQuery,
+  Drawer,
+  Paper,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { usePersistentTickets } from "../hooks/usePersistentTickets";
@@ -24,7 +36,7 @@ interface TicketViewPageProps {
   isSample?: boolean;
 }
 
-const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
+export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
   const { tickets: persistentTickets, isLoading: isTicketsLoading } = usePersistentTickets(storage);
   const tickets = isSample ? sampleTickets : persistentTickets;
   const isLoadingTickets = isSample ? false : isTicketsLoading;
@@ -41,19 +53,20 @@ const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const atariInfoForPanel = useMemo((): AtariInfoForPanel[] => {
     if (!detailTicket) return [];
     const rules = atariMatcher.get(detailTicket.laneText);
     if (!rules) return [];
     return rules
-      .map((rule) => {
-        return {
-          id: rule.id,
-          songTitle: rule.songTitle,
-          description: rule.description,
-          textageUrl: makeTextageUrl(rule.textageURL, settings.playSide, detailTicket.laneText),
-        };
-      })
+      .map((rule) => ({
+        id: rule.id,
+        songTitle: rule.songTitle,
+        description: rule.description,
+        textageUrl: makeTextageUrl(rule.textageURL, settings.playSide, detailTicket.laneText),
+      }))
       .filter((info): info is AtariInfoForPanel => info !== null);
   }, [detailTicket, atariMatcher, settings.playSide]);
 
@@ -71,6 +84,10 @@ const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
     if (newPlaySide !== null) {
       updatePlaySide(newPlaySide);
     }
+  };
+
+  const handleCloseDetail = () => {
+    setDetailTicket(null);
   };
 
   const isLoading = isLoadingTickets || isSongDataLoading || isAtariRulesLoading;
@@ -96,7 +113,7 @@ const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
         <Divider />
         <TextageForm songs={songs} selectedSong={selectedSong} onSongSelect={setSelectedSong} />
         <Divider />
-        {tickets.length === 0 ? (
+        {tickets.length === 0 && !isSample ? (
           <Box>
             <Typography variant="body1">チケットがありません</Typography>
             <Typography color="text.secondary">
@@ -117,11 +134,42 @@ const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
           />
         )}
       </Stack>
-      <TicketDetailPanel ticket={detailTicket} atariInfo={atariInfoForPanel} onClose={() => setDetailTicket(null)} />
+      {isMobile ? (
+        <Drawer
+          anchor="bottom"
+          open={!!detailTicket}
+          onClose={handleCloseDetail}
+          slotProps={{
+            paper: {
+              sx: {
+                height: "auto",
+                maxHeight: "80vh",
+                overflowY: "auto",
+                borderTopLeftRadius: 12,
+                borderTopRightRadius: 12,
+              },
+            },
+          }}
+        >
+          <TicketDetailPanel ticket={detailTicket} atariInfo={atariInfoForPanel} onClose={handleCloseDetail} />
+        </Drawer>
+      ) : (
+        detailTicket && (
+          <Paper
+            sx={{
+              position: "fixed",
+              bottom: 32,
+              right: 32,
+              zIndex: 1300,
+              width: 400,
+              borderRadius: 3,
+              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.3)",
+            }}
+          >
+            <TicketDetailPanel ticket={detailTicket} atariInfo={atariInfoForPanel} onClose={handleCloseDetail} />
+          </Paper>
+        )
+      )}
     </FormProvider>
   );
-};
-
-export const TicketViewPage = ({ isSample = false }: TicketViewPageProps) => {
-  return <TicketViewPageContent isSample={isSample} />;
 };
