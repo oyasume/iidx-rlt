@@ -139,8 +139,7 @@ dist
 storybook-static
 
 # custom
-dist-web
-dist-extension
+stats.html
 public/data/songs.json
 public/data/atari-rules.json
 public/data/version.json

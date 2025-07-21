@@ -2,6 +2,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import checker from "vite-plugin-checker";
+import { visualizer } from "rollup-plugin-visualizer";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig(() => {
@@ -12,11 +13,12 @@ export default defineConfig(() => {
       checker({
         typescript: true,
       }),
+      visualizer(),
       VitePWA({
         registerType: "autoUpdate",
         manifest: {
-          name: "iidx-rlt",
-          short_name: "iidx-rlt",
+          name: "RLT Manager",
+          short_name: "RLT Manager",
           description: "beatmania IIDXのランダムレーンチケット活用支援ツール",
           start_url: "/iidx-rlt/",
           scope: "/iidx-rlt/",
