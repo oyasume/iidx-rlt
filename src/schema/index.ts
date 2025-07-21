@@ -25,6 +25,7 @@ export type SearchFormValues = z.infer<typeof searchFormSchema>;
 export const atariRuleSchema = z.object({
   id: z.string(),
   songTitle: z.string(),
+  textageURL: z.string(),
   priority: z.number(),
   description: z.string(),
   patterns: z.array(searchFormSchema),

@@ -7,6 +7,7 @@ const mockAtariRules: AtariRule[] = [
   {
     id: "preset-rage-1",
     songTitle: "rage against usual(A)",
+    textageURL: "",
     priority: 1,
     description: "",
     patterns: [
@@ -21,6 +22,7 @@ const mockAtariRules: AtariRule[] = [
   {
     id: "preset-mei-1",
     songTitle: "冥(A)",
+    textageURL: "",
     priority: 1,
     description: "",
     patterns: [
@@ -35,6 +37,7 @@ const mockAtariRules: AtariRule[] = [
   {
     id: "preset-other-song-1",
     songTitle: "Another Song(A)",
+    textageURL: "",
     priority: 1,
     description: "",
     patterns: [

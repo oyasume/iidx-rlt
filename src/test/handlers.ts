@@ -5,6 +5,7 @@ const MOCK_ATARI_RULES = [
   {
     id: "test-id-1",
     songTitle: "rage against usual",
+    textageURL: "",
     priority: 1,
     description: "",
     patterns: [

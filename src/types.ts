@@ -21,6 +21,7 @@ export interface SongInfo {
 export interface AtariRule {
   id: string;
   songTitle: string;
+  textageURL: string;
   priority: number;
   description: string;
   patterns: SearchPattern[];

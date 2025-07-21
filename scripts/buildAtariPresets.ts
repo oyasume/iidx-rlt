@@ -7,11 +7,10 @@ import { AtariRule, SearchPattern } from "../src/types";
 
 const SONG_RULES_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvdia8KZZiRbJ8WmaaFw64HixFWuuYP3HuxYzqfAYKvDso8ITI0OWITchKiv04T57uD2vk0bm9sMFx/pub?gid=0&single=true&output=csv";
-const SCRATCH_SIDE_RULES_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvdia8KZZiRbJ8WmaaFw64HixFWuuYP3HuxYzqfAYKvDso8ITI0OWITchKiv04T57uD2vk0bm9sMFx/pub?gid=1857526366&single=true&output=csv";
 
 type SongRuleCsvRow = {
   曲名: string;
+  URL: string;
   説明?: string;
   優先度: string;
   皿側テキスト: string;
@@ -48,6 +47,7 @@ const processSongRules = (csvData: SongRuleCsvRow[]): AtariRule[] => {
   const validRows = csvData.filter(
     (row) =>
       isValidString(row.曲名) &&
+      isValidString(row.URL) &&
       isValidString(row.優先度) &&
       isValidString(row.皿側テキスト) &&
       isValidString(row.非皿側テキスト)
@@ -62,8 +62,9 @@ const processSongRules = (csvData: SongRuleCsvRow[]): AtariRule[] => {
     };
 
     return {
-      id: `preset-song-${i}`,
+      id: `preset-${i}`,
       songTitle: row.曲名,
+      textageURL: row.URL,
       priority: parseInt(row.優先度, 10),
       description: row.説明 || "",
       patterns: [searchPattern],
@@ -71,60 +72,13 @@ const processSongRules = (csvData: SongRuleCsvRow[]): AtariRule[] => {
   });
 };
 
-const processScratchSideRules = (csvData: string[][], startIndex: number): AtariRule[] => {
-  const rules: AtariRule[] = [];
-  const header = csvData[0];
-  const scratchSidePatterns = header.slice(1);
-  const songRows = csvData.slice(1);
-
-  let ruleCounter = 0;
-  for (const row of songRows) {
-    const songTitle = row[0];
-    if (typeof songTitle !== "string" || !songTitle.trim()) continue;
-
-    for (let i = 0; i < scratchSidePatterns.length; i++) {
-      const patternText = scratchSidePatterns[i];
-      const priorityStr = row[i + 1];
-
-      if (typeof priorityStr === "string" && priorityStr.trim() !== "") {
-        const searchPattern: SearchPattern = {
-          scratchSideText: patternText,
-          isScratchSideUnordered: true,
-          nonScratchSideText: "****",
-          isNonScratchSideUnordered: true,
-        };
-
-        rules.push({
-          id: `preset-scratch-${startIndex + ruleCounter++}`,
-          songTitle,
-          priority: parseInt(priorityStr, 10),
-          description: "",
-          patterns: [searchPattern],
-        });
-      }
-    }
-  }
-  return rules;
-};
-
 const main = async () => {
-  const [songRulesData, scratchSideData] = await Promise.all([
-    fetchAndParseCsv<SongRuleCsvRow>(SONG_RULES_CSV_URL, {
-      header: true,
-      skipEmptyLines: true,
-    }),
-    fetchAndParseCsv<string[]>(SCRATCH_SIDE_RULES_CSV_URL, {
-      skipEmptyLines: true,
-    }),
-  ]);
-
-  const processedSongRules = processSongRules(songRulesData);
-
-  const processedScratchSideRules = processScratchSideRules(scratchSideData, processedSongRules.length);
-
-  const finalRules: AtariRule[] = [...processedSongRules, ...processedScratchSideRules];
+  const songRulesData = await fetchAndParseCsv<SongRuleCsvRow>(SONG_RULES_CSV_URL, {
+    header: true,
+    skipEmptyLines: true,
+  });
+  const finalRules = processSongRules(songRulesData);
   console.log(`Total rules built: ${finalRules.length}`);
-
   await writeJsonFile(finalRules, "../public/data/atari-rules.json");
 };
 

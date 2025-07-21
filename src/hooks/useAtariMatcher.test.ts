@@ -13,6 +13,7 @@ const tickets: Ticket[] = [
 const rageRule: AtariRule = {
   id: "rage-rule",
   songTitle: "rage against usual(A)",
+  textageURL: "",
   priority: 1,
   description: "",
   patterns: [
@@ -28,6 +29,7 @@ const rageRule: AtariRule = {
 const meiRule: AtariRule = {
   id: "mei-rule",
   songTitle: "冥(A)",
+  textageURL: "",
   priority: 1,
   description: "縦連割れ",
   patterns: [
@@ -49,6 +51,7 @@ const meiRule: AtariRule = {
 const meiRule2: AtariRule = {
   id: "mei-rule-2",
   songTitle: "冥(A)",
+  textageURL: "",
   priority: 2,
   description: "冥当たり",
   patterns: [
