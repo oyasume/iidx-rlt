@@ -31,6 +31,7 @@ export const KeypadInput: React.FC<KeypadInputProps> = ({
       <FormLabel component="legend">{label}</FormLabel>
       <OutlinedInput
         {...register(name)}
+        placeholder={"*".repeat(length)}
         inputProps={{
           maxLength: length,
           inputMode: "tel",

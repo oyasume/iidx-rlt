@@ -8,10 +8,11 @@ import { Ticket, PlaySide } from "../types";
 export const useTicketSearch = (tickets: Ticket[], playSide: PlaySide) => {
   const methods = useForm<SearchFormValues>({
     resolver: zodResolver(searchFormSchema),
+    mode: "onChange",
     defaultValues: {
-      scratchSideText: "***",
+      scratchSideText: "",
       isScratchSideUnordered: true,
-      nonScratchSideText: "****",
+      nonScratchSideText: "",
       isNonScratchSideUnordered: true,
     },
   });
@@ -19,7 +20,12 @@ export const useTicketSearch = (tickets: Ticket[], playSide: PlaySide) => {
   const formValues = methods.watch();
 
   const filteredTickets = useMemo(() => {
-    return filterTickets(tickets, formValues, playSide);
+    const paddedFormValues = {
+      ...formValues,
+      scratchSideText: formValues.scratchSideText.padEnd(3, "*"),
+      nonScratchSideText: formValues.nonScratchSideText.padEnd(4, "*"),
+    };
+    return filterTickets(tickets, paddedFormValues, playSide);
   }, [tickets, formValues, playSide]);
 
   return {

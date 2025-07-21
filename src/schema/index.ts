@@ -9,13 +9,13 @@ const validateDuplicate = (val: string) => {
 export const searchFormSchema = z.object({
   scratchSideText: z
     .string()
-    .length(3, "3文字で指定してください")
+    .max(3, "3文字以内で入力してください")
     .regex(/^[1-7*]*$/, "指定できるのは1-7と*だけです")
     .refine(validateDuplicate, { message: "重複している鍵盤があります" }),
   isScratchSideUnordered: z.boolean(),
   nonScratchSideText: z
     .string()
-    .length(4, "4文字で指定してください")
+    .max(4, "4文字以内で入力してください")
     .regex(/^[1-7*]*$/, "指定できるのは1-7と*だけです")
     .refine(validateDuplicate, { message: "重複している鍵盤があります" }),
   isNonScratchSideUnordered: z.boolean(),
