@@ -9,7 +9,6 @@ import { AboutPage } from "../pages/AboutPage";
 import { AtariManagementPage } from "../pages/AtariManagementPage";
 import { TicketViewPage } from "../pages/TicketViewPage";
 import { TicketImporterPage } from "../pages/TicketImporterPage";
-import { SampleTicketViewPage } from "../pages/SampleTicketViewPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 
 const storage = new LocalStorage();
@@ -32,7 +31,7 @@ export const WebApp: React.FC = () => {
               <Route path="about" element={<AboutPage />} />
               <Route path="import" element={<TicketImporterPage />} />
               <Route path="manage" element={<AtariManagementPage />} />
-              <Route path="sample" element={<SampleTicketViewPage />} />
+              <Route path="sample" element={<TicketViewPage isSample={true} />} />
               <Route path="tickets" element={<TicketViewPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>

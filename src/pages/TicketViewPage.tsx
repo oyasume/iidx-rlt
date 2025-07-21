@@ -13,20 +13,31 @@ import { TicketDetailPanel, AtariInfoForPanel } from "../features/ticket/compone
 import { TicketDetailProvider, useTicketDetail } from "../features/ticket/contexts/TicketDetailContext";
 import { useAtariRules } from "../hooks/useAtariRules";
 import { useAtariMatcher } from "../hooks/useAtariMatcher";
+import { sampleTickets } from "../data";
 
 const storage = new LocalStorage();
 
-const TicketViewPageContent = () => {
-  const { tickets, isLoading: isTicketsLoading } = usePersistentTickets(storage);
+interface TicketViewPageProps {
+  isSample?: boolean;
+}
+
+const TicketViewPageContent: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
   const settings = useAppSettings();
+  // チケット
+  const { tickets: storageTickets, isLoading: isStorageTicketsLoading } = usePersistentTickets(storage);
+  const tickets = isSample ? sampleTickets : storageTickets;
+  const isTicketsLoading = isSample ? false : isStorageTicketsLoading;
   const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
+  // 曲
   const { songs, isLoading: isSongDataLoading } = useSongs({
     type: "url",
     path: `${import.meta.env.BASE_URL}data/songs.json`,
   });
+  const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
+  // 当たり定義
   const { allRules, uniquePatterns, isLoading: isAtariRulesLoading } = useAtariRules();
   const atariMatcher = useAtariMatcher(tickets, allRules, uniquePatterns, settings.playSide);
-  const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
+  // チケット選択
   const { detailTicket, setDetailTicket } = useTicketDetail();
 
   const atariInfoForPanel = useMemo((): AtariInfoForPanel[] => {
@@ -79,10 +90,10 @@ const TicketViewPageContent = () => {
   );
 };
 
-export const TicketViewPage = () => {
+export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample }) => {
   return (
     <TicketDetailProvider>
-      <TicketViewPageContent />
+      <TicketViewPageContent isSample={isSample} />
     </TicketDetailProvider>
   );
 };
