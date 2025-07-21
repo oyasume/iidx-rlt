@@ -43,26 +43,24 @@ const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
 
   const atariInfoForPanel = useMemo((): AtariInfoForPanel[] => {
     if (!detailTicket) return [];
-    const rules = atariMatcher.get(detailTicket.laneText) || [];
-    const songsInRules = songs.filter((s) => rules.some((r) => s.title === r.songTitle));
+    const rules = atariMatcher.get(detailTicket.laneText);
+    if (!rules) return [];
     return rules
       .map((rule) => {
-        const song = songsInRules.find((s) => s.title === rule.songTitle);
-        if (!song) return null;
         return {
           id: rule.id,
           songTitle: rule.songTitle,
           description: rule.description,
-          textageUrl: makeTextageUrl(song, settings.playSide, detailTicket.laneText),
+          textageUrl: makeTextageUrl(rule.textageURL, settings.playSide, detailTicket.laneText),
         };
       })
       .filter((info): info is AtariInfoForPanel => info !== null);
-  }, [detailTicket, atariMatcher, songs, settings.playSide]);
+  }, [detailTicket, atariMatcher, settings.playSide]);
 
   const handleOpenTextage = useCallback(
     (laneText: string) => {
       if (selectedSong) {
-        const url = makeTextageUrl(selectedSong, settings.playSide, laneText);
+        const url = makeTextageUrl(selectedSong.url, settings.playSide, laneText);
         window.open(url, "_blank", "noopener,noreferrer");
       }
     },
