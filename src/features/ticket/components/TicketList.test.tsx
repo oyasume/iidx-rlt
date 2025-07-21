@@ -12,7 +12,9 @@ vi.mock("./TicketRow", () => ({
 
 describe("TicketList", () => {
   it("チケットが空のときは何も表示しない", () => {
-    const { container } = render(<TicketList tickets={[]} selectedSong={null} onOpenTextage={() => {}} />);
+    const { container } = render(
+      <TicketList tickets={[]} selectedSong={null} onOpenTextage={() => {}} onRowClick={() => {}} />
+    );
 
     expect(container.firstChild).toBeNull();
   });
@@ -22,7 +24,7 @@ describe("TicketList", () => {
       { laneText: "1234567", expiration: "" },
       { laneText: "7654321", expiration: "" },
     ];
-    render(<TicketList tickets={tickets} selectedSong={null} onOpenTextage={() => {}} />);
+    render(<TicketList tickets={tickets} selectedSong={null} onOpenTextage={() => {}} onRowClick={() => {}} />);
 
     expect(screen.getByText("チケット")).toBeInTheDocument();
     expect(screen.getByText("有効期限")).toBeInTheDocument();

@@ -9,12 +9,11 @@ import { useTicketSearch } from "../hooks/useTicketSearch";
 import { TextageForm } from "../features/ticket/components/TextageForm";
 import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
 import { TicketList } from "../features/ticket/components/TicketList";
-import { SongInfo, PlaySide } from "../types";
+import { SongInfo, PlaySide, Ticket } from "../types";
 import { LocalStorage } from "../storage/localStorage";
 import { useAppSettings, useAppSettingsDispatch } from "../contexts/AppSettingsContext";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
 import { TicketDetailPanel, AtariInfoForPanel } from "../features/ticket/components/TicketDetailPanel";
-import { TicketDetailProvider, useTicketDetail } from "../features/ticket/contexts/TicketDetailContext";
 import { useAtariRules } from "../hooks/useAtariRules";
 import { useAtariMatcher } from "../hooks/useAtariMatcher";
 import { sampleTickets } from "../data";
@@ -40,7 +39,7 @@ const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
   const { allRules, uniquePatterns, isLoading: isAtariRulesLoading } = useAtariRules();
   const atariMatcher = useAtariMatcher(tickets, allRules, uniquePatterns, settings.playSide);
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
-  const { detailTicket, setDetailTicket } = useTicketDetail();
+  const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
 
   const atariInfoForPanel = useMemo((): AtariInfoForPanel[] => {
     if (!detailTicket) return [];
@@ -112,7 +111,12 @@ const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
         ) : filteredTickets.length === 0 ? (
           <Typography sx={{ color: "text.secondary" }}>検索条件に一致するチケットはありません。</Typography>
         ) : (
-          <TicketList tickets={filteredTickets} selectedSong={selectedSong} onOpenTextage={handleOpenTextage} />
+          <TicketList
+            tickets={filteredTickets}
+            selectedSong={selectedSong}
+            onOpenTextage={handleOpenTextage}
+            onRowClick={setDetailTicket}
+          />
         )}
       </Stack>
       <TicketDetailPanel ticket={detailTicket} atariInfo={atariInfoForPanel} onClose={() => setDetailTicket(null)} />
@@ -121,9 +125,5 @@ const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
 };
 
 export const TicketViewPage = ({ isSample = false }: TicketViewPageProps) => {
-  return (
-    <TicketDetailProvider>
-      <TicketViewPageContent isSample={isSample} />
-    </TicketDetailProvider>
-  );
+  return <TicketViewPageContent isSample={isSample} />;
 };

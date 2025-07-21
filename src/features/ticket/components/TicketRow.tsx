@@ -1,20 +1,17 @@
 import { TableRow, TableCell, Box, Typography, Tooltip, IconButton } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
-
-import { Ticket, SongInfo } from "types";
-import { useTicketDetail } from "../contexts/TicketDetailContext";
+import { Ticket, SongInfo } from "../../../types";
 
 export const TicketRow: React.FC<{
   ticket: Ticket;
   selectedSong: SongInfo | null;
   onOpenTextage: (_laneText: string) => void;
-}> = ({ ticket, selectedSong, onOpenTextage }) => {
-  const { setDetailTicket } = useTicketDetail();
-
+  onRowClick: (ticket: Ticket) => void;
+}> = ({ ticket, selectedSong, onOpenTextage, onRowClick }) => {
   return (
     <TableRow
       key={ticket.laneText}
-      onClick={() => setDetailTicket(ticket)}
+      onClick={() => onRowClick(ticket)}
       sx={{ "&:hover": { cursor: "pointer", backgroundColor: "action.hover" } }}
     >
       <TableCell component="th" scope="row">

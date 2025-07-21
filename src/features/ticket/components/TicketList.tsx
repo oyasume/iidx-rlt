@@ -7,9 +7,10 @@ interface TicketListProps {
   tickets: Ticket[];
   selectedSong: SongInfo | null;
   onOpenTextage: (_laneText: string) => void;
+  onRowClick: (ticket: Ticket) => void;
 }
 
-const TicketListComponent: React.FC<TicketListProps> = ({ tickets, selectedSong, onOpenTextage }) => {
+const TicketListComponent: React.FC<TicketListProps> = ({ tickets, selectedSong, onOpenTextage, onRowClick }) => {
   if (tickets.length === 0) {
     return null;
   }
@@ -29,6 +30,7 @@ const TicketListComponent: React.FC<TicketListProps> = ({ tickets, selectedSong,
               ticket={t}
               selectedSong={selectedSong}
               onOpenTextage={onOpenTextage}
+              onRowClick={onRowClick}
               key={`${t.laneText}-${index}`}
             />
           ))}

@@ -4,7 +4,6 @@ import { describe, it, expect, vi } from "vitest";
 import { Table, TableBody } from "@mui/material";
 import { TicketRow } from "./TicketRow";
 import { SongInfo, Ticket } from "types";
-import * as TicketDetailContext from "../contexts/TicketDetailContext";
 
 const mockTicket: Ticket = { laneText: "1234567", expiration: "2999/12/31" };
 const mockSelectedSong: SongInfo = {
@@ -12,12 +11,6 @@ const mockSelectedSong: SongInfo = {
   url: "",
   level: 12,
 };
-
-const mockSetDetailTicket = vi.fn();
-vi.spyOn(TicketDetailContext, "useTicketDetail").mockReturnValue({
-  detailTicket: null,
-  setDetailTicket: mockSetDetailTicket,
-});
 
 const tableWrapper = ({ children }: { children: React.ReactNode }) => (
   <Table>
@@ -27,22 +20,29 @@ const tableWrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe("TicketRow", () => {
   it("チケット情報が正しく表示されること", () => {
-    render(<TicketRow ticket={mockTicket} selectedSong={null} onOpenTextage={() => {}} />, { wrapper: tableWrapper });
+    render(<TicketRow ticket={mockTicket} selectedSong={null} onOpenTextage={() => {}} onRowClick={() => {}} />, {
+      wrapper: tableWrapper,
+    });
 
     expect(screen.getByText(mockTicket.laneText)).toBeInTheDocument();
     expect(screen.getByText(mockTicket.expiration)).toBeInTheDocument();
   });
 
   it("楽曲が選択されていない場合、ボタンが見えなくなること", () => {
-    render(<TicketRow ticket={mockTicket} selectedSong={null} onOpenTextage={() => {}} />, { wrapper: tableWrapper });
+    render(<TicketRow ticket={mockTicket} selectedSong={null} onOpenTextage={() => {}} onRowClick={() => {}} />, {
+      wrapper: tableWrapper,
+    });
 
     expect(screen.queryByRole("button")).toBeNull();
   });
 
   it("楽曲が選択されている場合、ボタンは有効になること", () => {
-    render(<TicketRow ticket={mockTicket} selectedSong={mockSelectedSong} onOpenTextage={() => {}} />, {
-      wrapper: tableWrapper,
-    });
+    render(
+      <TicketRow ticket={mockTicket} selectedSong={mockSelectedSong} onOpenTextage={() => {}} onRowClick={() => {}} />,
+      {
+        wrapper: tableWrapper,
+      }
+    );
 
     const button = screen.getByRole("button");
     expect(button).toBeEnabled();
@@ -51,21 +51,32 @@ describe("TicketRow", () => {
   it("ボタンをクリックするとonOpenTextageが呼ばれること", async () => {
     const user = userEvent.setup();
     const onOpenTextageMock = vi.fn();
-    render(<TicketRow ticket={mockTicket} selectedSong={mockSelectedSong} onOpenTextage={onOpenTextageMock} />, {
-      wrapper: tableWrapper,
-    });
+    render(
+      <TicketRow
+        ticket={mockTicket}
+        selectedSong={mockSelectedSong}
+        onOpenTextage={onOpenTextageMock}
+        onRowClick={() => {}}
+      />,
+      {
+        wrapper: tableWrapper,
+      }
+    );
 
     await user.click(screen.getByRole("button"));
     expect(onOpenTextageMock).toHaveBeenCalledWith(mockTicket.laneText);
   });
 
-  it("行をクリックするとsetDetailTicketが呼ばれること", async () => {
+  it("行をクリックするとonRowClickが呼ばれること", async () => {
     const user = userEvent.setup();
-    render(<TicketRow ticket={mockTicket} selectedSong={null} onOpenTextage={() => {}} />, { wrapper: tableWrapper });
+    const onRowClickMock = vi.fn();
+    render(<TicketRow ticket={mockTicket} selectedSong={null} onOpenTextage={() => {}} onRowClick={onRowClickMock} />, {
+      wrapper: tableWrapper,
+    });
 
     await user.click(screen.getByText(mockTicket.laneText));
 
-    expect(mockSetDetailTicket).toHaveBeenCalledTimes(1);
-    expect(mockSetDetailTicket).toHaveBeenCalledWith(mockTicket);
+    expect(onRowClickMock).toHaveBeenCalledTimes(1);
+    expect(onRowClickMock).toHaveBeenCalledWith(mockTicket);
   });
 });
