@@ -1,8 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, beforeAll, afterAll, afterEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { WebApp } from "./WebApp";
 import * as AppSettingsHook from "../hooks/useAppSettings";
+import { server } from "../test/server";
+
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 const useAppSettingsSpy = vi.spyOn(AppSettingsHook, "useAppSettings");
 
