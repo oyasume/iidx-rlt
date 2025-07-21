@@ -129,14 +129,25 @@ export const AboutPage = () => {
         本アプリケーションは個人で開発・公開している非公式のツールです。当該法人および関連企業とは一切関係ありません。
       </Typography>
       <Typography variant="caption" color="text.secondary" component="p">
-        本ツールの使用はご自身の責任でお願いいたします。使用により生じたいかなる損害についても、開発者は責任を負いかねます。
-      </Typography>
-      <Typography variant="caption" color="text.secondary" component="p">
-        譜面の表示には外部サイト「
+        譜面リンクには外部サイト「
         <Link href="https://textage.cc/" target="_blank" rel="noopener noreferrer">
           Textage
         </Link>
-        」様を参照しています。
+        」様を参照しています。サイトへ過度な負荷をかけないよう、リンクの利用は良識の範囲内でお願い致します。
+      </Typography>
+      <Typography variant="caption" color="text.secondary" component="p">
+        本アプリケーションの使用はご自身の責任でお願いいたします。使用により生じたいかなる損害についても、開発者は責任を負いかねます。
+      </Typography>
+      <Typography variant="caption" color="text.secondary" component="p">
+        本アプリケーションはオープンソースソフトウェアを利用しています。ライセンス情報は
+        <Link
+          href="https://github.com/oyasume/iidx-rlt/blob/main/THIRD_PARTY_NOTICES.txt"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          こちら
+        </Link>
+        をご覧ください。
       </Typography>
     </Box>
   );

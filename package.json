@@ -1,5 +1,6 @@
 {
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite",
@@ -11,7 +12,8 @@
     "build:presets": "tsx ./scripts/buildAtariPresets.ts && tsx ./scripts/generateVersion.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "license-check": "npx license-checker --production --markdown > THIRD_PARTY_NOTICES.txt"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -50,6 +52,7 @@
     "eslint-plugin-storybook": "^9.0.17",
     "eslint-plugin-vitest": "^0.5.4",
     "jsdom": "^26.1.0",
+    "license-checker": "^25.0.1",
     "msw": "^2.10.4",
     "papaparse": "^5.5.3",
     "prettier": "^3.6.2",
