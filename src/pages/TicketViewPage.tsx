@@ -1,13 +1,17 @@
 import { useCallback, useMemo, useState } from "react";
 import { FormProvider } from "react-hook-form";
+import { Stack, Divider, Box, Button, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import { usePersistentTickets } from "../hooks/usePersistentTickets";
 import { useSongs } from "../hooks/useSongs";
 import { useTicketSearch } from "../hooks/useTicketSearch";
-import { TicketView } from "../features/ticket/TicketView";
-import { SongInfo } from "../types";
+import { TextageForm } from "../features/ticket/components/TextageForm";
+import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
+import { TicketList } from "../features/ticket/components/TicketList";
+import { SongInfo, PlaySide } from "../types";
 import { LocalStorage } from "../storage/localStorage";
-import { useAppSettings } from "../contexts/AppSettingsContext";
+import { useAppSettings, useAppSettingsDispatch } from "../contexts/AppSettingsContext";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
 import { TicketDetailPanel, AtariInfoForPanel } from "../features/ticket/components/TicketDetailPanel";
 import { TicketDetailProvider, useTicketDetail } from "../features/ticket/contexts/TicketDetailContext";
@@ -21,29 +25,26 @@ interface TicketViewPageProps {
   isSample?: boolean;
 }
 
-const TicketViewPageContent: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
+const TicketViewPageContent = ({ isSample = false }: TicketViewPageProps) => {
+  const { tickets: persistentTickets, isLoading: isTicketsLoading } = usePersistentTickets(storage);
+  const tickets = isSample ? sampleTickets : persistentTickets;
+  const isLoadingTickets = isSample ? false : isTicketsLoading;
+
   const settings = useAppSettings();
-  // チケット
-  const { tickets: storageTickets, isLoading: isStorageTicketsLoading } = usePersistentTickets(storage);
-  const tickets = isSample ? sampleTickets : storageTickets;
-  const isTicketsLoading = isSample ? false : isStorageTicketsLoading;
+  const { updatePlaySide } = useAppSettingsDispatch();
   const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
-  // 曲
   const { songs, isLoading: isSongDataLoading } = useSongs({
     type: "url",
     path: `${import.meta.env.BASE_URL}data/songs.json`,
   });
-  const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
-  // 当たり定義
   const { allRules, uniquePatterns, isLoading: isAtariRulesLoading } = useAtariRules();
   const atariMatcher = useAtariMatcher(tickets, allRules, uniquePatterns, settings.playSide);
-  // チケット選択
+  const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
   const { detailTicket, setDetailTicket } = useTicketDetail();
 
   const atariInfoForPanel = useMemo((): AtariInfoForPanel[] => {
     if (!detailTicket) return [];
     const rules = atariMatcher.get(detailTicket.laneText) || [];
-    // ここら辺やりづらいのどうにかしたい
     const songsInRules = songs.filter((s) => rules.some((r) => s.title === r.songTitle));
     return rules
       .map((rule) => {
@@ -69,7 +70,13 @@ const TicketViewPageContent: React.FC<TicketViewPageProps> = ({ isSample = false
     [selectedSong, settings.playSide]
   );
 
-  const isLoading = isTicketsLoading || isSongDataLoading || isAtariRulesLoading;
+  const handlePlaySideToggle = (_event: React.MouseEvent<HTMLElement>, newPlaySide: PlaySide | null) => {
+    if (newPlaySide !== null) {
+      updatePlaySide(newPlaySide);
+    }
+  };
+
+  const isLoading = isLoadingTickets || isSongDataLoading || isAtariRulesLoading;
 
   if (isLoading) {
     return <div>データを読み込んでいます...</div>;
@@ -77,20 +84,43 @@ const TicketViewPageContent: React.FC<TicketViewPageProps> = ({ isSample = false
 
   return (
     <FormProvider {...methods}>
-      <TicketView
-        allTickets={tickets}
-        filteredTickets={filteredTickets}
-        songs={songs}
-        selectedSong={selectedSong}
-        onSongSelect={setSelectedSong}
-        onOpenTextage={handleOpenTextage}
-      />
+      <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+        <ToggleButtonGroup
+          size="large"
+          value={settings.playSide}
+          color="primary"
+          exclusive
+          onChange={handlePlaySideToggle}
+        >
+          <ToggleButton value="1P">1P</ToggleButton>
+          <ToggleButton value="2P">2P</ToggleButton>
+        </ToggleButtonGroup>
+        <TicketSearchForm />
+        <Divider />
+        <TextageForm songs={songs} selectedSong={selectedSong} onSongSelect={setSelectedSong} />
+        <Divider />
+        {tickets.length === 0 ? (
+          <Box>
+            <Typography variant="body1">チケットがありません</Typography>
+            <Typography color="text.secondary">
+              先にチケットをインポートするか、<Link to="/sample">サンプル</Link>でお試しください。
+            </Typography>
+            <Button component={Link} to="/import" variant="contained" sx={{ mt: 2 }}>
+              インポートページへ
+            </Button>
+          </Box>
+        ) : filteredTickets.length === 0 ? (
+          <Typography sx={{ color: "text.secondary" }}>検索条件に一致するチケットはありません。</Typography>
+        ) : (
+          <TicketList tickets={filteredTickets} selectedSong={selectedSong} onOpenTextage={handleOpenTextage} />
+        )}
+      </Stack>
       <TicketDetailPanel ticket={detailTicket} atariInfo={atariInfoForPanel} onClose={() => setDetailTicket(null)} />
     </FormProvider>
   );
 };
 
-export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample }) => {
+export const TicketViewPage = ({ isSample = false }: TicketViewPageProps) => {
   return (
     <TicketDetailProvider>
       <TicketViewPageContent isSample={isSample} />

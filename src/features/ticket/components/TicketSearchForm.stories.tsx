@@ -1,19 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ComponentProps } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { TicketSearchForm } from "./TicketSearchForm";
 import { searchFormSchema, SearchFormValues } from "../../../schema";
 import { AppSettingsContext } from "../../../contexts/AppSettingsContext";
-import { AppSettings, PlaySide } from "types";
-import { TicketView } from "../TicketView";
+import { AppSettings, PlaySide } from "../../../types";
 
-type TicketViewStoryProps = ComponentProps<typeof TicketView> & {
+type TicketSearchFormStoryProps = {
   playSide: PlaySide;
 };
 
-const meta: Meta<TicketViewStoryProps> = {
+const meta: Meta<TicketSearchFormStoryProps> = {
   title: "Component/TicketSearchForm",
   component: TicketSearchForm,
   tags: ["autodocs"],
@@ -53,12 +51,5 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     playSide: "1P",
-  },
-};
-
-export const PlaySide2P: Story = {
-  args: {
-    ...Default.args,
-    playSide: "2P",
   },
 };
