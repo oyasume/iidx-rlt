@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
+import ReactGA from "react-ga4";
 import { FormProvider } from "react-hook-form";
 import {
   Stack,
@@ -74,6 +75,11 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     (laneText: string) => {
       if (selectedSong) {
         const url = makeTextageUrl(selectedSong.url, settings.playSide, laneText);
+        ReactGA.event({
+          category: "Outbound Link",
+          action: "click_textage_link",
+          label: selectedSong.title,
+        });
         window.open(url, "_blank", "noopener,noreferrer");
       }
     },

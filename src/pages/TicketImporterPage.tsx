@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import ReactGA from "react-ga4";
 import { Box, Typography, Stepper, Step, StepLabel, StepContent } from "@mui/material";
+
 import { usePersistentTickets } from "../hooks/usePersistentTickets";
 import { useImporter } from "../features/import/hooks/useImporter";
 import { BookmarkletSection } from "../features/import/components/BookmarkletSection";
@@ -19,6 +21,11 @@ export const TicketImporterPage: React.FC = () => {
     if (state.status === "success") {
       setJsonText("");
       showSnackbar(`${state.importedCount}件のチケットをインポートしました。`, "success");
+      ReactGA.event({
+        category: "User",
+        action: "import_tickets_success",
+        value: state.importedCount,
+      });
     } else if (state.status === "error" && state.error) {
       showSnackbar(state.error, "error");
     }

@@ -73,6 +73,7 @@
 [picocolors@1.1.1](https://github.com/alexeyraspopov/picocolors) - ISC
 [prop-types@15.8.1](https://github.com/facebook/prop-types) - MIT
 [react-dom@19.1.0](https://github.com/facebook/react) - MIT
+[react-ga4@2.1.0](https://github.com/codler/react-ga4) - MIT
 [react-hook-form@7.60.0](https://github.com/react-hook-form/react-hook-form) - MIT
 [react-is@16.13.1](https://github.com/facebook/react) - MIT
 [react-is@19.1.0](https://github.com/facebook/react) - MIT

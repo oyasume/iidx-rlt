@@ -124,6 +124,40 @@ export const AboutPage = () => {
         </Step>
       </Stepper>
       <Divider sx={{ my: 4 }} />
+      <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
+        プライバシーポリシー
+      </Typography>
+      <Typography variant="body1" component="p">
+        本サービスでは、利用状況調査のためGoogleアナリティクスを利用しています。これにより収集される情報と利用目的は以下の通りです。
+      </Typography>
+      <List dense sx={{ listStyleType: "disc", pl: 4 }}>
+        <ListItem sx={{ display: "list-item", p: 0 }}>
+          <ListItemText primary="アクセス履歴（ユニークユーザー数、利用デバイスなど）" />
+        </ListItem>
+        <ListItem sx={{ display: "list-item", p: 0 }}>
+          <ListItemText primary="インポートされたチケットの枚数（パフォーマンス改善の目安として）" />
+        </ListItem>
+        <ListItem sx={{ display: "list-item", p: 0 }}>
+          <ListItemText primary="Textageへのリンクがクリックされた回数と対象の曲名" />
+        </ListItem>
+      </List>
+      <Typography variant="body1" component="p" sx={{ mt: 1.5 }}>
+        GoogleアナリティクスはCookieを利用して匿名のデータを収集します。
+        この機能はCookieを無効にすることで収集を拒否することが出来ます。 この規約に関しての詳細は
+        <Link
+          href="https://marketingplatform.google.com/about/analytics/terms/jp/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Googleアナリティクスサービスの利用規約
+        </Link>
+        や
+        <Link href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">
+          Googleポリシーと規約ページ
+        </Link>
+        をご確認ください。
+      </Typography>
+      <Divider sx={{ my: 4 }} />
       <Typography variant="caption" color="text.secondary" component="p">
         beatmaniaは株式会社コナミデジタルエンタテインメントの登録商標です。
         本アプリケーションは個人で開発・公開している非公式のツールです。当該法人および関連企業とは一切関係ありません。

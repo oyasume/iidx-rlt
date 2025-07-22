@@ -1,3 +1,4 @@
+import ReactGA from "react-ga4";
 import { Box, Typography, IconButton, List, ListItem, ListItemText, Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LaunchIcon from "@mui/icons-material/Launch";
@@ -17,7 +18,12 @@ interface TicketDetailPanelProps {
 }
 
 export const TicketDetailPanel = ({ ticket, atariInfo, onClose }: TicketDetailPanelProps) => {
-  const handleOpenTextage = (url: string) => {
+  const handleOpenTextage = (url: string, title: string) => {
+    ReactGA.event({
+      category: "Outbound Link",
+      action: "click_textage_link_from_detail",
+      label: title,
+    });
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
@@ -46,7 +52,7 @@ export const TicketDetailPanel = ({ ticket, atariInfo, onClose }: TicketDetailPa
                   <ListItemText primary={info.songTitle} secondary={info.description} />
                   <IconButton
                     aria-label={`${info.songTitle}をTextageで確認`}
-                    onClick={() => handleOpenTextage(info.textageUrl)}
+                    onClick={() => handleOpenTextage(info.textageUrl, info.songTitle)}
                   >
                     <LaunchIcon />
                   </IconButton>
