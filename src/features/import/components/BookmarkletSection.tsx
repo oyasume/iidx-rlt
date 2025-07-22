@@ -35,7 +35,8 @@ export const BookmarkletSection: React.FC = () => {
           <Typography color="text.secondary" variant="body2" component="div">
             コピーしたコードをURLにしたブックマークを作成してください。
             その後、IIDX公式サイトでブックマークを開くことで実行されます。
-            取得されるのはチケットの情報のみで、外部サーバーに送信されることはありません。
+            インポートされたチケットの枚数のみ、Googleアナリティクスで収集しています。
+            詳細はAboutページのプライバシーポリシーをご確認ください。
           </Typography>
         </Alert>
       </Collapse>
