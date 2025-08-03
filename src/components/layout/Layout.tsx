@@ -4,6 +4,7 @@ import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 // import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import InfoIcon from "@mui/icons-material/Info";
+import React from "react";
 
 import { AppHeader } from "./AppHeader";
 import { AppDrawer } from "./AppDrawer";
@@ -18,6 +19,7 @@ const navItems: AppNavItem[] = [
   // { path: "/manage", label: "当たり配置管理", icon: <ManageSearchIcon /> },
   { path: "/about", label: "About", icon: <InfoIcon /> },
 ];
+
 export const Layout: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
