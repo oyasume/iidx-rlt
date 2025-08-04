@@ -16,6 +16,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import LaunchIcon from "@mui/icons-material/Launch";
 import { GitHubLink } from "../components/links/GitHubLink";
 import { XLink } from "../components/links/XLink";
+import { HashtagLink } from "../components/links/HashtagLink";
 
 export const AboutPage = () => {
   return (
@@ -123,6 +124,14 @@ export const AboutPage = () => {
           </StepContent>
         </Step>
       </Stepper>
+      <Divider sx={{ my: 4 }} />
+      <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
+        フィードバック
+      </Typography>
+      <Typography variant="body1" component="p">
+        ツールの要望や不具合の報告などなんでも、X で <HashtagLink />{" "}
+        を付けて投稿してもらえれば、作者が定期的に確認します。
+      </Typography>
       <Divider sx={{ my: 4 }} />
       <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
         プライバシーポリシー
