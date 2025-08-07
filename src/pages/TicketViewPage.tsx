@@ -30,6 +30,7 @@ import { TicketDetailPanel, AtariInfoForPanel } from "../features/ticket/compone
 import { useAtariRules } from "../hooks/useAtariRules";
 import { useAtariMatcher } from "../hooks/useAtariMatcher";
 import { sampleTickets } from "../data";
+import { getHighlightColor } from "../utils/getHighlightColor";
 
 const storage = new LocalStorage();
 
@@ -56,6 +57,13 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const highlightedTickets = useMemo(() => {
+    return filteredTickets.map((ticket) => ({
+      ...ticket,
+      highlightColor: getHighlightColor(atariMatcher.get(ticket.laneText) || []),
+    }));
+  }, [filteredTickets, atariMatcher]);
 
   const atariInfoForPanel = useMemo((): AtariInfoForPanel[] => {
     if (!detailTicket) return [];
@@ -129,11 +137,11 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
               インポートページへ
             </Button>
           </Box>
-        ) : filteredTickets.length === 0 ? (
+        ) : highlightedTickets.length === 0 ? (
           <Typography sx={{ color: "text.secondary" }}>検索条件に一致するチケットはありません。</Typography>
         ) : (
           <TicketList
-            tickets={filteredTickets}
+            tickets={highlightedTickets}
             selectedSong={selectedSong}
             onOpenTextage={handleOpenTextage}
             onRowClick={setDetailTicket}

@@ -1,9 +1,17 @@
 import { TableRow, TableCell, Box, Typography, Tooltip, IconButton } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { Ticket, SongInfo } from "../../../types";
+import { HighlightColor } from "../../../utils/getHighlightColor";
+
+const colorMap: Record<NonNullable<HighlightColor>, string> = {
+  gold: "#FFD700",
+  silver: "#C0C0C0",
+  bronze: "#CD7F32",
+};
 
 export const TicketRow: React.FC<{
-  ticket: Ticket;
+  ticket: Ticket & { highlightColor?: HighlightColor };
   selectedSong: SongInfo | null;
   onOpenTextage: (_laneText: string) => void;
   onRowClick: (ticket: Ticket) => void;
@@ -16,6 +24,11 @@ export const TicketRow: React.FC<{
     >
       <TableCell component="th" scope="row">
         <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {ticket.highlightColor && (
+              <FiberManualRecordIcon sx={{ color: colorMap[ticket.highlightColor], fontSize: "1rem" }} />
+            )}
+          </Box>
           <Typography variant="body1" component="span" sx={{ mr: 1 }}>
             {ticket.laneText}
           </Typography>
