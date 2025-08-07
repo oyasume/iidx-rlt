@@ -3,7 +3,7 @@
     "id": "preset-0",
     "songTitle": "冥(A)",
     "textageURL": "https://textage.cc/score/12/_mei.html?1AC00",
-    "priority": 2,
+    "priority": 1,
     "description": "低速が割れる",
     "patterns": [
       {
@@ -18,7 +18,7 @@
     "id": "preset-1",
     "songTitle": "冥(A)",
     "textageURL": "https://textage.cc/score/12/_mei.html?1AC00",
-    "priority": 2,
+    "priority": 1,
     "description": "低速が割れる",
     "patterns": [
       {
@@ -108,7 +108,7 @@
     "id": "preset-7",
     "songTitle": "Sounds Of Summer(A)",
     "textageURL": "https://textage.cc/score/22/sosummer.html?1AC00",
-    "priority": 1,
+    "priority": 5,
     "description": "トリルが全部割れる",
     "patterns": [
       {
@@ -138,7 +138,7 @@
     "id": "preset-9",
     "songTitle": "AIR RAID FROM THA UNDAGROUND(L)",
     "textageURL": "https://textage.cc/score/17/airraid.html?1XC00",
-    "priority": 1,
+    "priority": 5,
     "description": "トリルがほぼ割れる",
     "patterns": [
       {
@@ -153,7 +153,7 @@
     "id": "preset-10",
     "songTitle": "AIR RAID FROM THA UNDAGROUND(L)",
     "textageURL": "https://textage.cc/score/17/airraid.html?1XC00",
-    "priority": 1,
+    "priority": 5,
     "description": "トリルがほぼ割れる",
     "patterns": [
       {
@@ -168,7 +168,7 @@
     "id": "preset-11",
     "songTitle": "3y3s(A)",
     "textageURL": "https://textage.cc/score/16/3y3s.html?1AC00",
-    "priority": 2,
+    "priority": 1,
     "description": "開幕発狂が割れる",
     "patterns": [
       {
@@ -183,7 +183,7 @@
     "id": "preset-12",
     "songTitle": "3y3s(A)",
     "textageURL": "https://textage.cc/score/16/3y3s.html?1AC00",
-    "priority": 2,
+    "priority": 1,
     "description": "開幕発狂が割れる",
     "patterns": [
       {
@@ -408,7 +408,7 @@
     "id": "preset-27",
     "songTitle": "rage against usual(A)",
     "textageURL": "https://textage.cc/score/12/rageagst.html?1AC00",
-    "priority": 1,
+    "priority": 2,
     "description": "発狂が割れる",
     "patterns": [
       {
@@ -423,7 +423,7 @@
     "id": "preset-28",
     "songTitle": "TECHNOPHOBIA(A)",
     "textageURL": "https://textage.cc/score/30/tcphobia.html?1AC00",
-    "priority": 1,
+    "priority": 2,
     "description": "発狂が割れる",
     "patterns": [
       {
@@ -526,6 +526,21 @@
   },
   {
     "id": "preset-35",
+    "songTitle": "Χ-DEN(A)",
+    "textageURL": "https://textage.cc/score/26/_kai_den.html?1AC00",
+    "priority": 1,
+    "description": "",
+    "patterns": [
+      {
+        "scratchSideText": "246",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-36",
     "songTitle": "VOX UP(A)",
     "textageURL": "https://textage.cc/score/21/voxup_sp.html?1AC00",
     "priority": 1,
@@ -540,10 +555,10 @@
     ]
   },
   {
-    "id": "preset-36",
+    "id": "preset-37",
     "songTitle": "VOX UP(A)",
     "textageURL": "https://textage.cc/score/21/voxup_sp.html?1AC00",
-    "priority": 1,
+    "priority": 5,
     "description": "R乱当たり配置",
     "patterns": [
       {
