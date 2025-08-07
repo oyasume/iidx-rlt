@@ -2,8 +2,8 @@
   const extractTicketsFromDOM = (targetDocument) => {
     const ticketListContainer = targetDocument.getElementById("ticket-list");
     if (!ticketListContainer) return [];
-    const ticketULs = Array.from(ticketListContainer.querySelectorAll("ul.inner"));
-    return ticketULs.slice(1).map((ticketUL) => {
+    const ticketULs = Array.from(ticketListContainer.querySelectorAll("ul.inner:not(.head)"));
+    return ticketULs.map((ticketUL) => {
       const laneText = ticketUL.querySelector("li").textContent.trim();
       const expiration = ticketUL.querySelector("li:nth-child(2)").textContent.trim();
       return { laneText, expiration };
@@ -12,11 +12,19 @@
 
   const getLastPageNumber = (targetDocument) => {
     const pageLinks = Array.from(targetDocument.querySelectorAll("#ticket-page a"));
-    if (pageLinks.length === 0) return 0;
-    const pageNumbers = pageLinks
-      .map((link) => parseInt(new URL(link.href, window.location.origin).searchParams.get("page"), 10))
-      .filter((num) => !isNaN(num));
-    return Math.max(...pageNumbers, 0);
+    if (pageLinks.length === 0) {
+      return 0;
+    }
+
+    const lastLink = pageLinks[pageLinks.length - 1];
+
+    try {
+      const pageStr = new URL(lastLink.href).searchParams.get("page");
+      const pageNum = parseInt(pageStr, 10);
+      return isNaN(pageNum) ? 0 : pageNum;
+    } catch (e) {
+      return 0;
+    }
   };
 
   const loadingHTML = `
@@ -35,17 +43,20 @@
     </div>
   `;
 
+  const lastPage = getLastPageNumber(document);
+  const baseUrl = "https://p.eagate.573.jp/game/2dx/32/djdata/random_lane/index.html";
+  const MAX_PAGES = 20; // 無限ループ防止用の最大ページ数
+
   document.body.innerHTML = loadingHTML;
   const progressText = document.getElementById("progress-text");
 
   try {
     const allTickets = [];
-    const lastPage = getLastPageNumber(document);
-    const baseUrl = "https://p.eagate.573.jp/game/2dx/32/djdata/random_lane/index.html";
+    const totalPages = lastPage + 1;
 
-    for (let i = 0; i <= lastPage; i++) {
+    for (let i = 0; i < Math.min(totalPages, MAX_PAGES); i++) {
       if (progressText) {
-        progressText.textContent = `${i + 1} / ${lastPage + 1} ページ目を処理中...`;
+        progressText.textContent = `${i + 1} / ${totalPages} ページ目を処理中... (最大${MAX_PAGES}ページまで)`;
       }
 
       const response = await fetch(`${baseUrl}?page=${i}`);
@@ -53,8 +64,13 @@
       const nextPageDoc = new DOMParser().parseFromString(htmlText, "text/html");
 
       const ticketsOnPage = extractTicketsFromDOM(nextPageDoc);
-      allTickets.push(...ticketsOnPage);
 
+      // 1ページ目以外でチケットが0件なら、それが最終ページと判断してループを抜ける
+      if (i > 0 && ticketsOnPage.length === 0) {
+        break;
+      }
+
+      allTickets.push(...ticketsOnPage);
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
 
