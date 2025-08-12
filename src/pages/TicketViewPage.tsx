@@ -16,60 +16,40 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-import { usePersistentTickets } from "../hooks/usePersistentTickets";
-import { useSongs } from "../hooks/useSongs";
 import { useTicketSearch } from "../hooks/useTicketSearch";
 import { TextageForm } from "../features/ticket/components/TextageForm";
 import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
 import { TicketList } from "../features/ticket/components/TicketList";
 import { SongInfo, PlaySide, Ticket } from "../types";
-import { LocalStorage } from "../storage/localStorage";
 import { useAppSettings, useAppSettingsDispatch } from "../contexts/AppSettingsContext";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
-import { TicketDetailPanel, AtariInfoForPanel } from "../features/ticket/components/TicketDetailPanel";
-import { useAtariRules } from "../hooks/useAtariRules";
-import { useAtariMatcher } from "../hooks/useAtariMatcher";
-import { sampleTickets } from "../data";
-import { getHighlightColor } from "../utils/getHighlightColor";
+import { TicketDetailPanel } from "../features/ticket/components/TicketDetailPanel";
 import { AtariRuleList } from "../features/ticket/components/AtariRuleList";
 import { matchTicket } from "../utils/ticketMatcher";
-
-const storage = new LocalStorage();
+import { useTicketViewData } from "../features/ticket/hooks/useTicketViewData";
+import { useAtariProcessor } from "../features/ticket/hooks/useAtariProcessor";
 
 interface TicketViewPageProps {
   isSample?: boolean;
 }
 
 export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
-  const { tickets: persistentTickets, isLoading: isTicketsLoading } = usePersistentTickets(storage);
-  const tickets = isSample ? sampleTickets : persistentTickets;
-  const isLoadingTickets = isSample ? false : isTicketsLoading;
-
+  const { isLoading, tickets, songs, allRules, rulesBySong, uniquePatterns } = useTicketViewData(isSample);
   const settings = useAppSettings();
   const { updatePlaySide } = useAppSettingsDispatch();
-  const { songs, isLoading: isSongDataLoading } = useSongs({
-    type: "url",
-    path: `${import.meta.env.BASE_URL}data/songs.json`,
-  });
-  const { allRules, rulesBySong, uniquePatterns, isLoading: isAtariRulesLoading } = useAtariRules();
-  const atariMatcher = useAtariMatcher(tickets, allRules, uniquePatterns, settings.playSide);
+
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const songsWithAtariRules = useMemo(() => {
-    if (!songs || !rulesBySong) return [];
-    return songs.filter((song) => rulesBySong.has(song.title));
-  }, [songs, rulesBySong]);
-
   const selectedSongAtariRules = useMemo(() => {
     if (!selectedSong || !rulesBySong) return [];
     return rulesBySong.get(selectedSong.title) || [];
   }, [selectedSong, rulesBySong]);
 
-  const ticketsFilteredByAtariRule = useMemo(() => {
+  const ticketsFilteredBySong = useMemo(() => {
     if (!selectedSong || selectedSongAtariRules.length === 0) {
       return tickets;
     }
@@ -80,28 +60,21 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     );
   }, [tickets, selectedSong, selectedSongAtariRules, settings.playSide]);
 
-  const { methods, filteredTickets } = useTicketSearch(ticketsFilteredByAtariRule, settings.playSide);
+  const { methods, filteredTickets } = useTicketSearch(ticketsFilteredBySong, settings.playSide);
+  const { addHighlight, getAtariInfoForPanel } = useAtariProcessor(
+    tickets,
+    settings.playSide,
+    allRules,
+    uniquePatterns
+  );
 
-  const highlightedTickets = useMemo(() => {
-    return filteredTickets.map((ticket) => ({
-      ...ticket,
-      highlightColor: getHighlightColor(atariMatcher.get(ticket.laneText) || []),
-    }));
-  }, [filteredTickets, atariMatcher]);
+  const highlightedTickets = addHighlight(filteredTickets);
+  const atariInfoForPanel = getAtariInfoForPanel(detailTicket);
 
-  const atariInfoForPanel = useMemo((): AtariInfoForPanel[] => {
-    if (!detailTicket) return [];
-    const rules = atariMatcher.get(detailTicket.laneText);
-    if (!rules) return [];
-    return rules
-      .map((rule) => ({
-        id: rule.id,
-        songTitle: rule.songTitle,
-        description: rule.description,
-        textageUrl: makeTextageUrl(rule.textageURL, settings.playSide, detailTicket.laneText),
-      }))
-      .filter((info): info is AtariInfoForPanel => info !== null);
-  }, [detailTicket, atariMatcher, settings.playSide]);
+  const songsWithAtariRules = useMemo(() => {
+    if (!songs || !rulesBySong) return [];
+    return songs.filter((song) => rulesBySong.has(song.title));
+  }, [songs, rulesBySong]);
 
   const handleOpenTextage = useCallback(
     (laneText: string) => {
@@ -127,8 +100,6 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const handleCloseDetail = () => {
     setDetailTicket(null);
   };
-
-  const isLoading = isLoadingTickets || isSongDataLoading || isAtariRulesLoading;
 
   if (isLoading) {
     return <div>データを読み込んでいます...</div>;
