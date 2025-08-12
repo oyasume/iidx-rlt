@@ -10,7 +10,7 @@ const meta: Meta<typeof TextageForm> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const songs = [
+const allSongsData = [
   {
     title: "A(A)",
     url: "https://textage.cc/score/7/a_amuro.html?1AC00",
@@ -23,9 +23,12 @@ const songs = [
   },
 ];
 
+const atariSongsData = [allSongsData[0], allSongsData[1]];
+
 export const Default: Story = {
   args: {
-    songs: songs,
+    allSongs: allSongsData,
+    atariSongs: atariSongsData,
     selectedSong: null,
     onSongSelect: () => {},
   },

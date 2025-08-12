@@ -18,15 +18,17 @@ export const useTicketSearch = (tickets: Ticket[], playSide: PlaySide) => {
   });
 
   const formValues = methods.watch();
+  const { scratchSideText, nonScratchSideText, isScratchSideUnordered, isNonScratchSideUnordered } = formValues;
 
   const filteredTickets = useMemo(() => {
     const paddedFormValues = {
-      ...formValues,
-      scratchSideText: formValues.scratchSideText.padEnd(3, "*"),
-      nonScratchSideText: formValues.nonScratchSideText.padEnd(4, "*"),
+      scratchSideText: scratchSideText.padEnd(3, "*"),
+      isScratchSideUnordered,
+      nonScratchSideText: nonScratchSideText.padEnd(4, "*"),
+      isNonScratchSideUnordered,
     };
     return filterTickets(tickets, paddedFormValues, playSide);
-  }, [tickets, formValues, playSide]);
+  }, [tickets, scratchSideText, nonScratchSideText, isScratchSideUnordered, isNonScratchSideUnordered, playSide]);
 
   return {
     methods,
