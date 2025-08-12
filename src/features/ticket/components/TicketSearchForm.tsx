@@ -9,6 +9,7 @@ export const TicketSearchForm: React.FC = () => {
 
   const scratchSide = (
     <KeypadInput
+      key="scratch"
       label={is1P ? "左側の3つが" : "右側の3つが"}
       name="scratchSideText"
       checkboxName="isScratchSideUnordered"
@@ -19,6 +20,7 @@ export const TicketSearchForm: React.FC = () => {
 
   const nonScratchSide = (
     <KeypadInput
+      key="non-scratch"
       label={is1P ? "右側の4つが" : "左側の4つが"}
       name="nonScratchSideText"
       checkboxName="isNonScratchSideUnordered"
