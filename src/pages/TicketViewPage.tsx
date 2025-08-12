@@ -41,6 +41,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const { updatePlaySide } = useAppSettingsDispatch();
 
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
+  const [applyAtariFilter, setApplyAtariFilter] = useState<boolean>(true);
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
 
   const theme = useTheme();
@@ -52,7 +53,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   }, [selectedSong, rulesBySong]);
 
   const ticketsFilteredBySong = useMemo(() => {
-    if (!selectedSong || selectedSongAtariRules.length === 0) {
+    if (!selectedSong || selectedSongAtariRules.length === 0 || !applyAtariFilter) {
       return tickets;
     }
     return tickets.filter((ticket) =>
@@ -60,7 +61,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
         rule.patterns.some((pattern) => matchTicket(ticket, pattern, settings.playSide))
       )
     );
-  }, [tickets, selectedSong, selectedSongAtariRules, settings.playSide]);
+  }, [tickets, selectedSong, selectedSongAtariRules, settings.playSide, applyAtariFilter]);
 
   const { methods, filteredTickets } = useTicketSearch(ticketsFilteredBySong, settings.playSide);
   const { addHighlight, getAtariInfoForPanel } = useAtariProcessor(
@@ -140,6 +141,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
           atariSongs={songsWithAtariRules}
           selectedSong={selectedSong}
           onSongSelect={setSelectedSong}
+          onModeChange={(mode) => setApplyAtariFilter(mode === "recommend")}
         />
         <AtariRuleList rules={selectedSongAtariRules} playSide={settings.playSide} />
         <Divider />

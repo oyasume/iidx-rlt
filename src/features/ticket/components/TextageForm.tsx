@@ -15,9 +15,16 @@ interface TextageFormProps {
   atariSongs: SongInfo[];
   selectedSong: SongInfo | null;
   onSongSelect: (_song: SongInfo | null) => void;
+  onModeChange?: (_mode: "recommend" | "all") => void;
 }
 
-export const TextageForm: React.FC<TextageFormProps> = ({ allSongs, atariSongs, selectedSong, onSongSelect }) => {
+export const TextageForm: React.FC<TextageFormProps> = ({
+  allSongs,
+  atariSongs,
+  selectedSong,
+  onSongSelect,
+  onModeChange,
+}) => {
   const [searchMode, setSearchMode] = useState<"recommend" | "all">("recommend");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -27,6 +34,7 @@ export const TextageForm: React.FC<TextageFormProps> = ({ allSongs, atariSongs, 
       setSearchMode(newMode);
       // モード切り替え時に選択をクリア
       onSongSelect(null);
+      onModeChange?.(newMode);
     }
   };
 
