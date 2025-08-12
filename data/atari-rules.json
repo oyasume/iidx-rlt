@@ -108,8 +108,8 @@
     "id": "preset-7",
     "songTitle": "Sounds Of Summer(A)",
     "textageURL": "https://textage.cc/score/22/sosummer.html?1AC00",
-    "priority": 5,
-    "description": "トリルが全部割れる",
+    "priority": 1,
+    "description": "中盤の長いトリルが割れるが皿側がきつい",
     "patterns": [
       {
         "scratchSideText": "157",
@@ -379,7 +379,7 @@
     "songTitle": "KAMAITACHI(L)",
     "textageURL": "https://textage.cc/score/14/kmitachi.html?1XC00",
     "priority": 1,
-    "description": "",
+    "description": "30小節が割れる",
     "patterns": [
       {
         "scratchSideText": "136",
