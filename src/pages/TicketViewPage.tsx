@@ -31,6 +31,8 @@ import { useAtariRules } from "../hooks/useAtariRules";
 import { useAtariMatcher } from "../hooks/useAtariMatcher";
 import { sampleTickets } from "../data";
 import { getHighlightColor } from "../utils/getHighlightColor";
+import { AtariRuleList } from "../features/ticket/components/AtariRuleList";
+import { matchTicket } from "../utils/ticketMatcher";
 
 const storage = new LocalStorage();
 
@@ -45,18 +47,40 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
 
   const settings = useAppSettings();
   const { updatePlaySide } = useAppSettingsDispatch();
-  const { methods, filteredTickets } = useTicketSearch(tickets, settings.playSide);
   const { songs, isLoading: isSongDataLoading } = useSongs({
     type: "url",
     path: `${import.meta.env.BASE_URL}data/songs.json`,
   });
-  const { allRules, uniquePatterns, isLoading: isAtariRulesLoading } = useAtariRules();
+  const { allRules, rulesBySong, uniquePatterns, isLoading: isAtariRulesLoading } = useAtariRules();
   const atariMatcher = useAtariMatcher(tickets, allRules, uniquePatterns, settings.playSide);
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const songsWithAtariRules = useMemo(() => {
+    if (!songs || !rulesBySong) return [];
+    return songs.filter((song) => rulesBySong.has(song.title));
+  }, [songs, rulesBySong]);
+
+  const selectedSongAtariRules = useMemo(() => {
+    if (!selectedSong || !rulesBySong) return [];
+    return rulesBySong.get(selectedSong.title) || [];
+  }, [selectedSong, rulesBySong]);
+
+  const ticketsFilteredByAtariRule = useMemo(() => {
+    if (!selectedSong || selectedSongAtariRules.length === 0) {
+      return tickets;
+    }
+    return tickets.filter((ticket) =>
+      selectedSongAtariRules.some((rule) =>
+        rule.patterns.some((pattern) => matchTicket(ticket, pattern, settings.playSide))
+      )
+    );
+  }, [tickets, selectedSong, selectedSongAtariRules, settings.playSide]);
+
+  const { methods, filteredTickets } = useTicketSearch(ticketsFilteredByAtariRule, settings.playSide);
 
   const highlightedTickets = useMemo(() => {
     return filteredTickets.map((ticket) => ({
@@ -125,7 +149,13 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
         </ToggleButtonGroup>
         <TicketSearchForm />
         <Divider />
-        <TextageForm songs={songs} selectedSong={selectedSong} onSongSelect={setSelectedSong} />
+        <TextageForm
+          allSongs={songs}
+          atariSongs={songsWithAtariRules}
+          selectedSong={selectedSong}
+          onSongSelect={setSelectedSong}
+        />
+        <AtariRuleList rules={selectedSongAtariRules} playSide={settings.playSide} />
         <Divider />
         {tickets.length === 0 && !isSample ? (
           <Box>

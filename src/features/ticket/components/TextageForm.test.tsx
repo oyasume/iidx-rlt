@@ -10,12 +10,20 @@ describe("TextageForm", () => {
     url: "https://textage.cc/score/7/a_amuro.html?1AC00",
     level: 12,
   };
-  const songs: SongInfo[] = [song];
+  const allSongsData: SongInfo[] = [song];
+  const atariSongsData: SongInfo[] = [song];
 
   it("曲を選択できる", async () => {
     const user = userEvent.setup();
     const onSongSelect = vi.fn();
-    render(<TextageForm songs={songs} selectedSong={null} onSongSelect={onSongSelect} />);
+    render(
+      <TextageForm
+        allSongs={allSongsData}
+        atariSongs={atariSongsData}
+        selectedSong={null}
+        onSongSelect={onSongSelect}
+      />
+    );
 
     const autocomplete = screen.getByLabelText("楽曲を選択");
     await user.click(autocomplete);
