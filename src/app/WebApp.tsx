@@ -6,7 +6,6 @@ import { AppSettingsContext, AppSettingsDispatchContext } from "../contexts/AppS
 import { SnackbarProvider } from "../contexts/SnackbarContext";
 import { Layout } from "../components/layout/Layout";
 import { AboutPage } from "../pages/AboutPage";
-import { AtariManagementPage } from "../pages/AtariManagementPage";
 import { TicketViewPage } from "../pages/TicketViewPage";
 import { TicketImporterPage } from "../pages/TicketImporterPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
@@ -30,7 +29,6 @@ export const WebApp: React.FC = () => {
               <Route index element={<TicketViewPage />} />
               <Route path="about" element={<AboutPage />} />
               <Route path="import" element={<TicketImporterPage />} />
-              <Route path="manage" element={<AtariManagementPage />} />
               <Route path="sample" element={<TicketViewPage isSample={true} />} />
               <Route path="tickets" element={<TicketViewPage />} />
               <Route path="*" element={<NotFoundPage />} />
