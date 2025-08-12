@@ -13,10 +13,12 @@ import {
   useMediaQuery,
   Drawer,
   Paper,
+  Pagination,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { useTicketSearch } from "../hooks/useTicketSearch";
+import { usePagination } from "../hooks/usePagination";
 import { TextageForm } from "../features/ticket/components/TextageForm";
 import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
 import { TicketList } from "../features/ticket/components/TicketList";
@@ -68,8 +70,17 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     uniquePatterns
   );
 
-  const highlightedTickets = addHighlight(filteredTickets);
+  const highlightedTickets = useMemo(() => addHighlight(filteredTickets), [addHighlight, filteredTickets]);
   const atariInfoForPanel = getAtariInfoForPanel(detailTicket);
+
+  const {
+    currentPage,
+    itemsPerPage,
+    pageCount,
+    paginatedItems: paginatedTickets,
+    handlePageChange,
+    handleItemsPerPageChange,
+  } = usePagination(highlightedTickets, 50);
 
   const songsWithAtariRules = useMemo(() => {
     if (!songs || !rulesBySong) return [];
@@ -105,6 +116,10 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     return <div>データを読み込んでいます...</div>;
   }
 
+  const totalCount = highlightedTickets.length;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalCount);
+
   return (
     <FormProvider {...methods}>
       <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -138,15 +153,56 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
               インポートページへ
             </Button>
           </Box>
-        ) : highlightedTickets.length === 0 ? (
-          <Typography sx={{ color: "text.secondary" }}>検索条件に一致するチケットはありません。</Typography>
         ) : (
-          <TicketList
-            tickets={highlightedTickets}
-            selectedSong={selectedSong}
-            onOpenTextage={handleOpenTextage}
-            onRowClick={setDetailTicket}
-          />
+          <>
+            {totalCount > 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  gap: 2,
+                  mb: 1,
+                  minHeight: "32px",
+                }}
+              >
+                <Typography variant="body2" color="text.secondary" sx={{ flexShrink: 0 }}>
+                  {`${totalCount}件中 ${startIndex + 1}～${endIndex}件`}
+                </Typography>
+                <ToggleButtonGroup
+                  value={itemsPerPage}
+                  exclusive
+                  onChange={handleItemsPerPageChange}
+                  size="small"
+                  color="primary"
+                  aria-label="表示件数"
+                >
+                  <ToggleButton value={50}>50</ToggleButton>
+                  <ToggleButton value={100}>100</ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
+            )}
+            {totalCount === 0 ? (
+              <Typography sx={{ color: "text.secondary" }}>検索条件に一致するチケットはありません。</Typography>
+            ) : (
+              <>
+                <TicketList
+                  tickets={paginatedTickets}
+                  selectedSong={selectedSong}
+                  onOpenTextage={handleOpenTextage}
+                  onRowClick={setDetailTicket}
+                />
+                {pageCount > 1 && (
+                  <Pagination
+                    count={pageCount}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    sx={{ alignSelf: "center" }}
+                  />
+                )}
+              </>
+            )}
+          </>
         )}
       </Stack>
       {isMobile ? (
