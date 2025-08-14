@@ -63,8 +63,8 @@ const processSongRules = (csvData: SongRuleCsvRow[]): AtariRule[] => {
 
     return {
       id: `preset-${i}`,
-      songTitle: row.曲名,
-      textageURL: row.URL,
+      title: row.曲名,
+      url: row.URL,
       priority: parseInt(row.優先度, 10),
       description: row.説明 || "",
       patterns: [searchPattern],

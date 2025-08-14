@@ -6,8 +6,8 @@ import { AtariRule } from "../types";
 const mockAtariRules: AtariRule[] = [
   {
     id: "preset-rage-1",
-    songTitle: "rage against usual(A)",
-    textageURL: "",
+    title: "rage against usual(A)",
+    url: "",
     priority: 1,
     description: "",
     patterns: [
@@ -21,8 +21,8 @@ const mockAtariRules: AtariRule[] = [
   },
   {
     id: "preset-mei-1",
-    songTitle: "冥(A)",
-    textageURL: "",
+    title: "冥(A)",
+    url: "",
     priority: 1,
     description: "",
     patterns: [
@@ -36,8 +36,8 @@ const mockAtariRules: AtariRule[] = [
   },
   {
     id: "preset-other-song-1",
-    songTitle: "Another Song(A)",
-    textageURL: "",
+    title: "Another Song(A)",
+    url: "",
     priority: 1,
     description: "",
     patterns: [

@@ -7,13 +7,11 @@ import { TicketViewPage } from "./TicketViewPage";
 import { AppSettingsContext, AppSettingsDispatchContext } from "../contexts/AppSettingsContext";
 import * as useTicketViewData from "../features/ticket/hooks/useTicketViewData";
 import * as useTicketSearch from "../hooks/useTicketSearch";
-import * as useAtariProcessor from "../features/ticket/hooks/useAtariProcessor";
 import { Ticket, SongInfo } from "../types";
 import { SearchFormValues } from "../schema";
 
 vi.mock("../features/ticket/hooks/useTicketViewData");
 vi.mock("../hooks/useTicketSearch");
-vi.mock("../features/ticket/hooks/useAtariProcessor");
 
 const mockTickets: Ticket[] = [{ laneText: "1234567", expiration: "" }];
 const mockSongs: SongInfo[] = [{ title: "A(A)", url: "", level: 12 }];
@@ -49,11 +47,6 @@ describe("TicketViewPage", () => {
     vi.spyOn(useTicketSearch, "useTicketSearch").mockReturnValue({
       methods: methods,
       filteredTickets: mockTickets,
-    });
-
-    vi.spyOn(useAtariProcessor, "useAtariProcessor").mockReturnValue({
-      addHighlight: (tickets) => tickets.map((t) => ({ ...t, highlightColor: null })),
-      getAtariInfoForPanel: () => [],
     });
   });
 

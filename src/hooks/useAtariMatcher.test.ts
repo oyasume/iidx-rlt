@@ -12,8 +12,8 @@ const tickets: Ticket[] = [
 
 const rageRule: AtariRule = {
   id: "rage-rule",
-  songTitle: "rage against usual(A)",
-  textageURL: "",
+  title: "rage against usual(A)",
+  url: "",
   priority: 1,
   description: "",
   patterns: [
@@ -28,8 +28,8 @@ const rageRule: AtariRule = {
 
 const meiRule: AtariRule = {
   id: "mei-rule",
-  songTitle: "冥(A)",
-  textageURL: "",
+  title: "冥(A)",
+  url: "",
   priority: 1,
   description: "縦連割れ",
   patterns: [
@@ -50,8 +50,8 @@ const meiRule: AtariRule = {
 
 const meiRule2: AtariRule = {
   id: "mei-rule-2",
-  songTitle: "冥(A)",
-  textageURL: "",
+  title: "冥(A)",
+  url: "",
   priority: 2,
   description: "冥当たり",
   patterns: [
@@ -72,11 +72,11 @@ describe("useAtariMatcher", () => {
     const { result } = renderHook(() => useAtariMatcher(tickets, allRules, uniquePatterns, "1P"));
 
     const atariForRage = result.current.get("1472356");
-    expect(atariForRage?.[0].songTitle).toBe("rage against usual(A)");
+    expect(atariForRage?.[0].title).toBe("rage against usual(A)");
     const atariForMei = result.current.get("1263457");
-    expect(atariForMei?.[0].songTitle).toBe("冥(A)");
+    expect(atariForMei?.[0].title).toBe("冥(A)");
     expect(atariForMei?.[0].description).toBe("冥当たり");
-    expect(atariForMei?.[1].songTitle).toBe("冥(A)");
+    expect(atariForMei?.[1].title).toBe("冥(A)");
     expect(atariForMei?.[1].description).toBe("縦連割れ");
   });
 

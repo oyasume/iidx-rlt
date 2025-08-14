@@ -34,10 +34,10 @@ export const useAtariRules = () => {
 
         for (const rule of allRules) {
           // 曲名 -> ルールリスト のインデックスを作成
-          if (!rulesBySong.has(rule.songTitle)) {
-            rulesBySong.set(rule.songTitle, []);
+          if (!rulesBySong.has(rule.title)) {
+            rulesBySong.set(rule.title, []);
           }
-          rulesBySong.get(rule.songTitle)!.push(rule);
+          rulesBySong.get(rule.title)!.push(rule);
 
           // 定義されているパターンの重複を除いたリストを作成
           for (const pattern of rule.patterns) {

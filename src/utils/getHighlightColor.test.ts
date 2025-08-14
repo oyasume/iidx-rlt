@@ -4,8 +4,8 @@ import { AtariRule } from "../types";
 describe("getHighlightColor", () => {
   const createRule = (priority: number): AtariRule => ({
     id: `rule-${priority}`,
-    songTitle: `Song ${priority}`,
-    textageURL: "",
+    title: `Song ${priority}`,
+    url: "",
     priority: priority,
     description: "",
     patterns: [],

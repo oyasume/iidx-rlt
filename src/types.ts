@@ -18,14 +18,12 @@ export interface SongInfo {
   level: number;
 }
 
-export interface AtariRule {
+export type AtariRule = Omit<SongInfo, "level"> & {
   id: string;
-  songTitle: string;
-  textageURL: string;
   priority: number;
   description: string;
   patterns: SearchPattern[];
-}
+};
 
 export interface AppSettings {
   playSide: PlaySide;
