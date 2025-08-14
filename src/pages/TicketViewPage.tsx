@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { FormProvider, useForm } from "react-hook-form";
-import { Stack, Divider, Box, Button, ToggleButton, ToggleButtonGroup, Typography, Pagination } from "@mui/material";
+import { Stack, Divider, Box, Button, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TicketResultsSection } from "../features/ticket/components/TicketResultsSection";
 import { searchFormSchema, SearchFormValues } from "../schema";
 import { usePagination } from "../hooks/usePagination";
 import { TextageForm } from "../features/ticket/components/TextageForm";
@@ -135,10 +136,6 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     return <div>データを読み込んでいます...</div>;
   }
 
-  const totalCount = processedTickets.length;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, totalCount);
-
   return (
     <FormProvider {...methods}>
       <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -175,55 +172,21 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
             </Button>
           </Box>
         ) : (
-          <>
-            {totalCount > 0 && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  gap: 2,
-                  mb: 1,
-                  minHeight: "32px",
-                }}
-              >
-                <Typography variant="body2" color="text.secondary" sx={{ flexShrink: 0 }}>
-                  {`${totalCount}件中 ${startIndex + 1}～${endIndex}件`}
-                </Typography>
-                <ToggleButtonGroup
-                  value={itemsPerPage}
-                  exclusive
-                  onChange={handleItemsPerPageChange}
-                  size="small"
-                  color="primary"
-                  aria-label="表示件数"
-                >
-                  <ToggleButton value={50}>50</ToggleButton>
-                  <ToggleButton value={100}>100</ToggleButton>
-                </ToggleButtonGroup>
-              </Box>
-            )}
-            {totalCount === 0 ? (
-              <Typography sx={{ color: "text.secondary" }}>検索条件に一致するチケットはありません。</Typography>
-            ) : (
-              <>
-                <TicketList
-                  tickets={paginatedTickets}
-                  selectedSong={selectedSong}
-                  onOpenTextage={handleOpenTextage}
-                  onRowClick={setDetailTicket}
-                />
-                {pageCount > 1 && (
-                  <Pagination
-                    count={pageCount}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    sx={{ alignSelf: "center" }}
-                  />
-                )}
-              </>
-            )}
-          </>
+          <TicketResultsSection
+            totalCount={processedTickets.length}
+            currentPage={currentPage}
+            pageCount={pageCount}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+          >
+            <TicketList
+              tickets={paginatedTickets}
+              selectedSong={selectedSong}
+              onOpenTextage={handleOpenTextage}
+              onRowClick={setDetailTicket}
+            />
+          </TicketResultsSection>
         )}
       </Stack>
       {detailTicket && detailTicketRules.length > 0 && (
