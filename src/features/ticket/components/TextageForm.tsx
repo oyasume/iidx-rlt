@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Autocomplete,
   TextField,
@@ -14,7 +13,8 @@ interface TextageFormProps {
   allSongs: SongInfo[];
   atariSongs: SongInfo[];
   selectedSong: SongInfo | null;
-  onSongSelect: (_song: SongInfo | null) => void;
+  onSongSelect?: (_song: SongInfo | null) => void;
+  searchMode: "recommend" | "all";
   onModeChange?: (_mode: "recommend" | "all") => void;
 }
 
@@ -23,18 +23,17 @@ export const TextageForm: React.FC<TextageFormProps> = ({
   atariSongs,
   selectedSong,
   onSongSelect,
+  searchMode,
   onModeChange,
 }) => {
-  const [searchMode, setSearchMode] = useState<"recommend" | "all">("recommend");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleModeChange = (_event: React.MouseEvent<HTMLElement>, newMode: "recommend" | "all" | null) => {
     if (newMode !== null) {
-      setSearchMode(newMode);
-      // モード切り替え時に選択をクリア
-      onSongSelect(null);
       onModeChange?.(newMode);
+      // モード切り替え時に選択をクリア
+      onSongSelect?.(null);
     }
   };
 
@@ -62,7 +61,7 @@ export const TextageForm: React.FC<TextageFormProps> = ({
         options={songs}
         getOptionLabel={(option) => option.title}
         value={selectedSong}
-        onChange={(_event, newValue) => onSongSelect(newValue)}
+        onChange={(_event, newValue) => onSongSelect?.(newValue)}
         slotProps={{ listbox: { sx: { maxHeight: isMobile ? "25vh" : "40vh" } } }}
         renderInput={(params) => (
           <TextField

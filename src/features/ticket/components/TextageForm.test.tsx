@@ -22,6 +22,7 @@ describe("TextageForm", () => {
         atariSongs={atariSongsData}
         selectedSong={null}
         onSongSelect={onSongSelect}
+        searchMode="recommend"
       />
     );
 

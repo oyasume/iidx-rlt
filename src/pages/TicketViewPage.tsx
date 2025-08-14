@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { Stack, Divider, Box, Button, ToggleButton, ToggleButtonGroup, Typography, Pagination } from "@mui/material";
 import { Link } from "react-router-dom";
-
-import { useTicketSearch } from "../hooks/useTicketSearch";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { searchFormSchema, SearchFormValues } from "../schema";
 import { usePagination } from "../hooks/usePagination";
 import { TextageForm } from "../features/ticket/components/TextageForm";
 import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
@@ -13,7 +13,7 @@ import { SongInfo, PlaySide, Ticket } from "../types";
 import { useAppSettings, useAppSettingsDispatch } from "../contexts/AppSettingsContext";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
 import { AtariRuleList } from "../features/ticket/components/AtariRuleList";
-import { matchTicket } from "../utils/ticketMatcher";
+import { matchTicket, filterTickets } from "../utils/ticketMatcher";
 import { useTicketViewData } from "../features/ticket/hooks/useTicketViewData";
 import { AtariInfoPanel } from "../features/ticket/components/AtariInfoPanel";
 import { useAtariMatcher } from "../hooks/useAtariMatcher";
@@ -25,65 +25,28 @@ interface TicketViewPageProps {
 
 export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
   const { isLoading, tickets, songs, allRules, rulesBySong, uniquePatterns } = useTicketViewData(isSample);
+
+  // 1P/2Pの設定
   const settings = useAppSettings();
   const { updatePlaySide } = useAppSettingsDispatch();
-
-  const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
-  const [applyAtariFilter, setApplyAtariFilter] = useState<boolean>(true);
-  const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
-
-  const selectedSongAtariRules = useMemo(() => {
-    if (!selectedSong || !rulesBySong) return [];
-    return rulesBySong.get(selectedSong.title) || [];
-  }, [selectedSong, rulesBySong]);
-
-  const ticketsFilteredBySong = useMemo(() => {
-    if (!selectedSong || selectedSongAtariRules.length === 0 || !applyAtariFilter) {
-      return tickets;
+  const handlePlaySideToggle = (_event: React.MouseEvent<HTMLElement>, newPlaySide: PlaySide | null) => {
+    if (newPlaySide !== null) {
+      updatePlaySide(newPlaySide);
     }
-    return tickets.filter((ticket) =>
-      selectedSongAtariRules.some((rule) =>
-        rule.patterns.some((pattern) => matchTicket(ticket, pattern, settings.playSide))
-      )
-    );
-  }, [tickets, selectedSong, selectedSongAtariRules, settings.playSide, applyAtariFilter]);
-
-  const { methods, filteredTickets } = useTicketSearch(ticketsFilteredBySong, settings.playSide);
-
-  const atariMatcher = useAtariMatcher(tickets, allRules, uniquePatterns, settings.playSide);
-  const detailTicketRules = useMemo(() => {
-    if (!detailTicket) return [];
-    return atariMatcher.get(detailTicket.laneText) || [];
-  }, [detailTicket, atariMatcher]);
-
-  const handleCloseDetail = () => {
-    setDetailTicket(null);
   };
+  const atariMatcher = useAtariMatcher(tickets, allRules, uniquePatterns, settings.playSide);
 
-  const addHighlight = useCallback(
-    (tickets: Ticket[]) => {
-      return tickets.map((ticket) => ({
-        ...ticket,
-        highlightColor: getHighlightColor(atariMatcher.get(ticket.laneText) || []),
-      }));
-    },
-    [atariMatcher]
-  );
-  const highlightedTickets = useMemo(() => addHighlight(filteredTickets), [addHighlight, filteredTickets]);
-
-  const {
-    currentPage,
-    itemsPerPage,
-    pageCount,
-    paginatedItems: paginatedTickets,
-    handlePageChange,
-    handleItemsPerPageChange,
-  } = usePagination(highlightedTickets, 50);
-
+  // 選択された曲の状態管理
+  const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
+  const [searchMode, setSearchMode] = useState<"recommend" | "all">("recommend");
   const songsWithAtariRules = useMemo(() => {
     if (!songs || !rulesBySong) return [];
     return songs.filter((song) => rulesBySong.has(song.title));
   }, [songs, rulesBySong]);
+  const selectedSongAtariRules = useMemo(() => {
+    if (!selectedSong || !rulesBySong) return [];
+    return rulesBySong.get(selectedSong.title) || [];
+  }, [selectedSong, rulesBySong]);
 
   const handleOpenTextage = useCallback(
     (laneText: string) => {
@@ -100,17 +63,79 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     [selectedSong, settings.playSide]
   );
 
-  const handlePlaySideToggle = (_event: React.MouseEvent<HTMLElement>, newPlaySide: PlaySide | null) => {
-    if (newPlaySide !== null) {
-      updatePlaySide(newPlaySide);
-    }
+  // 検索フォームの状態管理
+  const methods = useForm<SearchFormValues>({
+    resolver: zodResolver(searchFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      scratchSideText: "",
+      isScratchSideUnordered: true,
+      nonScratchSideText: "",
+      isNonScratchSideUnordered: true,
+    },
+  });
+  const { scratchSideText, isScratchSideUnordered, nonScratchSideText, isNonScratchSideUnordered } = methods.watch();
+
+  const processedTickets = useMemo(() => {
+    const paddedSearchPattern = {
+      scratchSideText: scratchSideText.padEnd(3, "*"),
+      isScratchSideUnordered: isScratchSideUnordered,
+      nonScratchSideText: nonScratchSideText.padEnd(4, "*"),
+      isNonScratchSideUnordered: isNonScratchSideUnordered,
+    };
+    const filteredTickets = filterTickets(tickets, paddedSearchPattern, settings.playSide);
+
+    return filteredTickets
+      .filter((ticket) => {
+        // おすすめから選択された曲がある場合、その曲の当たりチケットのみを表示
+        const applyAtariFilter = searchMode === "recommend" && selectedSong;
+        if (!applyAtariFilter) return true;
+        return selectedSongAtariRules.some((rule) =>
+          rule.patterns.some((pattern) => matchTicket(ticket, pattern, settings.playSide))
+        );
+      })
+      .map((ticket) => ({
+        ...ticket,
+        highlightColor: getHighlightColor(atariMatcher.get(ticket.laneText) || []),
+      }));
+  }, [
+    atariMatcher,
+    isNonScratchSideUnordered,
+    isScratchSideUnordered,
+    nonScratchSideText,
+    scratchSideText,
+    searchMode,
+    selectedSong,
+    selectedSongAtariRules,
+    settings.playSide,
+    tickets,
+  ]);
+
+  // ページネーションの設定
+  const {
+    currentPage,
+    itemsPerPage,
+    pageCount,
+    paginatedItems: paginatedTickets,
+    handlePageChange,
+    handleItemsPerPageChange,
+  } = usePagination(processedTickets, 50);
+
+  // 詳細チケットの状態管理
+  const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
+  const detailTicketRules = useMemo(() => {
+    if (!detailTicket) return [];
+    return atariMatcher.get(detailTicket.laneText) || [];
+  }, [detailTicket, atariMatcher]);
+  const handleCloseDetail = () => {
+    setDetailTicket(null);
   };
 
   if (isLoading) {
     return <div>データを読み込んでいます...</div>;
   }
 
-  const totalCount = highlightedTickets.length;
+  const totalCount = processedTickets.length;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalCount);
 
@@ -134,7 +159,8 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
           atariSongs={songsWithAtariRules}
           selectedSong={selectedSong}
           onSongSelect={setSelectedSong}
-          onModeChange={(mode) => setApplyAtariFilter(mode === "recommend")}
+          searchMode={searchMode}
+          onModeChange={setSearchMode}
         />
         <AtariRuleList rules={selectedSongAtariRules} playSide={settings.playSide} />
         <Divider />

@@ -10,6 +10,8 @@ vi.mock("react-ga4", () => ({
   },
 }));
 
+window.scrollTo = vi.fn();
+
 afterEach(() => {
   cleanup();
 });
