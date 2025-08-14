@@ -1,5 +1,5 @@
-import { Drawer, Paper, Box, Divider, useTheme, useMediaQuery } from "@mui/material";
-import React from "react";
+import { Drawer, Paper, useTheme, useMediaQuery } from "@mui/material";
+import { Panel } from "./Panel";
 
 interface FloatingPanelProps {
   open: boolean;
@@ -16,17 +16,7 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, tit
     return null;
   }
 
-  const panelContent = (
-    <Box sx={{ p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
-      {title && (
-        <>
-          {title}
-          <Divider sx={{ mb: 1 }} />
-        </>
-      )}
-      {children}
-    </Box>
-  );
+  const panelContent = <Panel title={title}>{children}</Panel>;
 
   if (isMobile) {
     return (

@@ -12,7 +12,7 @@ import { TicketList } from "../features/ticket/components/TicketList";
 import { SongInfo, PlaySide, Ticket } from "../types";
 import { useAppSettings, useAppSettingsDispatch } from "../contexts/AppSettingsContext";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
-import { AtariRuleList } from "../features/ticket/components/AtariRuleList";
+import { AtariRulePanel } from "../features/ticket/components/AtariRulePanel";
 import { matchTicket, filterTickets } from "../utils/ticketMatcher";
 import { useTicketViewData } from "../features/ticket/hooks/useTicketViewData";
 import { AtariInfoPanel } from "../features/ticket/components/AtariInfoPanel";
@@ -162,7 +162,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
           searchMode={searchMode}
           onModeChange={setSearchMode}
         />
-        <AtariRuleList rules={selectedSongAtariRules} playSide={settings.playSide} />
+        <AtariRulePanel rules={selectedSongAtariRules} playSide={settings.playSide} />
         <Divider />
         {tickets.length === 0 && !isSample ? (
           <Box>
