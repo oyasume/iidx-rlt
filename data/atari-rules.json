@@ -1,8 +1,8 @@
 [
   {
     "id": "preset-0",
-    "songTitle": "冥(A)",
-    "textageURL": "https://textage.cc/score/12/_mei.html?1AC00",
+    "title": "冥(A)",
+    "url": "https://textage.cc/score/12/_mei.html?1AC00",
     "priority": 1,
     "description": "低速が割れる",
     "patterns": [
@@ -16,8 +16,8 @@
   },
   {
     "id": "preset-1",
-    "songTitle": "冥(A)",
-    "textageURL": "https://textage.cc/score/12/_mei.html?1AC00",
+    "title": "冥(A)",
+    "url": "https://textage.cc/score/12/_mei.html?1AC00",
     "priority": 1,
     "description": "低速が割れる",
     "patterns": [
@@ -31,8 +31,8 @@
   },
   {
     "id": "preset-2",
-    "songTitle": "Xperanza(A)",
-    "textageURL": "https://textage.cc/score/25/xperanza.html?1AC00",
+    "title": "Xperanza(A)",
+    "url": "https://textage.cc/score/25/xperanza.html?1AC00",
     "priority": 1,
     "description": "全体のトリルが割れる",
     "patterns": [
@@ -46,8 +46,8 @@
   },
   {
     "id": "preset-3",
-    "songTitle": "聖人の塔(A)",
-    "textageURL": "https://textage.cc/score/19/_seijin.html?1AC00",
+    "title": "聖人の塔(A)",
+    "url": "https://textage.cc/score/19/_seijin.html?1AC00",
     "priority": 1,
     "description": "二重トリルが割れる",
     "patterns": [
@@ -61,8 +61,8 @@
   },
   {
     "id": "preset-4",
-    "songTitle": "聖人の塔(A)",
-    "textageURL": "https://textage.cc/score/19/_seijin.html?1AC00",
+    "title": "聖人の塔(A)",
+    "url": "https://textage.cc/score/19/_seijin.html?1AC00",
     "priority": 1,
     "description": "二重トリルが割れる",
     "patterns": [
@@ -76,8 +76,8 @@
   },
   {
     "id": "preset-5",
-    "songTitle": "THANK YOU FOR PLAYING(L)",
-    "textageURL": "https://textage.cc/score/16/thank_u4.html?1XC00",
+    "title": "THANK YOU FOR PLAYING(L)",
+    "url": "https://textage.cc/score/16/thank_u4.html?1XC00",
     "priority": 1,
     "description": "24分折り返しが割れる",
     "patterns": [
@@ -91,8 +91,8 @@
   },
   {
     "id": "preset-6",
-    "songTitle": "Inferno of Fomalhaut(A)",
-    "textageURL": "https://textage.cc/score/27/inffomal.html?1AC00",
+    "title": "Inferno of Fomalhaut(A)",
+    "url": "https://textage.cc/score/27/inffomal.html?1AC00",
     "priority": 1,
     "description": "ラストの二重トリルが割れる",
     "patterns": [
@@ -106,8 +106,8 @@
   },
   {
     "id": "preset-7",
-    "songTitle": "Sounds Of Summer(A)",
-    "textageURL": "https://textage.cc/score/22/sosummer.html?1AC00",
+    "title": "Sounds Of Summer(A)",
+    "url": "https://textage.cc/score/22/sosummer.html?1AC00",
     "priority": 1,
     "description": "中盤の長いトリルが割れるが皿側がきつい",
     "patterns": [
@@ -121,8 +121,8 @@
   },
   {
     "id": "preset-8",
-    "songTitle": "東京神話(A)",
-    "textageURL": "https://textage.cc/score/25/_tksinwa.html?1AC00",
+    "title": "東京神話(A)",
+    "url": "https://textage.cc/score/25/_tksinwa.html?1AC00",
     "priority": 1,
     "description": "1-7, 5-7トリルが割れる",
     "patterns": [
@@ -136,8 +136,8 @@
   },
   {
     "id": "preset-9",
-    "songTitle": "AIR RAID FROM THA UNDAGROUND(L)",
-    "textageURL": "https://textage.cc/score/17/airraid.html?1XC00",
+    "title": "AIR RAID FROM THA UNDAGROUND(L)",
+    "url": "https://textage.cc/score/17/airraid.html?1XC00",
     "priority": 5,
     "description": "トリルがほぼ割れる",
     "patterns": [
@@ -151,8 +151,8 @@
   },
   {
     "id": "preset-10",
-    "songTitle": "AIR RAID FROM THA UNDAGROUND(L)",
-    "textageURL": "https://textage.cc/score/17/airraid.html?1XC00",
+    "title": "AIR RAID FROM THA UNDAGROUND(L)",
+    "url": "https://textage.cc/score/17/airraid.html?1XC00",
     "priority": 5,
     "description": "トリルがほぼ割れる",
     "patterns": [
@@ -166,8 +166,8 @@
   },
   {
     "id": "preset-11",
-    "songTitle": "3y3s(A)",
-    "textageURL": "https://textage.cc/score/16/3y3s.html?1AC00",
+    "title": "3y3s(A)",
+    "url": "https://textage.cc/score/16/3y3s.html?1AC00",
     "priority": 1,
     "description": "開幕発狂が割れる",
     "patterns": [
@@ -181,8 +181,8 @@
   },
   {
     "id": "preset-12",
-    "songTitle": "3y3s(A)",
-    "textageURL": "https://textage.cc/score/16/3y3s.html?1AC00",
+    "title": "3y3s(A)",
+    "url": "https://textage.cc/score/16/3y3s.html?1AC00",
     "priority": 1,
     "description": "開幕発狂が割れる",
     "patterns": [
@@ -196,8 +196,8 @@
   },
   {
     "id": "preset-13",
-    "songTitle": "Smashing Wedge(A)",
-    "textageURL": "https://textage.cc/score/27/smawedge.html?1AC00",
+    "title": "Smashing Wedge(A)",
+    "url": "https://textage.cc/score/27/smawedge.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -211,8 +211,8 @@
   },
   {
     "id": "preset-14",
-    "songTitle": "Smashing Wedge(A)",
-    "textageURL": "https://textage.cc/score/27/smawedge.html?1AC00",
+    "title": "Smashing Wedge(A)",
+    "url": "https://textage.cc/score/27/smawedge.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -226,8 +226,8 @@
   },
   {
     "id": "preset-15",
-    "songTitle": "狂イ咲ケ焔ノ華(A)",
-    "textageURL": "https://textage.cc/score/20/_kuruizk.html?1AC00",
+    "title": "狂イ咲ケ焔ノ華(A)",
+    "url": "https://textage.cc/score/20/_kuruizk.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -241,8 +241,8 @@
   },
   {
     "id": "preset-16",
-    "songTitle": "狂イ咲ケ焔ノ華(A)",
-    "textageURL": "https://textage.cc/score/20/_kuruizk.html?1AC00",
+    "title": "狂イ咲ケ焔ノ華(A)",
+    "url": "https://textage.cc/score/20/_kuruizk.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -256,8 +256,8 @@
   },
   {
     "id": "preset-17",
-    "songTitle": "ra'am(A)",
-    "textageURL": "https://textage.cc/score/21/raam.html?1AC00",
+    "title": "ra'am(A)",
+    "url": "https://textage.cc/score/21/raam.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -271,8 +271,8 @@
   },
   {
     "id": "preset-18",
-    "songTitle": "ra'am(A)",
-    "textageURL": "https://textage.cc/score/21/raam.html?1AC00",
+    "title": "ra'am(A)",
+    "url": "https://textage.cc/score/21/raam.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -286,8 +286,8 @@
   },
   {
     "id": "preset-19",
-    "songTitle": "アストライアの双皿(A)",
-    "textageURL": "https://textage.cc/score/20/_astraia.html?1AC00",
+    "title": "アストライアの双皿(A)",
+    "url": "https://textage.cc/score/20/_astraia.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -301,8 +301,8 @@
   },
   {
     "id": "preset-20",
-    "songTitle": "アストライアの双皿(A)",
-    "textageURL": "https://textage.cc/score/20/_astraia.html?1AC00",
+    "title": "アストライアの双皿(A)",
+    "url": "https://textage.cc/score/20/_astraia.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -316,8 +316,8 @@
   },
   {
     "id": "preset-21",
-    "songTitle": "Beyond Evolution(A)",
-    "textageURL": "https://textage.cc/score/30/beyondev.html?1AC00",
+    "title": "Beyond Evolution(A)",
+    "url": "https://textage.cc/score/30/beyondev.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -331,8 +331,8 @@
   },
   {
     "id": "preset-22",
-    "songTitle": "Somnidiscotheque(A)",
-    "textageURL": "https://textage.cc/score/30/somnidis.html?1AC00",
+    "title": "Somnidiscotheque(A)",
+    "url": "https://textage.cc/score/30/somnidis.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -346,8 +346,8 @@
   },
   {
     "id": "preset-23",
-    "songTitle": "Somnidiscotheque(A)",
-    "textageURL": "https://textage.cc/score/30/somnidis.html?1AC00",
+    "title": "Somnidiscotheque(A)",
+    "url": "https://textage.cc/score/30/somnidis.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -361,8 +361,8 @@
   },
   {
     "id": "preset-24",
-    "songTitle": "n/a(A)",
-    "textageURL": "https://textage.cc/score/29/n_a.html?1AC00",
+    "title": "n/a(A)",
+    "url": "https://textage.cc/score/29/n_a.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -376,10 +376,10 @@
   },
   {
     "id": "preset-25",
-    "songTitle": "KAMAITACHI(L)",
-    "textageURL": "https://textage.cc/score/14/kmitachi.html?1XC00",
+    "title": "KAMAITACHI(L)",
+    "url": "https://textage.cc/score/14/kmitachi.html?1XC00",
     "priority": 1,
-    "description": "30小節が割れる",
+    "description": "34小節が割れる、ラストは難しい",
     "patterns": [
       {
         "scratchSideText": "136",
@@ -391,8 +391,8 @@
   },
   {
     "id": "preset-26",
-    "songTitle": "子供の落書き帳(A)",
-    "textageURL": "https://textage.cc/score/19/_kodomo.html?1AC00",
+    "title": "子供の落書き帳(A)",
+    "url": "https://textage.cc/score/19/_kodomo.html?1AC00",
     "priority": 1,
     "description": "23-24小節が押しやすい",
     "patterns": [
@@ -406,8 +406,8 @@
   },
   {
     "id": "preset-27",
-    "songTitle": "rage against usual(A)",
-    "textageURL": "https://textage.cc/score/12/rageagst.html?1AC00",
+    "title": "rage against usual(A)",
+    "url": "https://textage.cc/score/12/rageagst.html?1AC00",
     "priority": 2,
     "description": "発狂が割れる",
     "patterns": [
@@ -421,8 +421,8 @@
   },
   {
     "id": "preset-28",
-    "songTitle": "TECHNOPHOBIA(A)",
-    "textageURL": "https://textage.cc/score/30/tcphobia.html?1AC00",
+    "title": "TECHNOPHOBIA(A)",
+    "url": "https://textage.cc/score/30/tcphobia.html?1AC00",
     "priority": 2,
     "description": "発狂が割れる",
     "patterns": [
@@ -436,8 +436,8 @@
   },
   {
     "id": "preset-29",
-    "songTitle": "KAISER PHOENIX(L)",
-    "textageURL": "https://textage.cc/score/21/kaiserph.html?1XC00",
+    "title": "KAISER PHOENIX(L)",
+    "url": "https://textage.cc/score/21/kaiserph.html?1XC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -451,8 +451,8 @@
   },
   {
     "id": "preset-30",
-    "songTitle": "AKASHIC BREAK(A)",
-    "textageURL": "https://textage.cc/score/27/akashicb.html?1AC00",
+    "title": "AKASHIC BREAK(A)",
+    "url": "https://textage.cc/score/27/akashicb.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -466,8 +466,8 @@
   },
   {
     "id": "preset-31",
-    "songTitle": "卑弥呼(A)",
-    "textageURL": "https://textage.cc/score/16/_himiko.html?1AC00",
+    "title": "卑弥呼(A)",
+    "url": "https://textage.cc/score/16/_himiko.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -481,8 +481,8 @@
   },
   {
     "id": "preset-32",
-    "songTitle": "ディスコルディア(A)",
-    "textageURL": "https://textage.cc/score/28/_dscrdia.html?1AC00",
+    "title": "ディスコルディア(A)",
+    "url": "https://textage.cc/score/28/_dscrdia.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -496,8 +496,8 @@
   },
   {
     "id": "preset-33",
-    "songTitle": "Go Beyond!!(A)",
-    "textageURL": "https://textage.cc/score/16/gobeyond.html?1AC00",
+    "title": "Go Beyond!!(A)",
+    "url": "https://textage.cc/score/16/gobeyond.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -511,8 +511,8 @@
   },
   {
     "id": "preset-34",
-    "songTitle": "Go Ahead!!(A)",
-    "textageURL": "https://textage.cc/score/24/goahead.html?1AC00",
+    "title": "Go Ahead!!(A)",
+    "url": "https://textage.cc/score/24/goahead.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -526,8 +526,8 @@
   },
   {
     "id": "preset-35",
-    "songTitle": "Χ-DEN(A)",
-    "textageURL": "https://textage.cc/score/26/_kai_den.html?1AC00",
+    "title": "Χ-DEN(A)",
+    "url": "https://textage.cc/score/26/_kai_den.html?1AC00",
     "priority": 1,
     "description": "",
     "patterns": [
@@ -541,8 +541,8 @@
   },
   {
     "id": "preset-36",
-    "songTitle": "VOX UP(A)",
-    "textageURL": "https://textage.cc/score/21/voxup_sp.html?1AC00",
+    "title": "VOX UP(A)",
+    "url": "https://textage.cc/score/21/voxup_sp.html?1AC00",
     "priority": 1,
     "description": "R乱当たり配置",
     "patterns": [
@@ -556,10 +556,25 @@
   },
   {
     "id": "preset-37",
-    "songTitle": "VOX UP(A)",
-    "textageURL": "https://textage.cc/score/21/voxup_sp.html?1AC00",
+    "title": "VOX UP(A)",
+    "url": "https://textage.cc/score/21/voxup_sp.html?1AC00",
     "priority": 5,
     "description": "R乱当たり配置",
+    "patterns": [
+      {
+        "scratchSideText": "167",
+        "isScratchSideUnordered": true,
+        "nonScratchSideText": "****",
+        "isNonScratchSideUnordered": true
+      }
+    ]
+  },
+  {
+    "id": "preset-38",
+    "title": "シムルグの目醒め(A)",
+    "url": "https://textage.cc/score/25/_simurgh.html?1AC00",
+    "priority": 1,
+    "description": "皿絡みが楽になる",
     "patterns": [
       {
         "scratchSideText": "167",
