@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { filterTickets } from "./ticketMatcher";
+import { filterTickets } from "./match";
 import type { Ticket, SearchPattern } from "../types";
 
 const sampleTickets: Ticket[] = [

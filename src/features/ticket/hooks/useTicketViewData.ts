@@ -1,6 +1,6 @@
+import { useAtariRules } from "../../../hooks/useAtariRules";
 import { usePersistentTickets } from "../../../hooks/usePersistentTickets";
 import { useSongs } from "../../../hooks/useSongs";
-import { useAtariRules } from "../../../hooks/useAtariRules";
 import { LocalStorage } from "../../../storage/localStorage";
 import { Ticket } from "../../../types";
 
@@ -25,7 +25,7 @@ export const useTicketViewData = (isSample: boolean) => {
     type: "url",
     path: `${import.meta.env.BASE_URL}data/songs.json`,
   });
-  const { allRules, rulesBySong, uniquePatterns, isLoading: isAtariRulesLoading } = useAtariRules();
+  const { atariRules, isLoading: isAtariRulesLoading } = useAtariRules();
 
   const tickets = isSample ? sampleTickets : persistentTickets;
 
@@ -37,8 +37,6 @@ export const useTicketViewData = (isSample: boolean) => {
     isLoading,
     tickets,
     songs,
-    allRules,
-    rulesBySong,
-    uniquePatterns,
+    atariRules,
   };
 };

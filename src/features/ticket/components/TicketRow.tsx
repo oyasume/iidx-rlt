@@ -1,8 +1,9 @@
-import { TableRow, TableCell, Box, Typography, Tooltip, IconButton } from "@mui/material";
-import LaunchIcon from "@mui/icons-material/Launch";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { Ticket, SongInfo } from "../../../types";
-import { HighlightColor } from "../../../utils/getHighlightColor";
+import LaunchIcon from "@mui/icons-material/Launch";
+import { Box, IconButton, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
+
+import { SongInfo, Ticket } from "../../../types";
+import { HighlightColor } from "../../../utils/atari";
 
 const colorMap: Record<NonNullable<HighlightColor>, string> = {
   gold: "#FFD700",

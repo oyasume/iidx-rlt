@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import {
   Box,
   IconButton,
@@ -12,11 +13,11 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { Ticket, SongInfo } from "../../../types";
+import React, { useState } from "react";
+
+import { SongInfo, Ticket } from "../../../types";
+import { HighlightColor } from "../../../utils/atari";
 import { TicketRow } from "./TicketRow";
-import { HighlightColor } from "../../../utils/getHighlightColor";
 
 interface TicketListProps {
   tickets: (Ticket & { highlightColor?: HighlightColor })[];

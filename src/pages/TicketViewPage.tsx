@@ -1,32 +1,31 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Box, Button, Divider, Stack, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import React, { useCallback, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { FormProvider, useForm } from "react-hook-form";
-import { Stack, Divider, Box, Button, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { TicketResultsSection } from "../features/ticket/components/TicketResultsSection";
-import { searchFormSchema, SearchFormValues } from "../schema";
-import { usePagination } from "../hooks/usePagination";
-import { TextageForm } from "../features/ticket/components/TextageForm";
-import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
-import { TicketList } from "../features/ticket/components/TicketList";
-import { SongInfo, PlaySide, Ticket } from "../types";
+
 import { useAppSettings, useAppSettingsDispatch } from "../contexts/AppSettingsContext";
-import { makeTextageUrl } from "../utils/makeTextageUrl";
-import { AtariRulePanel } from "../features/ticket/components/AtariRulePanel";
-import { matchTicket, filterTickets } from "../utils/ticketMatcher";
-import { useTicketViewData } from "../features/ticket/hooks/useTicketViewData";
 import { AtariInfoPanel } from "../features/ticket/components/AtariInfoPanel";
-import { useAtariMatcher } from "../hooks/useAtariMatcher";
-import { getHighlightColor } from "../utils/getHighlightColor";
+import { AtariRulePanel } from "../features/ticket/components/AtariRulePanel";
+import { TextageForm } from "../features/ticket/components/TextageForm";
+import { TicketList } from "../features/ticket/components/TicketList";
+import { TicketResultsSection } from "../features/ticket/components/TicketResultsSection";
+import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
+import { useTicketViewData } from "../features/ticket/hooks/useTicketViewData";
+import { usePagination } from "../hooks/usePagination";
+import { searchFormSchema, SearchFormValues } from "../schema";
+import { PlaySide, SongInfo, Ticket } from "../types";
+import { createAtariMap } from "../utils/atari";
+import { makeTextageUrl } from "../utils/makeTextageUrl";
+import { filterTickets, matchTicket } from "../utils/match";
 
 interface TicketViewPageProps {
   isSample?: boolean;
 }
 
 export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
-  const { isLoading, tickets, songs, allRules, rulesBySong, uniquePatterns } = useTicketViewData(isSample);
-
+  const { isLoading, tickets, songs, atariRules } = useTicketViewData(isSample);
   // 1P/2Pの設定
   const settings = useAppSettings();
   const { updatePlaySide } = useAppSettingsDispatch();
@@ -35,20 +34,21 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
       updatePlaySide(newPlaySide);
     }
   };
-  const atariMatcher = useAtariMatcher(tickets, allRules, uniquePatterns, settings.playSide);
+
+  // 当たり配置情報
+  const atariMap = useMemo(() => createAtariMap(atariRules), [atariRules]);
 
   // 選択された曲の状態管理
   const [selectedSong, setSelectedSong] = useState<SongInfo | null>(null);
   const [searchMode, setSearchMode] = useState<"recommend" | "all">("recommend");
-  const songsWithAtariRules = useMemo(() => {
-    if (!songs || !rulesBySong) return [];
-    return songs.filter((song) => rulesBySong.has(song.title));
-  }, [songs, rulesBySong]);
-  const selectedSongAtariRules = useMemo(() => {
-    if (!selectedSong || !rulesBySong) return [];
-    return rulesBySong.get(selectedSong.title) || [];
-  }, [selectedSong, rulesBySong]);
-
+  const atariSongs = useMemo(
+    () => songs.filter((song) => (atariMap.getRulesForSong(song.title) ?? []).length > 0),
+    [songs, atariMap]
+  );
+  const selectedAtariRules = useMemo(
+    () => (selectedSong ? (atariMap.getRulesForSong(selectedSong.title) ?? []) : []),
+    [atariMap, selectedSong]
+  );
   const handleOpenTextage = useCallback(
     (laneText: string) => {
       if (selectedSong) {
@@ -91,23 +91,23 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
         // おすすめから選択された曲がある場合、その曲の当たりチケットのみを表示
         const applyAtariFilter = searchMode === "recommend" && selectedSong;
         if (!applyAtariFilter) return true;
-        return selectedSongAtariRules.some((rule) =>
+        return selectedAtariRules.some((rule) =>
           rule.patterns.some((pattern) => matchTicket(ticket, pattern, settings.playSide))
         );
       })
       .map((ticket) => ({
         ...ticket,
-        highlightColor: getHighlightColor(atariMatcher.get(ticket.laneText) || []),
+        highlightColor: atariMap.getColorForTicket(ticket, settings.playSide),
       }));
   }, [
-    atariMatcher,
+    atariMap,
     isNonScratchSideUnordered,
     isScratchSideUnordered,
     nonScratchSideText,
     scratchSideText,
     searchMode,
+    selectedAtariRules,
     selectedSong,
-    selectedSongAtariRules,
     settings.playSide,
     tickets,
   ]);
@@ -126,8 +126,8 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
   const detailTicketRules = useMemo(() => {
     if (!detailTicket) return [];
-    return atariMatcher.get(detailTicket.laneText) || [];
-  }, [detailTicket, atariMatcher]);
+    return atariMap.getRulesForTicket(detailTicket, settings.playSide) || [];
+  }, [detailTicket, atariMap, settings.playSide]);
   const handleCloseDetail = () => {
     setDetailTicket(null);
   };
@@ -153,13 +153,13 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
         <Divider />
         <TextageForm
           allSongs={songs}
-          atariSongs={songsWithAtariRules}
+          atariSongs={atariSongs}
           selectedSong={selectedSong}
           onSongSelect={setSelectedSong}
           searchMode={searchMode}
           onModeChange={setSearchMode}
         />
-        <AtariRulePanel rules={selectedSongAtariRules} playSide={settings.playSide} />
+        <AtariRulePanel rules={selectedAtariRules} playSide={settings.playSide} />
         <Divider />
         {tickets.length === 0 && !isSample ? (
           <Box>

@@ -1,4 +1,4 @@
-import type { Ticket, SearchPattern, PlaySide } from "../types";
+import { Ticket, SearchPattern, PlaySide } from "../types";
 
 const matchChar = (ruleChar: string, targetChar: string): boolean => {
   if (ruleChar === "*") return true;
