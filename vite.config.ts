@@ -38,6 +38,30 @@ export default defineConfig(() => {
             },
           ],
         },
+        workbox: {
+          globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+          runtimeCaching: [
+            {
+              urlPattern: ({ url }) => url.pathname.endsWith("/iidx-rlt/data/version.json"),
+              handler: "NetworkFirst",
+              options: {
+                cacheName: "version-cache",
+                expiration: { maxEntries: 1 },
+              },
+            },
+            {
+              urlPattern: ({ url }) => url.pathname.startsWith("/iidx-rlt/data/"),
+              handler: "StaleWhileRevalidate",
+              options: {
+                cacheName: "data-cache",
+                expiration: {
+                  maxEntries: 10,
+                  maxAgeSeconds: 60 * 60 * 24 * 7,
+                },
+              },
+            },
+          ],
+        },
       }),
     ],
     test: {

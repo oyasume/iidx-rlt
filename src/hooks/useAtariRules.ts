@@ -10,7 +10,7 @@ export const useAtariRules = () => {
   useEffect(() => {
     const loadRules = async () => {
       try {
-        const versionResponse = await fetch(`${import.meta.env.BASE_URL}data/version.json?r=${new Date().getTime()}`);
+        const versionResponse = await fetch(`${import.meta.env.BASE_URL}data/version.json`);
         const versionData = (await versionResponse.json()) as { version: string };
         const version = versionData.version;
 
