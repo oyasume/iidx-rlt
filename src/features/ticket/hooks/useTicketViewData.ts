@@ -15,6 +15,8 @@ const sampleTickets: Ticket[] = [
   { laneText: "7531642", expiration: "2999/12/31" }, // 2P側
   { laneText: "1726354", expiration: "2999/12/31" },
   { laneText: "4567123", expiration: "2999/12/31" },
+  { laneText: "1562347", expiration: "2999/12/31" }, // AIR RAID 1P
+  { laneText: "1564237", expiration: "2999/12/31" }, // AIR RAID 2P
 ];
 
 const storage = new LocalStorage();
