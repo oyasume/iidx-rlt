@@ -40,6 +40,7 @@ export default defineConfig(() => {
         },
         workbox: {
           globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+          navigateFallbackDenylist: [/^\/iidx-rlt\/sitemap\.xml$/, /^\/iidx-rlt\/robots\.txt$/],
           runtimeCaching: [
             {
               urlPattern: ({ url }) => url.pathname.startsWith("/iidx-rlt/data/"),
@@ -65,8 +66,12 @@ export default defineConfig(() => {
         exclude: ["src/**/*.stories.tsx", "src/types.ts", "src/storage/index.ts"],
       },
     },
+    ssr: {
+      noExternal: ["react-helmet-async"],
+    },
     build: {
       outDir: "dist",
+      ssrManifest: true,
     },
   };
 });
