@@ -142,5 +142,4 @@ storybook-static
 stats.html
 public/data/songs.json
 public/data/atari-rules.json
-public/data/version.json
 docs/ai

@@ -1,6 +1,5 @@
 import { http, HttpResponse } from "msw";
 
-const MOCK_VERSION = { version: "test-version" };
 const MOCK_ATARI_RULES = [
   {
     id: "test-id-1",
@@ -33,9 +32,6 @@ const MOCK_SONGS = [
 ];
 
 export const handlers = [
-  http.get("*/iidx-rlt/data/version.json", () => {
-    return HttpResponse.json(MOCK_VERSION);
-  }),
   http.get("*/iidx-rlt/data/atari-rules.json", () => {
     return HttpResponse.json(MOCK_ATARI_RULES);
   }),

@@ -9,7 +9,7 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "update-master": "tsx ./scripts/updateMaster.ts",
-    "build:presets": "tsx ./scripts/buildAtariPresets.ts && tsx ./scripts/generateVersion.ts",
+    "build:presets": "tsx ./scripts/buildAtariPresets.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "preview": "vite preview",
