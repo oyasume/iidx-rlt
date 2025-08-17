@@ -13,12 +13,8 @@ import { NotFoundPage } from "../pages/NotFoundPage";
 const storage = new LocalStorage();
 
 export const WebApp: React.FC = () => {
-  const { settings, updatePlaySide, isLoading } = useLocalStorageAppSettings(storage);
+  const { settings, updatePlaySide } = useLocalStorageAppSettings(storage);
   const dispatchValue = useMemo(() => ({ updatePlaySide }), [updatePlaySide]);
-
-  if (isLoading) {
-    return <div>設定を読み込んでいます...</div>;
-  }
 
   return (
     <SnackbarProvider>
