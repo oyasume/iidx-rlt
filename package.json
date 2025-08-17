@@ -2,7 +2,9 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && npm run prerender &&  tsx scripts/generateSitemap.ts",
+    "prerender": "vite build --ssr src/prerender-entry.tsx --outDir dist-ssr && tsx scripts/prerender.ts",
+    "preview": "vite preview",
     "dev": "vite",
     "lint": "eslint src scripts",
     "format": "prettier . --write",
@@ -11,9 +13,13 @@
     "update-master": "tsx ./scripts/updateMaster.ts",
     "build:presets": "tsx ./scripts/buildAtariPresets.ts",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "preview": "vite preview",
     "license-check": "npx license-checker --production --markdown > THIRD_PARTY_NOTICES.txt"
+  },
+  "overrides": {
+    "react-helmet-async": {
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0"
+    }
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -24,6 +30,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-ga4": "^2.1.0",
+    "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.62.0",
     "react-router-dom": "^7.8.0",
     "zod": "^4.0.17"
@@ -59,6 +66,7 @@
     "prettier": "^3.6.2",
     "puppeteer": "^24.16.1",
     "rollup-plugin-visualizer": "^6.0.3",
+    "sitemap": "^8.0.0",
     "storybook": "^9.0.12",
     "tsx": "^4.20.3",
     "typescript": "^5.9.2",

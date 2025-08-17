@@ -9,6 +9,7 @@ import { AboutPage } from "../pages/AboutPage";
 import { TicketViewPage } from "../pages/TicketViewPage";
 import { TicketImporterPage } from "../pages/TicketImporterPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { HomePage } from "../pages/HomePage";
 
 const storage = new LocalStorage();
 
@@ -22,7 +23,7 @@ export const WebApp: React.FC = () => {
         <AppSettingsDispatchContext.Provider value={dispatchValue}>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route index element={<TicketViewPage />} />
+              <Route index element={<HomePage />} />
               <Route path="about" element={<AboutPage />} />
               <Route path="import" element={<TicketImporterPage />} />
               <Route path="sample" element={<TicketViewPage isSample={true} />} />

@@ -5,6 +5,7 @@ import ReactGA from "react-ga4";
 import { FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
+import { Page } from "../components/layout/Page";
 import { useAppSettings, useAppSettingsDispatch } from "../contexts/AppSettingsContext";
 import { AtariInfoPanel } from "../features/ticket/components/AtariInfoPanel";
 import { AtariRulePanel } from "../features/ticket/components/AtariRulePanel";
@@ -132,66 +133,74 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     setDetailTicket(null);
   };
 
-  if (isLoading) {
-    return <div>データを読み込んでいます...</div>;
+  const isSSR = import.meta.env.SSR;
+  if (isLoading && !isSSR) {
+    return (
+      <>
+        <title> チケット一覧・当たり配置候補 - RLT Manager</title>
+        <div>データを読み込んでいます...</div>
+      </>
+    );
   }
 
   return (
-    <FormProvider {...methods}>
-      <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-        <ToggleButtonGroup
-          size="large"
-          value={settings.playSide}
-          color="primary"
-          exclusive
-          onChange={handlePlaySideToggle}
-        >
-          <ToggleButton value="1P">1P</ToggleButton>
-          <ToggleButton value="2P">2P</ToggleButton>
-        </ToggleButtonGroup>
-        <TicketSearchForm />
-        <Divider />
-        <TextageForm
-          allSongs={songs}
-          atariSongs={atariSongs}
-          selectedSong={selectedSong}
-          onSongSelect={setSelectedSong}
-          searchMode={searchMode}
-          onModeChange={setSearchMode}
-        />
-        <AtariRulePanel rules={selectedAtariRules} playSide={settings.playSide} />
-        <Divider />
-        {tickets.length === 0 && !isSample ? (
-          <Box>
-            <Typography variant="body1">チケットがありません</Typography>
-            <Typography color="text.secondary">
-              先にチケットをインポートするか、<Link to="/sample">サンプル</Link>でお試しください。
-            </Typography>
-            <Button component={Link} to="/import" variant="contained" sx={{ mt: 2 }}>
-              インポートページへ
-            </Button>
-          </Box>
-        ) : (
-          <TicketResultsSection
-            totalCount={processedTickets.length}
-            currentPage={currentPage}
-            pageCount={pageCount}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
+    <Page title="チケット一覧・当たり配置候補">
+      <FormProvider {...methods}>
+        <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+          <ToggleButtonGroup
+            size="large"
+            value={settings.playSide}
+            color="primary"
+            exclusive
+            onChange={handlePlaySideToggle}
           >
-            <TicketList
-              tickets={paginatedTickets}
-              selectedSong={selectedSong}
-              onOpenTextage={handleOpenTextage}
-              onRowClick={setDetailTicket}
-            />
-          </TicketResultsSection>
+            <ToggleButton value="1P">1P</ToggleButton>
+            <ToggleButton value="2P">2P</ToggleButton>
+          </ToggleButtonGroup>
+          <TicketSearchForm />
+          <Divider />
+          <TextageForm
+            allSongs={songs}
+            atariSongs={atariSongs}
+            selectedSong={selectedSong}
+            onSongSelect={setSelectedSong}
+            searchMode={searchMode}
+            onModeChange={setSearchMode}
+          />
+          <AtariRulePanel rules={selectedAtariRules} playSide={settings.playSide} />
+          <Divider />
+          {tickets.length === 0 && !isSample ? (
+            <Box>
+              <Typography variant="body1">チケットがありません</Typography>
+              <Typography color="text.secondary">
+                先にチケットをインポートするか、<Link to="/sample">サンプル</Link>でお試しください。
+              </Typography>
+              <Button component={Link} to="/import" variant="contained" sx={{ mt: 2 }}>
+                インポートページへ
+              </Button>
+            </Box>
+          ) : (
+            <TicketResultsSection
+              totalCount={processedTickets.length}
+              currentPage={currentPage}
+              pageCount={pageCount}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+            >
+              <TicketList
+                tickets={paginatedTickets}
+                selectedSong={selectedSong}
+                onOpenTextage={handleOpenTextage}
+                onRowClick={setDetailTicket}
+              />
+            </TicketResultsSection>
+          )}
+        </Stack>
+        {detailTicket && detailTicketRules.length > 0 && (
+          <AtariInfoPanel ticket={detailTicket} rules={detailTicketRules} onClose={handleCloseDetail} />
         )}
-      </Stack>
-      {detailTicket && detailTicketRules.length > 0 && (
-        <AtariInfoPanel ticket={detailTicket} rules={detailTicketRules} onClose={handleCloseDetail} />
-      )}
-    </FormProvider>
+      </FormProvider>
+    </Page>
   );
 };
