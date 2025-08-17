@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  actions: read
 
 jobs:
   scrape-and-update:
@@ -28,16 +29,9 @@ jobs:
       - name: Fetch latest master data
         run: npm run update-master
 
-      - name: Data Preparation
-        run: |
-          mkdir -p ./staging/data
-          cp ./public/data/songs.json ./staging/data/
-
-      - name: Deploy data file to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload song data artifact
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./staging
-          keep_files: true
-          commit_message: "chore: Update songs.json"
+          name: songs-data
+          path: public/data/songs.json
+          retention-days: 90
