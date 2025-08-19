@@ -20,10 +20,7 @@ describe("TicketList", () => {
   });
 
   it("チケットがある場合は一覧表示する", () => {
-    const tickets = [
-      { laneText: "1234567", expiration: "" },
-      { laneText: "7654321", expiration: "" },
-    ];
+    const tickets = [{ laneText: "1234567" }, { laneText: "7654321" }];
     render(<TicketList tickets={tickets} selectedSong={null} onOpenTextage={() => {}} onRowClick={() => {}} />);
 
     expect(screen.getByText("チケット")).toBeInTheDocument();

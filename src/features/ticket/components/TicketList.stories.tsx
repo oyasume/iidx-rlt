@@ -13,10 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    tickets: [
-      { laneText: "1234567", expiration: "" },
-      { laneText: "7654321", expiration: "" },
-    ],
+    tickets: [{ laneText: "1234567" }, { laneText: "7654321" }],
     selectedSong: null,
     onOpenTextage: () => alert("Textageが開かれます"),
   },

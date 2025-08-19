@@ -32,10 +32,7 @@ describe("useImporter", () => {
 
     it("インポート成功", async () => {
       const { result } = renderHook(() => useImporter(onImportMock));
-      const mockTickets = [
-        { laneText: "1234567", expiration: "" },
-        { laneText: "7654321", expiration: "" },
-      ];
+      const mockTickets = [{ laneText: "1234567" }, { laneText: "7654321" }];
 
       await act(async () => {
         await result.current.importTickets(JSON.stringify(mockTickets));

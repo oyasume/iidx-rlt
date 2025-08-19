@@ -4,10 +4,7 @@ import { usePersistentTickets } from "./usePersistentTickets";
 import { IStorage } from "../storage";
 import { Ticket } from "../types";
 
-const mockTickets: Ticket[] = [
-  { laneText: "1234567", expiration: "" },
-  { laneText: "7654321", expiration: "" },
-];
+const mockTickets: Ticket[] = [{ laneText: "1234567" }, { laneText: "7654321" }];
 
 const mockStorage: IStorage = {
   get: vi.fn(),
@@ -50,7 +47,7 @@ describe("usePersistentTickets", () => {
   describe("saveTickets", () => {
     it("新しいチケットで状態を更新し、ストレージに保存する", async () => {
       const { result } = renderHook(() => usePersistentTickets(mockStorage));
-      const newTickets: Ticket[] = [{ laneText: "2461357", expiration: "" }];
+      const newTickets: Ticket[] = [{ laneText: "2461357" }];
 
       await act(async () => {});
 

@@ -1,6 +1,6 @@
 export interface Ticket {
   laneText: string;
-  expiration: string;
+  expiration?: string;
 }
 
 export interface SearchPattern {

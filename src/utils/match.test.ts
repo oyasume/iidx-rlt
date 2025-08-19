@@ -3,11 +3,11 @@ import { filterTickets } from "./match";
 import type { Ticket, SearchPattern } from "../types";
 
 const sampleTickets: Ticket[] = [
-  { laneText: "1234567", expiration: "" },
-  { laneText: "3217654", expiration: "" },
-  { laneText: "7654321", expiration: "" },
-  { laneText: "1746352", expiration: "" }, // Xperanza当たり例1P
-  { laneText: "3645271", expiration: "" }, // Xperanza当たり例2P
+  { laneText: "1234567" },
+  { laneText: "3217654" },
+  { laneText: "7654321" },
+  { laneText: "1746352" }, // Xperanza当たり例1P
+  { laneText: "3645271" }, // Xperanza当たり例2P
 ];
 
 describe("filterTickets", () => {

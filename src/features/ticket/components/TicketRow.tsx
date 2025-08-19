@@ -54,7 +54,7 @@ export const TicketRow: React.FC<{
       </TableCell>
       <TableCell>
         <Typography variant="body2" color="text.secondary">
-          {ticket.expiration}
+          {ticket.expiration ?? ""}
         </Typography>
       </TableCell>
     </TableRow>

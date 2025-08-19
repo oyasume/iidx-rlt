@@ -37,17 +37,17 @@ describe(createAtariMap, () => {
 
   describe("getRulesForTicket", () => {
     it("マッチするものだけ返す(1P)", () => {
-      const ticket: Ticket = { laneText: "1234567", expiration: "" };
+      const ticket: Ticket = { laneText: "1234567" };
       const map = createAtariMap([createRule("a", 1, "A", p1), createRule("b", 1, "B", p2)]);
       expect(map.getRulesForTicket(ticket, "1P")?.map((v) => v.id)).toEqual(["a"]);
     });
     it("マッチするものだけ返す(2P)", () => {
-      const ticket: Ticket = { laneText: "7654321", expiration: "" };
+      const ticket: Ticket = { laneText: "7654321" };
       const map = createAtariMap([createRule("a", 1, "A", p1), createRule("b", 1, "B", p2)]);
       expect(map.getRulesForTicket(ticket, "2P")?.map((v) => v.id)).toEqual(["a"]);
     });
     it("優先度でソートされる", () => {
-      const ticket: Ticket = { laneText: "1234567", expiration: "" };
+      const ticket: Ticket = { laneText: "1234567" };
       const map = createAtariMap([
         createRule("a", 1, "A", p1),
         createRule("b", 2, "B", p1),
@@ -56,7 +56,7 @@ describe(createAtariMap, () => {
       expect(map.getRulesForTicket(ticket, "1P")?.map((v) => v.id)).toEqual(["c", "b", "a"]);
     });
     it("マッチしない場合はundefinedを返す", () => {
-      const ticket: Ticket = { laneText: "1357246", expiration: "" };
+      const ticket: Ticket = { laneText: "1357246" };
       const map = createAtariMap([createRule("a", 1, "A", p1)]);
       expect(map.getRulesForTicket(ticket, "1P")).toBeUndefined();
     });
@@ -119,7 +119,7 @@ describe(createAtariMap, () => {
 
     it.each(testCases)("$description", ({ rules, expectedColor }) => {
       const atariMap = createAtariMap(rules);
-      const color = atariMap.getColorForTicket({ laneText: "1234567", expiration: "" }, "1P");
+      const color = atariMap.getColorForTicket({ laneText: "1234567" }, "1P");
       expect(color).toBe(expectedColor);
     });
   });
