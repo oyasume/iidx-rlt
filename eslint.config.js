@@ -27,6 +27,7 @@ export default [
           varsIgnorePattern: "^_",
         },
       ],
+      "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: { attributes: false } }],
       "func-style": ["error", "expression", { allowArrowFunctions: true }],
     },
   },
