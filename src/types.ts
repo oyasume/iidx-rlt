@@ -21,7 +21,7 @@ export interface SongInfo {
 export type AtariRule = Omit<SongInfo, "level"> & {
   id: string;
   priority: number;
-  description: string;
+  description?: string;
   patterns: SearchPattern[];
 };
 
@@ -33,4 +33,13 @@ export interface AppNavItem {
   path: string;
   label: string;
   icon: React.ReactNode;
+}
+
+export type FilterMode = "recommend" | "all";
+
+export interface TicketQuery extends SearchPattern {
+  filterMode: FilterMode;
+  textageSong: SongInfo | null;
+  itemsPerPage: number;
+  currentPage: number;
 }
