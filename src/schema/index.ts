@@ -31,3 +31,12 @@ export const atariRuleSchema = z.object({
   patterns: z.array(searchFormSchema),
 });
 export const atariRulesSchema = z.array(atariRuleSchema);
+
+export const manualImportFormSchema = z.object({
+  laneText: z
+    .string()
+    .regex(/^[1-7]{7}$/, "1-7の数字のみを7桁で入力してください")
+    .refine(validateDuplicate, { message: "重複している数字があります" }),
+  expiration: z.string().optional(),
+});
+export type ManualImportFormValues = z.infer<typeof manualImportFormSchema>;
