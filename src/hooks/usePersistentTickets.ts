@@ -28,5 +28,13 @@ export const usePersistentTickets = (storage: IStorage) => {
     [storage]
   );
 
-  return { tickets, saveTickets, isLoading };
+  const addTicket = useCallback(
+    async (newTicket: Ticket) => {
+      const newTickets = [...tickets, newTicket];
+      await saveTickets(newTickets);
+    },
+    [tickets, saveTickets]
+  );
+
+  return { tickets, saveTickets, addTicket, isLoading };
 };
