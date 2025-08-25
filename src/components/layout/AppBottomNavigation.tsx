@@ -9,7 +9,10 @@ interface AppBottomNavigationProps {
 
 export const AppBottomNavigation: React.FC<AppBottomNavigationProps> = ({ navItems, tabIndex }) => {
   return (
-    <Paper sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }} elevation={3}>
+    <Paper
+      sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: (theme) => theme.zIndex.appBar }}
+      elevation={3}
+    >
       <BottomNavigation showLabels={false} value={tabIndex}>
         {navItems.map((tab) => (
           <BottomNavigationAction
