@@ -1,8 +1,18 @@
-import { Box, Button, Divider, Stack, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 import React, { useCallback, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { FormProvider } from "react-hook-form";
 import { Link } from "react-router-dom";
+import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
 import { useAppSettings, useAppSettingsDispatch } from "../contexts/AppSettingsContext";
@@ -14,26 +24,56 @@ import { TicketResultsSection } from "../features/ticket/components/TicketResult
 import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
 import { useTicketQuery } from "../features/ticket/hooks/useTicketQuery";
 import { useTicketSelectors } from "../features/ticket/hooks/useTicketSelectors";
-import { useTicketViewData } from "../features/ticket/hooks/useTicketViewData";
-import { PlaySide, Ticket } from "../types";
+import { usePersistentTickets } from "../hooks/usePersistentTickets";
+import { LocalStorage } from "../storage/localStorage";
+import { AtariRule, PlaySide, SongInfo, Ticket } from "../types";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
+
+const sampleTickets: Ticket[] = [
+  { laneText: "1234567", expiration: "2999/12/31" },
+  { laneText: "7654321", expiration: "2999/12/31" },
+  { laneText: "3456712", expiration: "2999/12/31" },
+  { laneText: "5432176", expiration: "2999/12/31" },
+  { laneText: "1357246", expiration: "2999/12/31" },
+  { laneText: "2461357", expiration: "2999/12/31" }, // 1P側
+  { laneText: "6427531", expiration: "2999/12/31" },
+  { laneText: "7531642", expiration: "2999/12/31" }, // 2P側
+  { laneText: "1726354", expiration: "2999/12/31" },
+  { laneText: "4567123", expiration: "2999/12/31" },
+  { laneText: "1562347", expiration: "2999/12/31" }, // AIR RAID 1P
+  { laneText: "1564237", expiration: "2999/12/31" }, // AIR RAID 2P
+];
+
+const storage = new LocalStorage();
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface TicketViewPageProps {
   isSample?: boolean;
 }
 
 export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
-  const { isLoading, tickets, songs, atariRules } = useTicketViewData(isSample);
+  const { tickets: persistentTickets, isLoading: isTicketsLoading } = usePersistentTickets(storage);
+
+  const { data: songs, isLoading: isSongDataLoading } = useSWR<SongInfo[]>(
+    `${import.meta.env.BASE_URL}data/songs.json`,
+    fetcher
+  );
+  const { data: atariRules, isLoading: isAtariRulesLoading } = useSWR<AtariRule[]>(
+    `${import.meta.env.BASE_URL}data/atari-rules.json`,
+    fetcher
+  );
 
   const settings = useAppSettings();
   const { updatePlaySide } = useAppSettingsDispatch();
 
   const { query, methods, ...handlers } = useTicketQuery();
 
+  const tickets = isSample ? sampleTickets : persistentTickets;
+
   const { atariMap, atariSongs, selectedAtariRules, paginatedTickets, pageCount, totalCount } = useTicketSelectors(
     tickets,
-    songs,
-    atariRules,
+    songs ?? [],
+    atariRules ?? [],
     query,
     settings.playSide
   );
@@ -65,13 +105,18 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     [query.textageSong, settings.playSide]
   );
 
-  const isSSR = import.meta.env.SSR;
-  if (isLoading && !isSSR) {
+  const isLoading = isSample
+    ? isSongDataLoading || isAtariRulesLoading
+    : isTicketsLoading || isSongDataLoading || isAtariRulesLoading;
+
+  if (isLoading && !import.meta.env.SSR) {
     return (
-      <>
-        <title> チケット一覧・当たり配置候補 - RLT Manager</title>
-        <div>データを読み込んでいます...</div>
-      </>
+      <Page title="チケット一覧・当たり配置候補 - RLT Manager">
+        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+          <CircularProgress />
+          <Typography sx={{ ml: 2 }}>データを読み込んでいます...</Typography>
+        </Box>
+      </Page>
     );
   }
 
@@ -92,7 +137,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
           <TicketSearchForm />
           <Divider />
           <TextageForm
-            allSongs={songs}
+            allSongs={songs ?? []}
             atariSongs={atariSongs}
             selectedSong={query.textageSong}
             onSongSelect={handlers.handleTextageSongChange}
