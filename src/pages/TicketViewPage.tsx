@@ -1,20 +1,12 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  Stack,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
-import React, { useCallback, useMemo, useState } from "react";
+import { Box, Button, CircularProgress, Divider, Stack, Typography } from "@mui/material";
+import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import { FormProvider } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
+import { PlaySideToggle } from "../components/ui/PlaySideToggle";
 import { AtariInfoPanel } from "../features/ticket/components/AtariInfoPanel";
 import { AtariRulePanel } from "../features/ticket/components/AtariRulePanel";
 import { TextageForm } from "../features/ticket/components/TextageForm";
@@ -67,12 +59,14 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
 
   const { query, methods, ...handlers } = useTicketQuery();
 
+  const deferredPlaySide = useDeferredValue(settings.playSide);
+
   const { atariMap, atariSongs, selectedAtariRules, paginatedTickets, pageCount, totalCount } = useTicketSelectors(
     tickets,
     songs ?? [],
     atariRules ?? [],
     query,
-    settings.playSide
+    deferredPlaySide
   );
 
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
@@ -81,10 +75,8 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     return atariMap.getRulesForTicket(detailTicket, settings.playSide) || [];
   }, [detailTicket, atariMap, settings.playSide]);
 
-  const handlePlaySideToggle = (_event: React.MouseEvent<HTMLElement>, newPlaySide: PlaySide | null) => {
-    if (newPlaySide !== null) {
-      updatePlaySide(newPlaySide);
-    }
+  const handlePlaySideChange = (newPlaySide: PlaySide) => {
+    updatePlaySide(newPlaySide);
   };
 
   const handleOpenTextage = useCallback(
@@ -119,16 +111,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     <Page title="チケット一覧・当たり配置候補">
       <FormProvider {...methods}>
         <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          <ToggleButtonGroup
-            size="large"
-            value={settings.playSide}
-            color="primary"
-            exclusive
-            onChange={handlePlaySideToggle}
-          >
-            <ToggleButton value="1P">1P</ToggleButton>
-            <ToggleButton value="2P">2P</ToggleButton>
-          </ToggleButtonGroup>
+          <PlaySideToggle value={settings.playSide} onChange={handlePlaySideChange} />
           <TicketSearchForm />
           <Divider />
           <TextageForm
