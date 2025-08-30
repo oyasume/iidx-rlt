@@ -12,41 +12,63 @@ export const useTicketSelectors = (
 ) => {
   const atariMap = useMemo(() => createAtariMap(atariRules), [atariRules]);
 
+  const {
+    scratchSideText,
+    isScratchSideUnordered,
+    nonScratchSideText,
+    isNonScratchSideUnordered,
+    filterMode,
+    textageSong,
+    itemsPerPage,
+    currentPage,
+  } = query;
+
   const selectedAtariRules = useMemo(
-    () => (query.textageSong ? (atariMap.getRulesForSong(query.textageSong.title) ?? []) : []),
-    [atariMap, query.textageSong]
+    () => (textageSong ? (atariMap.getRulesForSong(textageSong.title) ?? []) : []),
+    [atariMap, textageSong]
   );
 
   const filteredTickets = useMemo(() => {
-    const searched = filterTickets(tickets, query, playSide);
+    const searched = filterTickets(
+      tickets,
+      { scratchSideText, isScratchSideUnordered, nonScratchSideText, isNonScratchSideUnordered },
+      playSide
+    );
 
-    const applyAtariFilter = query.filterMode === "recommend" && query.textageSong;
-    if (!applyAtariFilter) {
-      return searched;
-    }
+    const applyAtariFilter = filterMode === "recommend" && textageSong;
+    if (!applyAtariFilter) return searched;
+
     return searched.filter((ticket) =>
       selectedAtariRules.some((rule) => rule.patterns.some((pattern) => matchTicket(ticket, pattern, playSide)))
     );
-  }, [tickets, query, playSide, selectedAtariRules]);
+  }, [
+    tickets,
+    playSide,
+    selectedAtariRules,
+    scratchSideText,
+    isScratchSideUnordered,
+    nonScratchSideText,
+    isNonScratchSideUnordered,
+    filterMode,
+    textageSong,
+  ]);
 
-  const highlightedTickets = useMemo(
+  const totalCount = filteredTickets.length;
+  const pageCount = useMemo(() => Math.ceil(totalCount / itemsPerPage), [totalCount, itemsPerPage]);
+
+  const pageSlice = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredTickets.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredTickets, currentPage, itemsPerPage]);
+
+  const paginatedTickets = useMemo(
     () =>
-      filteredTickets.map((ticket) => ({
+      pageSlice.map((ticket) => ({
         ...ticket,
         highlightColor: atariMap.getColorForTicket(ticket, playSide),
       })),
-    [filteredTickets, atariMap, playSide]
+    [pageSlice, atariMap, playSide]
   );
-
-  const pageCount = useMemo(
-    () => Math.ceil(highlightedTickets.length / query.itemsPerPage),
-    [highlightedTickets.length, query.itemsPerPage]
-  );
-
-  const paginatedTickets = useMemo(() => {
-    const startIndex = (query.currentPage - 1) * query.itemsPerPage;
-    return highlightedTickets.slice(startIndex, startIndex + query.itemsPerPage);
-  }, [highlightedTickets, query.currentPage, query.itemsPerPage]);
 
   const atariSongs = useMemo(
     () => songs.filter((song) => (atariMap.getRulesForSong(song.title) ?? []).length > 0),
@@ -59,6 +81,6 @@ export const useTicketSelectors = (
     selectedAtariRules,
     paginatedTickets,
     pageCount,
-    totalCount: highlightedTickets.length,
+    totalCount,
   };
 };
