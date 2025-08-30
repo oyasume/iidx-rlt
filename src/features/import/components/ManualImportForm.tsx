@@ -1,18 +1,19 @@
-import { Button, Stack, TextField } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { manualImportFormSchema, ManualImportFormValues } from "../../../schema";
-import { Ticket } from "../../../types";
-import { useState } from "react";
-import dayjs from "dayjs";
-import "dayjs/locale/ja";
-import { jaJP } from "@mui/x-date-pickers/locales";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Button, Stack, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { jaJP } from "@mui/x-date-pickers/locales";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import "dayjs/locale/ja";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+
+import { manualImportFormSchema, ManualImportFormValues } from "../../../schema";
+import { Ticket } from "../../../types";
 
 interface Props {
-  onImport: (ticket: Ticket) => Promise<void>;
+  onImport: (ticket: Ticket) => void;
   isLoading: boolean;
 }
 
@@ -31,12 +32,12 @@ export const ManualImportForm = ({ onImport, isLoading }: Props) => {
     },
   });
 
-  const onSubmit = async (data: ManualImportFormValues) => {
+  const onSubmit = (data: ManualImportFormValues) => {
     const ticket: Ticket =
       data.expiration && data.expiration.trim() !== ""
         ? { laneText: data.laneText, expiration: data.expiration }
         : { laneText: data.laneText };
-    await onImport(ticket);
+    onImport(ticket);
     reset({ laneText: "", expiration: data.expiration ?? "" });
   };
 

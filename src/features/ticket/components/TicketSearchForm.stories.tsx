@@ -1,11 +1,11 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
-import { TicketSearchForm } from "./TicketSearchForm";
 import { searchFormSchema, SearchFormValues } from "../../../schema";
-import { AppSettingsContext } from "../../../contexts/AppSettingsContext";
-import { AppSettings, PlaySide } from "../../../types";
+import { useSettingsStore } from "../../../state/settingsStore";
+import { PlaySide } from "../../../types";
+import { TicketSearchForm } from "./TicketSearchForm";
 
 type TicketSearchFormStoryProps = {
   playSide: PlaySide;
@@ -17,7 +17,9 @@ const meta: Meta<TicketSearchFormStoryProps> = {
   tags: ["autodocs"],
   decorators: [
     (Story, context) => {
-      const settings: AppSettings = { playSide: context.args.playSide || "1P" };
+      const side: PlaySide = context.args.playSide || "1P";
+      useSettingsStore.setState({ playSide: side });
+
       const methods = useForm<SearchFormValues>({
         resolver: zodResolver(searchFormSchema),
         defaultValues: {
@@ -28,11 +30,9 @@ const meta: Meta<TicketSearchFormStoryProps> = {
         },
       });
       return (
-        <AppSettingsContext.Provider value={settings}>
-          <FormProvider {...methods}>
-            <Story />
-          </FormProvider>
-        </AppSettingsContext.Provider>
+        <FormProvider {...methods}>
+          <Story />
+        </FormProvider>
       );
     },
   ],

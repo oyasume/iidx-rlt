@@ -1,11 +1,11 @@
-import React from "react";
 import { Box } from "@mui/material";
-import { useAppSettings } from "../../../contexts/AppSettingsContext";
+import React from "react";
+
 import { KeypadInput } from "../../../components/ui/KeypadInput";
+import { useSettingsStore } from "../../../state/settingsStore";
 
 export const TicketSearchForm: React.FC = () => {
-  const settings = useAppSettings();
-  const is1P = settings.playSide === "1P";
+  const is1P = useSettingsStore((s) => s.playSide) === "1P";
 
   const scratchSide = (
     <KeypadInput

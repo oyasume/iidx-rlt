@@ -1,38 +1,26 @@
-import { useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
-import { LocalStorage } from "../storage/localStorage";
-import { useAppSettings as useLocalStorageAppSettings } from "../hooks/useAppSettings";
-import { AppSettingsContext, AppSettingsDispatchContext } from "../contexts/AppSettingsContext";
-import { SnackbarProvider } from "../contexts/SnackbarContext";
-import { Layout } from "../components/layout/Layout";
-import { AboutPage } from "../pages/AboutPage";
-import { TicketViewPage } from "../pages/TicketViewPage";
-import { TicketImporterPage } from "../pages/TicketImporterPage";
-import { NotFoundPage } from "../pages/NotFoundPage";
-import { HomePage } from "../pages/HomePage";
 
-const storage = new LocalStorage();
+import { Layout } from "../components/layout/Layout";
+import { SnackbarProvider } from "../contexts/SnackbarContext";
+import { AboutPage } from "../pages/AboutPage";
+import { HomePage } from "../pages/HomePage";
+import { NotFoundPage } from "../pages/NotFoundPage";
+import { TicketImporterPage } from "../pages/TicketImporterPage";
+import { TicketViewPage } from "../pages/TicketViewPage";
 
 export const WebApp: React.FC = () => {
-  const { settings, updatePlaySide } = useLocalStorageAppSettings(storage);
-  const dispatchValue = useMemo(() => ({ updatePlaySide }), [updatePlaySide]);
-
   return (
     <SnackbarProvider>
-      <AppSettingsContext.Provider value={settings}>
-        <AppSettingsDispatchContext.Provider value={dispatchValue}>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<HomePage />} />
-              <Route path="about" element={<AboutPage />} />
-              <Route path="import" element={<TicketImporterPage />} />
-              <Route path="sample" element={<TicketViewPage isSample={true} />} />
-              <Route path="tickets" element={<TicketViewPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
-          </Routes>
-        </AppSettingsDispatchContext.Provider>
-      </AppSettingsContext.Provider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="import" element={<TicketImporterPage />} />
+          <Route path="sample" element={<TicketViewPage isSample={true} />} />
+          <Route path="tickets" element={<TicketViewPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
     </SnackbarProvider>
   );
 };

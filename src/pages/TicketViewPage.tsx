@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import useSWR from "swr";
 
 import { Page } from "../components/layout/Page";
-import { useAppSettings, useAppSettingsDispatch } from "../contexts/AppSettingsContext";
 import { AtariInfoPanel } from "../features/ticket/components/AtariInfoPanel";
 import { AtariRulePanel } from "../features/ticket/components/AtariRulePanel";
 import { TextageForm } from "../features/ticket/components/TextageForm";
@@ -24,8 +23,8 @@ import { TicketResultsSection } from "../features/ticket/components/TicketResult
 import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
 import { useTicketQuery } from "../features/ticket/hooks/useTicketQuery";
 import { useTicketSelectors } from "../features/ticket/hooks/useTicketSelectors";
-import { usePersistentTickets } from "../hooks/usePersistentTickets";
-import { LocalStorage } from "../storage/localStorage";
+import { useSettingsStore } from "../state/settingsStore";
+import { useTicketsStore } from "../state/ticketsStore";
 import { AtariRule, PlaySide, SongInfo, Ticket } from "../types";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
 
@@ -44,7 +43,6 @@ const sampleTickets: Ticket[] = [
   { laneText: "1564237", expiration: "2999/12/31" }, // AIR RAID 2P
 ];
 
-const storage = new LocalStorage();
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface TicketViewPageProps {
@@ -52,8 +50,6 @@ interface TicketViewPageProps {
 }
 
 export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false }) => {
-  const { tickets: persistentTickets, isLoading: isTicketsLoading } = usePersistentTickets(storage);
-
   const { data: songs, isLoading: isSongDataLoading } = useSWR<SongInfo[]>(
     `${import.meta.env.BASE_URL}data/songs.json`,
     fetcher
@@ -63,12 +59,13 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     fetcher
   );
 
-  const settings = useAppSettings();
-  const { updatePlaySide } = useAppSettingsDispatch();
+  const persistentTickets = useTicketsStore((s) => s.tickets);
+  const tickets = isSample ? sampleTickets : persistentTickets;
+
+  const settings = { playSide: useSettingsStore((s) => s.playSide) };
+  const updatePlaySide = useSettingsStore((s) => s.updatePlaySide);
 
   const { query, methods, ...handlers } = useTicketQuery();
-
-  const tickets = isSample ? sampleTickets : persistentTickets;
 
   const { atariMap, atariSongs, selectedAtariRules, paginatedTickets, pageCount, totalCount } = useTicketSelectors(
     tickets,
@@ -105,9 +102,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     [query.textageSong, settings.playSide]
   );
 
-  const isLoading = isSample
-    ? isSongDataLoading || isAtariRulesLoading
-    : isTicketsLoading || isSongDataLoading || isAtariRulesLoading;
+  const isLoading = isSample ? isSongDataLoading || isAtariRulesLoading : isSongDataLoading || isAtariRulesLoading;
 
   if (isLoading && !import.meta.env.SSR) {
     return (

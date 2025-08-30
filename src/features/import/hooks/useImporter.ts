@@ -1,4 +1,5 @@
-import { useReducer, useCallback } from "react";
+import { useCallback, useReducer } from "react";
+
 import { Ticket } from "../../../types";
 
 export type ImporterState = {
@@ -35,11 +36,11 @@ const reducer = (state: ImporterState, action: Action): ImporterState => {
   }
 };
 
-export const useImporter = (onImport: (tickets: Ticket[]) => Promise<void>) => {
+export const useImporter = (onImport: (tickets: Ticket[]) => void) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const importTickets = useCallback(
-    async (jsonText: string) => {
+    (jsonText: string) => {
       dispatch({ type: "START_IMPORT" });
 
       if (!jsonText.trim()) {
@@ -53,7 +54,7 @@ export const useImporter = (onImport: (tickets: Ticket[]) => Promise<void>) => {
           dispatch({ type: "IMPORT_ERROR", payload: { error: "データが配列形式になっていません。" } });
           return;
         }
-        await onImport(parsedData);
+        onImport(parsedData);
         dispatch({ type: "IMPORT_SUCCESS", payload: { count: parsedData.length } });
       } catch (e) {
         const errorMessage =

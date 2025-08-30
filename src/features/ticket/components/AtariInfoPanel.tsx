@@ -1,10 +1,11 @@
-import ReactGA from "react-ga4";
-import { Typography, IconButton, List, ListItem, ListItemText, Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LaunchIcon from "@mui/icons-material/Launch";
-import { AtariRule, Ticket } from "../../../types";
+import { Box, IconButton, List, ListItem, ListItemText, Typography } from "@mui/material";
+import ReactGA from "react-ga4";
+
 import { FloatingPanel } from "../../../components/ui/FloatingPanel";
-import { useAppSettings } from "../../../contexts/AppSettingsContext";
+import { useSettingsStore } from "../../../state/settingsStore";
+import { AtariRule, Ticket } from "../../../types";
 import { makeTextageUrl } from "../../../utils/makeTextageUrl";
 
 interface AtariInfoPanelProps {
@@ -14,7 +15,7 @@ interface AtariInfoPanelProps {
 }
 
 export const AtariInfoPanel = ({ ticket, rules, onClose }: AtariInfoPanelProps) => {
-  const settings = useAppSettings();
+  const playSide = useSettingsStore((s) => s.playSide);
 
   const handleOpenTextage = (rule: AtariRule) => {
     ReactGA.event({
@@ -22,7 +23,7 @@ export const AtariInfoPanel = ({ ticket, rules, onClose }: AtariInfoPanelProps) 
       action: "click_textage_link_from_detail",
       label: rule.title,
     });
-    const url = makeTextageUrl(rule.url, settings.playSide, ticket.laneText);
+    const url = makeTextageUrl(rule.url, playSide, ticket.laneText);
     window.open(url, "_blank", "noopener,noreferrer");
   };
 

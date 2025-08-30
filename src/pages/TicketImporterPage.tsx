@@ -8,24 +8,22 @@ import { BookmarkletSection } from "../features/import/components/BookmarkletSec
 import { JsonImportForm } from "../features/import/components/JsonImportForm";
 import { ManualImportForm } from "../features/import/components/ManualImportForm";
 import { useImporter } from "../features/import/hooks/useImporter";
-import { usePersistentTickets } from "../hooks/usePersistentTickets";
-import { LocalStorage } from "../storage/localStorage";
+import { useTicketsStore } from "../state/ticketsStore";
 import { Ticket } from "../types";
 
-const storage = new LocalStorage();
-
 export const TicketImporterPage: React.FC = () => {
-  const { saveTickets, addTicket } = usePersistentTickets(storage);
+  const setTickets = useTicketsStore((s) => s.setTickets);
+  const addTicket = useTicketsStore((s) => s.addTicket);
+  const { state, importTickets } = useImporter(setTickets);
   const [jsonText, setJsonText] = useState("");
-  const { state, importTickets } = useImporter(saveTickets);
   const { showSnackbar } = useSnackbar();
   const [isManualLoading, setIsManualLoading] = useState(false);
 
-  const handleManualImport = async (ticket: Ticket) => {
+  const handleManualImport = (ticket: Ticket): void => {
     try {
       setIsManualLoading(true);
-      await addTicket(ticket);
-      showSnackbar(`チケット ${ticket.laneText} を追加しました。`, "success");
+      addTicket(ticket);
+      showSnackbar(`${ticket.laneText} を追加しました。`, "success");
       ReactGA.event({
         category: "User",
         action: "manual_import",

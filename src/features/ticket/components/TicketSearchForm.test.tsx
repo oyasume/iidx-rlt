@@ -1,25 +1,23 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { TicketSearchForm } from "./TicketSearchForm";
+import { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { FC, PropsWithChildren } from "react";
+import { describe, expect, it } from "vitest";
+
 import { SearchFormValues } from "../../../schema";
-import { AppSettingsContext } from "../../../contexts/AppSettingsContext";
-import { AppSettings } from "../../../types";
+import { useSettingsStore } from "../../../state/settingsStore";
+import { PlaySide } from "../../../types";
+import { TicketSearchForm } from "./TicketSearchForm";
 
 describe("TicketSearchForm", () => {
-  const FormWrapper: FC<PropsWithChildren<{ settings: AppSettings }>> = ({ children, settings }) => {
+  const FormWrapper: React.FC<PropsWithChildren<{ playSide: PlaySide }>> = ({ children, playSide }) => {
     const methods = useForm<SearchFormValues>();
-    return (
-      <AppSettingsContext.Provider value={settings}>
-        <FormProvider {...methods}>{children}</FormProvider>
-      </AppSettingsContext.Provider>
-    );
+    useSettingsStore.setState({ playSide });
+    return <FormProvider {...methods}>{children}</FormProvider>;
   };
 
   it("1P設定で必要な入力欄が正しく表示される", () => {
     render(
-      <FormWrapper settings={{ playSide: "1P" }}>
+      <FormWrapper playSide="1P">
         <TicketSearchForm />
       </FormWrapper>
     );
@@ -30,7 +28,7 @@ describe("TicketSearchForm", () => {
 
   it("2P設定で必要な入力欄が正しく表示される", () => {
     render(
-      <FormWrapper settings={{ playSide: "2P" }}>
+      <FormWrapper playSide="2P">
         <TicketSearchForm />
       </FormWrapper>
     );
