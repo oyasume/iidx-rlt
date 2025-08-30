@@ -74,13 +74,14 @@ const getRulesForTicket = (
 
 export const createAtariMap = (atariRules: AtariRule[]): IAtariMap => {
   const rulesByPatternKey = createRulesByPatternKey(atariRules);
+  const rulesBySong = createRulesBySong(atariRules);
 
   return {
     getRulesForTicket: (ticket: Ticket, playSide: PlaySide): AtariRule[] | undefined => {
       return getRulesForTicket(ticket, playSide, rulesByPatternKey);
     },
     getRulesForSong: (title: string): AtariRule[] | undefined => {
-      return createRulesBySong(atariRules).get(title);
+      return rulesBySong.get(title);
     },
     getColorForTicket: (ticket: Ticket, playSide: PlaySide): HighlightColor | undefined => {
       const rules = getRulesForTicket(ticket, playSide, rulesByPatternKey);

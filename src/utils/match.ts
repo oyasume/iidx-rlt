@@ -41,5 +41,9 @@ export const matchTicket = (ticket: Ticket, pattern: SearchPattern, playSide: Pl
 };
 
 export const filterTickets = (tickets: Ticket[], pattern: SearchPattern, playSide: PlaySide): Ticket[] => {
+  const isAllWildcard =
+    pattern.scratchSideText.split("").every((c) => c === "*") &&
+    pattern.nonScratchSideText.split("").every((c) => c === "*");
+  if (isAllWildcard) return tickets;
   return tickets.filter((ticket) => matchTicket(ticket, pattern, playSide));
 };
