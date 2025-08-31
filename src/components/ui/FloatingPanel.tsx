@@ -10,7 +10,9 @@ interface FloatingPanelProps {
 
 export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, title, children }) => {
   const theme = useTheme();
-  const useBottomSheet = useMediaQuery(`(max-width: ${theme.breakpoints.values.sm}px) or (max-height: 500px)`);
+  const isSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const hasCoarsePointer = useMediaQuery("(pointer: coarse)");
+  const useBottomSheet = isSm || hasCoarsePointer;
 
   if (!open) {
     return null;
@@ -28,7 +30,7 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, tit
           paper: {
             sx: {
               height: "auto",
-              maxHeight: "80vh",
+              maxHeight: "50vh",
               overflowY: "auto",
               borderTopLeftRadius: 12,
               borderTopRightRadius: 12,
@@ -43,6 +45,7 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, tit
 
   return (
     <Paper
+      elevation={8}
       sx={(theme) => ({
         position: "fixed",
         bottom: theme.spacing(4),
