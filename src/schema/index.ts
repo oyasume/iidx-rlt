@@ -6,18 +6,21 @@ const validateDuplicate = (val: string) => {
   return uniqueDigits.size === digits.length;
 };
 
+const createLaneTextSchema = (length: number, allowWildcard: boolean) => {
+  const regex = new RegExp(`^[1-7${allowWildcard ? "*" : ""}]*$`);
+  const message = `指定できるのは1-7${allowWildcard ? "と*" : ""}だけです`;
+
+  return z
+    .string()
+    .max(length, `${length}文字以内で入力してください`)
+    .regex(regex, message)
+    .refine(validateDuplicate, { message: "重複している鍵盤があります" });
+};
+
 export const searchFormSchema = z.object({
-  scratchSideText: z
-    .string()
-    .max(3, "3文字以内で入力してください")
-    .regex(/^[1-7*]*$/, "指定できるのは1-7と*だけです")
-    .refine(validateDuplicate, { message: "重複している鍵盤があります" }),
+  scratchSideText: createLaneTextSchema(3, true),
   isScratchSideUnordered: z.boolean(),
-  nonScratchSideText: z
-    .string()
-    .max(4, "4文字以内で入力してください")
-    .regex(/^[1-7*]*$/, "指定できるのは1-7と*だけです")
-    .refine(validateDuplicate, { message: "重複している鍵盤があります" }),
+  nonScratchSideText: createLaneTextSchema(4, true),
   isNonScratchSideUnordered: z.boolean(),
 });
 export type SearchFormValues = z.infer<typeof searchFormSchema>;
@@ -33,10 +36,7 @@ export const atariRuleSchema = z.object({
 export const atariRulesSchema = z.array(atariRuleSchema);
 
 export const manualImportFormSchema = z.object({
-  laneText: z
-    .string()
-    .regex(/^[1-7]{7}$/, "1-7の数字のみを7桁で入力してください")
-    .refine(validateDuplicate, { message: "重複している数字があります" }),
+  laneText: createLaneTextSchema(7, false),
   expiration: z.string().optional(),
 });
 export type ManualImportFormValues = z.infer<typeof manualImportFormSchema>;

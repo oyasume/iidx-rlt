@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { jaJP } from "@mui/x-date-pickers/locales";
@@ -7,30 +7,32 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 
+import { LaneTextInput } from "../../../components/ui/LaneTextInput";
 import { manualImportFormSchema, ManualImportFormValues } from "../../../schema";
 import { Ticket } from "../../../types";
 
-interface Props {
+interface ManualImportFormProps {
   onImport: (ticket: Ticket) => void;
   isLoading: boolean;
 }
 
-export const ManualImportForm = ({ onImport, isLoading }: Props) => {
+export const ManualImportForm = ({ onImport, isLoading }: ManualImportFormProps) => {
   const [showExpiration, setShowExpiration] = useState(false);
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<ManualImportFormValues>({
+  const methods = useForm<ManualImportFormValues>({
     resolver: zodResolver(manualImportFormSchema),
     defaultValues: {
       laneText: "",
       expiration: "",
     },
   });
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = methods;
 
   const onSubmit = (data: ManualImportFormValues) => {
     const ticket: Ticket =
@@ -42,64 +44,59 @@ export const ManualImportForm = ({ onImport, isLoading }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={2} alignItems="flex-start">
-        <Stack direction="row" spacing={2} alignItems="flex-start">
-          <Controller
-            name="laneText"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="チケット"
-                error={!!errors.laneText}
-                placeholder="1234567"
-                helperText={errors.laneText?.message}
-                size="small"
-                slotProps={{ inputLabel: { shrink: true }, htmlInput: { maxLength: 7, inputMode: "tel" } }}
-              />
-            )}
-          />
-          <Button type="submit" variant="contained" disabled={isLoading}>
-            追加
-          </Button>
-        </Stack>
-        {showExpiration ? (
-          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
-            <Controller
-              name="expiration"
-              control={control}
-              render={({ field }) => (
-                <DatePicker
-                  label="有効期限"
-                  value={field.value ? dayjs(field.value, "YYYY/MM/DD", true) : null}
-                  onChange={(newValue) => {
-                    field.onChange(newValue ? newValue.format("YYYY/MM/DD") : "");
-                  }}
-                  format="YYYY / MM / DD"
-                  disablePast
-                  localeText={jaJP.components.MuiLocalizationProvider.defaultProps.localeText}
-                  slotProps={{
-                    field: { clearable: true },
-                    calendarHeader: { format: "YYYY年 MM月" },
-                    toolbar: { toolbarFormat: "YYYY年 M月 D日" },
-                    textField: {
-                      InputLabelProps: { shrink: true },
-                      size: "small",
-                      error: !!errors.expiration,
-                      helperText: errors.expiration?.message,
-                    },
-                  }}
-                />
-              )}
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={2} alignItems="flex-start">
+          <Stack direction="row" spacing={2} alignItems="flex-start">
+            <LaneTextInput
+              name="laneText"
+              label="チケット"
+              length={7}
+              placeholder="1234567"
+              size="small"
+              slotProps={{ inputLabel: { shrink: true } }}
             />
-          </LocalizationProvider>
-        ) : (
-          <Button variant="text" onClick={() => setShowExpiration(true)}>
-            有効期限を入力する（任意）
-          </Button>
-        )}
-      </Stack>
-    </form>
+            <Button type="submit" variant="contained" disabled={isLoading}>
+              追加
+            </Button>
+          </Stack>
+          {showExpiration ? (
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
+              <Controller
+                name="expiration"
+                control={control}
+                render={({ field }) => (
+                  <DatePicker
+                    label="有効期限"
+                    value={field.value ? dayjs(field.value, "YYYY/MM/DD", true) : null}
+                    onChange={(newValue) => {
+                      field.onChange(newValue ? newValue.format("YYYY/MM/DD") : "");
+                    }}
+                    format="YYYY / MM / DD"
+                    disablePast
+                    localeText={jaJP.components.MuiLocalizationProvider.defaultProps.localeText}
+                    slotProps={{
+                      field: { clearable: true },
+                      calendarHeader: { format: "YYYY年 MM月" },
+                      toolbar: { toolbarFormat: "YYYY年 M月 D日" },
+                      textField: {
+                        InputLabelProps: { shrink: true },
+                        size: "small",
+                        error: !!errors.expiration,
+                        helperText: errors.expiration?.message,
+                      },
+                    }}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          ) : (
+            <Button variant="text" onClick={() => setShowExpiration(true)}>
+              有効期限を入力する（任意）
+            </Button>
+          )}
+        </Stack>
+      </form>
+    </FormProvider>
   );
 };
