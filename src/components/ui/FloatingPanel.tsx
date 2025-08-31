@@ -10,7 +10,7 @@ interface FloatingPanelProps {
 
 export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, title, children }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const useBottomSheet = useMediaQuery(`(max-width: ${theme.breakpoints.values.sm}px) or (max-height: 500px)`);
 
   if (!open) {
     return null;
@@ -18,7 +18,7 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, tit
 
   const panelContent = <Panel title={title}>{children}</Panel>;
 
-  if (isMobile) {
+  if (useBottomSheet) {
     return (
       <Drawer
         anchor="bottom"
@@ -43,15 +43,15 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({ open, onClose, tit
 
   return (
     <Paper
-      sx={{
+      sx={(theme) => ({
         position: "fixed",
-        bottom: 32,
-        right: 32,
-        zIndex: 1300,
-        width: 400,
+        bottom: theme.spacing(4),
+        right: theme.spacing(4),
+        zIndex: theme.zIndex.modal,
+        width: theme.spacing(50),
         borderRadius: 3,
-        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.3)",
-      }}
+        boxShadow: theme.shadows[3],
+      })}
     >
       {panelContent}
     </Paper>
