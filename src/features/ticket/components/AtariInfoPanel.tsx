@@ -18,10 +18,10 @@ export const AtariInfoPanel = ({ ticket, rules, onClose }: AtariInfoPanelProps) 
   const playSide = useSettingsStore((s) => s.playSide);
 
   const handleOpenTextage = (rule: AtariRule) => {
-    ReactGA.event({
-      category: "Outbound Link",
-      action: "click_textage_link_from_detail",
-      label: rule.title,
+    ReactGA.event("click_textage_link_from_detail", {
+      song_title: rule.title,
+      lane_text: ticket.laneText,
+      play_side: playSide,
     });
     const url = makeTextageUrl(rule.url, playSide, ticket.laneText);
     window.open(url, "_blank", "noopener,noreferrer");

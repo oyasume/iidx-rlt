@@ -54,12 +54,12 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const persistentTickets = useTicketsStore((s) => s.tickets);
   const tickets = isSample ? sampleTickets : persistentTickets;
 
-  const settings = { playSide: useSettingsStore((s) => s.playSide) };
+  const playSide = useSettingsStore((s) => s.playSide);
   const updatePlaySide = useSettingsStore((s) => s.updatePlaySide);
 
   const { query, methods, ...handlers } = useTicketQuery();
 
-  const deferredPlaySide = useDeferredValue(settings.playSide);
+  const deferredPlaySide = useDeferredValue(playSide);
 
   const { atariMap, atariSongs, selectedAtariRules, paginatedTickets, pageCount, totalCount } = useTicketSelectors(
     tickets,
@@ -72,8 +72,8 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const [detailTicket, setDetailTicket] = useState<Ticket | null>(null);
   const detailTicketRules = useMemo(() => {
     if (!detailTicket) return [];
-    return atariMap.getRulesForTicket(detailTicket, settings.playSide) || [];
-  }, [detailTicket, atariMap, settings.playSide]);
+    return atariMap.getRulesForTicket(detailTicket, playSide) || [];
+  }, [detailTicket, atariMap, playSide]);
 
   const handlePlaySideChange = (newPlaySide: PlaySide) => {
     updatePlaySide(newPlaySide);
@@ -82,16 +82,16 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
   const handleOpenTextage = useCallback(
     (laneText: string) => {
       if (query.textageSong) {
-        const url = makeTextageUrl(query.textageSong.url, settings.playSide, laneText);
-        ReactGA.event({
-          category: "Outbound Link",
-          action: "click_textage_link",
-          label: query.textageSong.title,
+        const url = makeTextageUrl(query.textageSong.url, playSide, laneText);
+        ReactGA.event("click_textage_link", {
+          song_title: query.textageSong.title,
+          lane_text: laneText,
+          play_side: playSide,
         });
         window.open(url, "_blank", "noopener,noreferrer");
       }
     },
-    [query.textageSong, settings.playSide]
+    [query.textageSong, playSide]
   );
 
   const isLoading = isSample ? isSongDataLoading || isAtariRulesLoading : isSongDataLoading || isAtariRulesLoading;
@@ -111,7 +111,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     <Page title="チケット一覧・当たり配置候補">
       <FormProvider {...methods}>
         <Stack spacing={2} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          <PlaySideToggle value={settings.playSide} onChange={handlePlaySideChange} />
+          <PlaySideToggle value={playSide} onChange={handlePlaySideChange} />
           <TicketSearchForm />
           <Divider />
           <TextageForm
@@ -122,7 +122,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
             searchMode={query.filterMode}
             onModeChange={handlers.handleFilterModeChange}
           />
-          <AtariRulePanel rules={selectedAtariRules} playSide={settings.playSide} />
+          <AtariRulePanel rules={selectedAtariRules} playSide={playSide} />
           <Divider />
           {tickets.length === 0 && !isSample ? (
             <Box>
