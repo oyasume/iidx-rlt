@@ -1,20 +1,24 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, PaletteMode } from "@mui/material";
 
-export const theme = createTheme({
-  components: {
-    MuiToggleButton: {
-      styleOverrides: {
-        root: {
-          padding: "4px 16px",
+export const getTheme = (mode: PaletteMode) =>
+  createTheme({
+    palette: {
+      mode,
+    },
+    components: {
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            padding: "4px 16px",
+          },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: "none",
+          },
         },
       },
     },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: "none",
-        },
-      },
-    },
-  },
-});
+  });

@@ -1,7 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { AppBar, Toolbar, Typography, Link, Button, Collapse, Alert, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import {
+  Alert,
+  alpha,
+  AppBar,
+  Button,
+  Collapse,
+  IconButton,
+  Link,
+  Switch,
+  Toolbar,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
+
+import { useSettingsStore } from "../../state/settingsStore";
 
 const APP_TITLE = "RLT Manager";
 const SURVEY_URL = "https://forms.gle/8PTuYZgbyFJwpEgu9";
@@ -16,6 +30,8 @@ const handleSurveyClick = (source: "Header" | "Alert") => {
 
 export const AppHeader: React.FC = () => {
   const [surveyAlertOpen, setSurveyAlertOpen] = useState(false);
+  const toggleThemeMode = useSettingsStore((s) => s.toggleThemeMode);
+  const theme = useTheme();
 
   useEffect(() => {
     const dismissed = localStorage.getItem(SURVEY_NOTIFICATION_KEY);
@@ -38,8 +54,8 @@ export const AppHeader: React.FC = () => {
     <AppBar
       position="sticky"
       sx={{
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
-        color: "#000",
+        backgroundColor: (theme) => alpha(theme.palette.background.paper, 0.8),
+        color: "text.primary",
         backdropFilter: "blur(6px)",
         boxShadow: "none",
       }}
@@ -58,6 +74,7 @@ export const AppHeader: React.FC = () => {
         >
           フィードバック
         </Button>
+        <Switch checked={theme.palette.mode === "dark"} onChange={toggleThemeMode} />
       </Toolbar>
       <Collapse in={surveyAlertOpen}>
         <Alert
