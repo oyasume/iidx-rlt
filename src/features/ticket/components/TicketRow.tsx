@@ -2,14 +2,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import LaunchIcon from "@mui/icons-material/Launch";
 import { Box, IconButton, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
 
-import { SongInfo, Ticket } from "../../../types";
-import { HighlightColor } from "../../../utils/atari";
-
-const colorMap: Record<NonNullable<HighlightColor>, string> = {
-  gold: "#FFD700",
-  silver: "#C0C0C0",
-  bronze: "#CD7F32",
-};
+import { HighlightColor, SongInfo, Ticket } from "../../../types";
 
 export const TicketRow: React.FC<{
   ticket: Ticket & { highlightColor?: HighlightColor };
@@ -27,7 +20,7 @@ export const TicketRow: React.FC<{
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center" }}>
             {ticket.highlightColor && (
-              <FiberManualRecordIcon sx={{ color: colorMap[ticket.highlightColor], fontSize: "1rem" }} />
+              <FiberManualRecordIcon sx={{ color: `highlight.${ticket.highlightColor}`, fontSize: "1rem" }} />
             )}
           </Box>
           <Typography variant="body1" component="span" sx={{ mr: 1 }}>

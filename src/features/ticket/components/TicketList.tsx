@@ -15,8 +15,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 
-import { SongInfo, Ticket } from "../../../types";
-import { HighlightColor } from "../../../utils/atari";
+import { HighlightColor, SongInfo, Ticket } from "../../../types";
 import { TicketRow } from "./TicketRow";
 
 interface TicketListProps {
@@ -26,9 +25,9 @@ interface TicketListProps {
   onRowClick: (ticket: Ticket) => void;
 }
 
-const LegendItem: React.FC<{ color: string; label: string }> = ({ color, label }) => (
+const LegendItem: React.FC<{ color: NonNullable<HighlightColor>; label: string }> = ({ color, label }) => (
   <Stack direction="row" alignItems="center" spacing={1}>
-    <FiberManualRecordIcon sx={{ color, fontSize: "1rem" }} />
+    <FiberManualRecordIcon sx={{ color: `highlight.${color}`, fontSize: "1rem" }} />
     <Typography variant="body2">{label}</Typography>
   </Stack>
 );
@@ -73,9 +72,9 @@ const TicketListComponent: React.FC<TicketListProps> = ({ tickets, selectedSong,
                   }}
                 >
                   <Stack spacing={1} sx={{ p: 2 }}>
-                    <LegendItem color="#FFD700" label="強いチケット" />
-                    <LegendItem color="#C0C0C0" label="そこそこ強いチケット" />
-                    <LegendItem color="#CD7F32" label="当たり候補があるチケット" />
+                    <LegendItem color="gold" label="強いチケット" />
+                    <LegendItem color="silver" label="そこそこ強いチケット" />
+                    <LegendItem color="bronze" label="当たり候補があるチケット" />
                   </Stack>
                 </Popover>
               </Box>

@@ -1,4 +1,4 @@
-import { AtariRule, PlaySide, Ticket } from "../types";
+import { AtariRule, HighlightColor, PlaySide, Ticket } from "../types";
 import { matchTicket } from "./match";
 import { generatePatternKey, parsePatternKey } from "./pattern";
 
@@ -7,7 +7,6 @@ const GOLD_QUANTITY_THRESHOLD = 5;
 const SILVER_QUALITY_THRESHOLD = 2;
 const SILVER_QUANTITY_THRESHOLD = 3;
 
-export type HighlightColor = "gold" | "silver" | "bronze" | undefined;
 type RulesByPatternKey = Map<string, AtariRule[]>;
 type RulesBySong = Map<string, AtariRule[]>;
 
@@ -83,7 +82,7 @@ export const createAtariMap = (atariRules: AtariRule[]): IAtariMap => {
     getRulesForSong: (title: string): AtariRule[] | undefined => {
       return rulesBySong.get(title);
     },
-    getColorForTicket: (ticket: Ticket, playSide: PlaySide): HighlightColor | undefined => {
+    getColorForTicket: (ticket: Ticket, playSide: PlaySide): HighlightColor => {
       const rules = getRulesForTicket(ticket, playSide, rulesByPatternKey);
       if (!rules) {
         return undefined;

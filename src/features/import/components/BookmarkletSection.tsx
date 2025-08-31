@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Box, Typography, Collapse, Button, Link, Alert, AlertTitle } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { Alert, AlertTitle, Box, Button, Collapse, Link, Typography } from "@mui/material";
+import React, { useState } from "react";
+
 import { useClipboard } from "../../../hooks/useClipboard";
 
 const bookmarkletCode = `javascript:(function(){const t='https://oyasume.github.io/iidx-rlt/bookmarklet.js?v='+new Date().getTime();const e=document.createElement('script');e.src=t;document.body.appendChild(e);})();`;
@@ -28,7 +29,7 @@ export const BookmarkletSection: React.FC = () => {
               コピー
             </Button>
           </Box>
-          <Box sx={{ p: 2, wordBreak: "break-all", bgcolor: "#f5f5f5" }}>{bookmarkletCode}</Box>
+          <Box sx={{ p: 2, wordBreak: "break-all", bgcolor: "action.hover" }}>{bookmarkletCode}</Box>
         </Box>
         <Alert severity="info" sx={{ mt: 2 }}>
           <AlertTitle>補足</AlertTitle>

@@ -1,7 +1,12 @@
+import { getTheme } from "./theme";
+
 export interface Ticket {
   laneText: string;
   expiration?: string;
 }
+
+const _theme = getTheme("light");
+export type HighlightColor = keyof typeof _theme.palette.highlight | undefined;
 
 export interface SearchPattern {
   scratchSideText: string;
