@@ -8,7 +8,7 @@ import { BookmarkletSection } from "../features/import/components/BookmarkletSec
 import { JsonImportForm } from "../features/import/components/JsonImportForm";
 import { ManualImportForm } from "../features/import/components/ManualImportForm";
 import { useImporter } from "../features/import/hooks/useImporter";
-import { useTicketsStore } from "../state/ticketsStore";
+import { useTicketsStore } from "../store/ticketsStore";
 import { Ticket } from "../types";
 
 export const TicketImporterPage: React.FC = () => {

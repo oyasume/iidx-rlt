@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { describe, expect, it } from "vitest";
 
 import { SearchFormValues } from "../../../schema";
-import { useSettingsStore } from "../../../state/settingsStore";
+import { useSettingsStore } from "../../../store/settingsStore";
 import { PlaySide } from "../../../types";
 import { TicketSearchForm } from "./TicketSearchForm";
 

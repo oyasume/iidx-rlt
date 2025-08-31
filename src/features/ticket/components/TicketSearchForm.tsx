@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 
 import { KeypadInput } from "../../../components/ui/KeypadInput";
-import { useSettingsStore } from "../../../state/settingsStore";
+import { useSettingsStore } from "../../../store/settingsStore";
 
 export const TicketSearchForm: React.FC = () => {
   const is1P = useSettingsStore((s) => s.playSide) === "1P";

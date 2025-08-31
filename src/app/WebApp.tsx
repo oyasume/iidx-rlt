@@ -1,4 +1,4 @@
-import { ThemeProvider, CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -9,7 +9,7 @@ import { HomePage } from "../pages/HomePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { TicketImporterPage } from "../pages/TicketImporterPage";
 import { TicketViewPage } from "../pages/TicketViewPage";
-import { useSettingsStore } from "../state/settingsStore";
+import { useSettingsStore } from "../store/settingsStore";
 import { getTheme } from "../theme";
 
 export const WebApp: React.FC = () => {

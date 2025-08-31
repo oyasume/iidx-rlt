@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
 
-import { useSettingsStore } from "../../state/settingsStore";
+import { useSettingsStore } from "../../store/settingsStore";
 
 const APP_TITLE = "RLT Manager";
 const SURVEY_URL = "https://forms.gle/8PTuYZgbyFJwpEgu9";

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { searchFormSchema, SearchFormValues } from "../../../schema";
-import { useSettingsStore } from "../../../state/settingsStore";
+import { useSettingsStore } from "../../../store/settingsStore";
 import { PlaySide } from "../../../types";
 import { TicketSearchForm } from "./TicketSearchForm";
 

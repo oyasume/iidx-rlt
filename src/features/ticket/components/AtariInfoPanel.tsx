@@ -4,7 +4,7 @@ import { Box, IconButton, List, ListItem, ListItemText, Typography } from "@mui/
 import ReactGA from "react-ga4";
 
 import { FloatingPanel } from "../../../components/ui/FloatingPanel";
-import { useSettingsStore } from "../../../state/settingsStore";
+import { useSettingsStore } from "../../../store/settingsStore";
 import { AtariRule, Ticket } from "../../../types";
 import { makeTextageUrl } from "../../../utils/makeTextageUrl";
 

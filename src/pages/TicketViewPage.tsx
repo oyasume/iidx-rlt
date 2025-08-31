@@ -15,8 +15,8 @@ import { TicketResultsSection } from "../features/ticket/components/TicketResult
 import { TicketSearchForm } from "../features/ticket/components/TicketSearchForm";
 import { useTicketQuery } from "../features/ticket/hooks/useTicketQuery";
 import { useTicketSelectors } from "../features/ticket/hooks/useTicketSelectors";
-import { useSettingsStore } from "../state/settingsStore";
-import { useTicketsStore } from "../state/ticketsStore";
+import { useSettingsStore } from "../store/settingsStore";
+import { useTicketsStore } from "../store/ticketsStore";
 import { AtariRule, PlaySide, SongInfo, Ticket } from "../types";
 import { makeTextageUrl } from "../utils/makeTextageUrl";
 
