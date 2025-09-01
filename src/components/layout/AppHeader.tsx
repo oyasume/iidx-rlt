@@ -1,8 +1,6 @@
-import { alpha, AppBar, Button, Link, Switch, Toolbar, Typography, useTheme } from "@mui/material";
+import { alpha, AppBar, Button, Link, Toolbar, Typography } from "@mui/material";
 import React from "react";
 import ReactGA from "react-ga4";
-
-import { useSettingsStore } from "../../store/settingsStore";
 
 const APP_TITLE = "RLT Manager";
 const SURVEY_URL = "https://forms.gle/8PTuYZgbyFJwpEgu9";
@@ -15,9 +13,6 @@ const handleSurveyClick = () => {
 };
 
 export const AppHeader: React.FC = () => {
-  const toggleThemeMode = useSettingsStore((s) => s.toggleThemeMode);
-  const theme = useTheme();
-
   return (
     <AppBar
       position="sticky"
@@ -42,7 +37,6 @@ export const AppHeader: React.FC = () => {
         >
           フィードバック
         </Button>
-        <Switch checked={theme.palette.mode === "dark"} onChange={toggleThemeMode} />
       </Toolbar>
     </AppBar>
   );

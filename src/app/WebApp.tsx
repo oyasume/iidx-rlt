@@ -9,12 +9,10 @@ import { HomePage } from "../pages/HomePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { TicketImporterPage } from "../pages/TicketImporterPage";
 import { TicketViewPage } from "../pages/TicketViewPage";
-import { useSettingsStore } from "../store/settingsStore";
 import { getTheme } from "../theme";
 
 export const WebApp: React.FC = () => {
-  const themeMode = useSettingsStore((s) => s.themeMode);
-  const theme = useMemo(() => getTheme(themeMode), [themeMode]);
+  const theme = useMemo(() => getTheme("light"), []);
 
   return (
     <ThemeProvider theme={theme}>
