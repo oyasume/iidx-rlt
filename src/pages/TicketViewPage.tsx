@@ -83,7 +83,8 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
     (laneText: string) => {
       if (query.textageSong) {
         const url = makeTextageUrl(query.textageSong.url, playSide, laneText);
-        ReactGA.event("click_textage_link", {
+        const eventName = query.filterMode === "recommend" ? "click_textage_link_recommend" : "click_textage_link_all";
+        ReactGA.event(eventName, {
           song_title: query.textageSong.title,
           lane_text: laneText,
           play_side: playSide,
@@ -91,7 +92,7 @@ export const TicketViewPage: React.FC<TicketViewPageProps> = ({ isSample = false
         window.open(url, "_blank", "noopener,noreferrer");
       }
     },
-    [query.textageSong, playSide]
+    [query.textageSong, playSide, query.filterMode]
   );
 
   const isLoading = isSample ? isSongDataLoading || isAtariRulesLoading : isSongDataLoading || isAtariRulesLoading;
